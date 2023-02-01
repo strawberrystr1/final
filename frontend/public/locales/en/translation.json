@@ -1,0 +1,23 @@
+{
+  "auth": {
+    "title_sup": "Sign Up",
+    "title_sin": "Sign In",
+    "name": "name",
+    "password": "password",
+    "email": "email",
+    "change_btn_sup": "Already have an account? Sign in",
+    "change_btn_sin": "Back to registration",
+    "success": "You successfully logged in!",
+    "email_required": "Email is required",
+    "email_invalid": "Invalid email format",
+    "email_min": "Email must be 6 or more characters",
+    "password_whitespaces": "Password mustn't contain the whitespaces",
+    "password_required": "Password is required",
+    "password_characters": "Password mustn't contain the following characters '@, #, $, %, ^, &, *'",
+    "password_min": "Password must be 8 or more characters",
+    "name_required": "Name is required",
+    "name_letters": "Name should contain only letters and numbers",
+    "name_min": "Name must be 3 or more characters",
+    "name_max": "Name must be 20 or less characters"
+  }
+}
