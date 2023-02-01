@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+dotenv.config();
 import bodyParser from "body-parser";
+import passport from "passport";
 
 import dbClient from "./db";
 import router from "./router/index";
@@ -19,11 +21,12 @@ import DateField from "./models/date.model";
 import Tag from "./models/tag.model";
 import ItemsTag from "./models/itemsTag.model";
 
-const runServer = async () => {
-  dotenv.config();
+import "./middlewares/passport.middleware";
 
+const runServer = async () => {
   const app = express();
 
+  app.use(passport.initialize());
   app.use(cors({ origin: "*" }));
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());

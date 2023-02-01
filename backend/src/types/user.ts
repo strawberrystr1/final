@@ -8,4 +8,4 @@ export interface IUser {
   theme: "light" | "dark";
 }
 
-export type IUserCreation = Omit<IUser, "id" | "language" | "theme">;
+export type IUserCreation = Omit<IUser, "id" | "language" | "theme" | "role">;

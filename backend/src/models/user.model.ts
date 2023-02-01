@@ -21,7 +21,8 @@ const User = dbClient.define<Model<IUser, IUserCreation>>(
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
