@@ -3,12 +3,19 @@ import { ValidationError } from "sequelize";
 
 import {
   CANT_CREATE_USER,
-  EMAIL_ALREADY_EXISTS
+  EMAIL_ALREADY_EXISTS,
+  SOMETHING_WRONG,
+  USER_NOT_EXISTS,
+  WRONG_PASSWORD
 } from "../constants/httpMessages";
-import { createUser, getAllUsers } from "../services/user.service";
+import { createUser, getAllUsers, loginUser } from "../services/user.service";
 import { HTTPCodes } from "../types/httpCodes";
+import { IUserCreation, IUserLogin } from "../types/user";
 
-export const registrationController = async (req: Request, res: Response) => {
+export const registrationController = async (
+  req: Request<{}, {}, IUserCreation>,
+  res: Response
+) => {
   try {
     const data = req.body;
 
@@ -33,4 +40,32 @@ export const getAllContoller = async (req: Request, res: Response) => {
 
     res.json(users);
   } catch (e) {}
+};
+
+export const loginController = async (
+  req: Request<{}, {}, IUserLogin>,
+  res: Response
+) => {
+  try {
+    const { password, email } = req.body;
+
+    const user = await loginUser(password, email);
+
+    res.json(user);
+  } catch (e) {
+    console.log('e: ', e);
+    if (e instanceof Error) {
+      switch (e.message) {
+        case `${HTTPCodes.NOT_FOUND}`:
+          res.status(HTTPCodes.NOT_FOUND).json({ msg: USER_NOT_EXISTS });
+          break;
+        case `${HTTPCodes.BAD_REQUEST}`:
+          res.status(HTTPCodes.BAD_REQUEST).json({ msg: WRONG_PASSWORD });
+          break;
+        default:
+          res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
+          break;
+      }
+    }
+  }
 };

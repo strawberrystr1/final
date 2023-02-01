@@ -9,3 +9,5 @@ export interface IUser {
 }
 
 export type IUserCreation = Omit<IUser, "id" | "language" | "theme" | "role">;
+
+export type IUserLogin = Omit<IUserCreation, "name">;

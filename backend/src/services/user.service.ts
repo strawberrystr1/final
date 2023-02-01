@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import { SALT_NUMBER } from "../constants/hash";
+import { USER_NOT_EXISTS } from "../constants/httpMessages";
 import User from "../models/user.model";
+import { HTTPCodes } from "../types/httpCodes";
 
 import { IUserCreation } from "../types/user";
 import { createToken } from "../utils/createToken";
@@ -30,6 +32,7 @@ export const createUser = async (user: IUserCreation) => {
   return {
     role,
     language,
+    email,
     theme,
     id,
     name: userName,
@@ -37,8 +40,8 @@ export const createUser = async (user: IUserCreation) => {
   };
 };
 
-export const getUser = async (name: string, email: string) => {
-  const user = (await User.findOne({ where: { name, email } }))?.toJSON();
+export const getUser = async (email: string) => {
+  const user = (await User.findOne({ where: { email } }))?.toJSON();
 
   return user;
 };
@@ -48,5 +51,25 @@ export const getAllUsers = async () => {
 };
 
 export const loginUser = async (password: string, email: string) => {
-  
-}
+  const user = await getUser(email);
+
+  if (!user) {
+    throw new Error(`${HTTPCodes.NOT_FOUND}`);
+  }
+
+  const match = await bcrypt.compare(password, user.password);
+
+  if (match) {
+    return {
+      name: user.name,
+      role: user.role,
+      id: user.id,
+      language: user.language,
+      token: createToken(user.name, user.email, user.role),
+      email: user.email,
+      theme: user.theme
+    };
+  } else {
+    throw new Error(`${HTTPCodes.BAD_REQUEST}`);
+  }
+};

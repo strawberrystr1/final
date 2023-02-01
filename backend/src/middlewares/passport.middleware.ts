@@ -12,7 +12,7 @@ const options: StrategyOptions = {
 passport.use(
   new Strategy(options, async (payload, done) => {
     console.log("payload: ", payload);
-    const user = await getUser(payload.name, payload.email);
+    const user = await getUser(payload.email);
 
     // if (!user) {
     //   return done({ msg: "User " });
