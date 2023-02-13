@@ -4,13 +4,24 @@ import { ValidationError } from "sequelize";
 import {
   CANT_CREATE_USER,
   EMAIL_ALREADY_EXISTS,
+  SETTINGS_UPDATED,
   SOMETHING_WRONG,
   USER_NOT_EXISTS,
   WRONG_PASSWORD
 } from "../constants/httpMessages";
-import { createUser, getAllUsers, loginUser } from "../services/user.service";
+import {
+  createUser,
+  getAllUsers,
+  loginUser,
+  updateSettings
+} from "../services/user.service";
 import { HTTPCodes } from "../types/httpCodes";
-import { IUserCreation, IUserLogin } from "../types/user";
+import {
+  IAuthUser,
+  IUserCreation,
+  IUserLogin,
+  IUserSettings
+} from "../types/user";
 
 export const registrationController = async (
   req: Request<{}, {}, IUserCreation>,
@@ -39,7 +50,9 @@ export const getAllContoller = async (req: Request, res: Response) => {
     const users = await getAllUsers();
 
     res.json(users);
-  } catch (e) {}
+  } catch (e) {
+    res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
+  }
 };
 
 export const loginController = async (
@@ -53,7 +66,6 @@ export const loginController = async (
 
     res.json(user);
   } catch (e) {
-    console.log('e: ', e);
     if (e instanceof Error) {
       switch (e.message) {
         case `${HTTPCodes.NOT_FOUND}`:
@@ -66,6 +78,27 @@ export const loginController = async (
           res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
           break;
       }
+    } else {
+      res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
     }
+  }
+};
+
+export const settingsController = async (
+  req: Request<{}, {}, IUserSettings>,
+  res: Response
+) => {
+  try {
+    const data = req.body;
+    const user = req.user as IAuthUser;
+
+    await updateSettings(
+      { ...data, theme: user.theme === "dark" ? "light" : "dark" },
+      user.email
+    );
+
+    res.json({ msg: SETTINGS_UPDATED });
+  } catch (e) {
+    res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
   }
 };

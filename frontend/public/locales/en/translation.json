@@ -19,5 +19,33 @@
     "name_letters": "Name should contain only letters and numbers",
     "name_min": "Name must be 3 or more characters",
     "name_max": "Name must be 20 or less characters"
+  },
+  "collection": {
+    "name_required": "Name is required",
+    "name_min": "Name must be 6 or more characters",
+    "description_required": "Description is required",
+    "description_min": "Description must be 10 or more characters",
+    "create": "Create collection",
+    "name": "Collection name",
+    "description": "Collection description",
+    "type": "Collection type",
+    "image": "Collection image",
+    "additional": "Additional fields",
+    "create_btn": "Create",
+    "alcohol": "Alcohol",
+    "books": "Books",
+    "movies": "Movies",
+    "heroes": "Heroes",
+    "cars": "cars",
+    "number": "number field",
+    "string": "string field",
+    "text": "text field",
+    "date": "date field",
+    "boolean": "boolean field",
+    "dragging": "Drop the files here...",
+    "file": "Drag drop some file here, or click to select file"
+  },
+  "placeholder": {
+    "field_name": "Field name"
   }
 }

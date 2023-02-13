@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 
-const useValidationSchema = () => {
+const useAuthValidationSchema = () => {
   const { t } = useTranslation();
 
   const validationSchema = yup.object({
@@ -34,4 +34,4 @@ const useValidationSchema = () => {
   return validationSchema;
 };
 
-export default useValidationSchema;
+export default useAuthValidationSchema;

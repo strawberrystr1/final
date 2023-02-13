@@ -49,23 +49,23 @@ const runServer = async () => {
     Collection.hasMany(CollectionItem);
     CollectionItem.belongsTo(Collection);
 
-    CollectionItem.hasOne(Like);
+    CollectionItem.hasMany(Like);
     Like.belongsTo(CollectionItem);
 
-    CollectionItem.hasMany(CheckboxField);
-    CheckboxField.belongsTo(CollectionItem);
+    Collection.hasMany(CheckboxField);
+    CheckboxField.belongsTo(Collection);
 
-    CollectionItem.hasMany(NumberField);
-    NumberField.belongsTo(CollectionItem);
+    Collection.hasMany(NumberField);
+    NumberField.belongsTo(Collection);
 
-    CollectionItem.hasMany(StringField);
-    StringField.belongsTo(CollectionItem);
+    Collection.hasMany(StringField);
+    StringField.belongsTo(Collection);
 
-    CollectionItem.hasMany(TextField);
-    TextField.belongsTo(CollectionItem);
+    Collection.hasMany(TextField);
+    TextField.belongsTo(Collection);
 
-    CollectionItem.hasMany(DateField);
-    DateField.belongsTo(CollectionItem);
+    Collection.hasMany(DateField);
+    DateField.belongsTo(Collection);
 
     CollectionItem.hasMany(Comment);
     Comment.belongsTo(CollectionItem);

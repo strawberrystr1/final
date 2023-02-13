@@ -10,7 +10,7 @@ import { useFormik } from 'formik';
 
 import routes from '../../constants/routes';
 import { useLoginMutation, useRegisterMutation } from '../../redux/api/auth';
-import useValidationSchema from '../../utils/validationSchema';
+import useValidationSchema from '../../utils/authValidationSchema';
 
 import { ButtonsWrapper, Form, StyledField } from './styled';
 
@@ -85,7 +85,7 @@ export const AuthForm = () => {
               type={showPassword ? 'text' : 'password'}
               value={formik.values[field]}
               onChange={formik.handleChange}
-              error={formik.touched[field] && Boolean(formik.errors[field])}
+              error={formik.touched[field] && !!formik.errors[field]}
               helperText={formik.touched[field] && formik.errors[field]}
               InputProps={{
                 endAdornment: (
@@ -110,7 +110,7 @@ export const AuthForm = () => {
               label={capitalize(t(`auth.${field}`))}
               value={formik.values[field]}
               onChange={formik.handleChange}
-              error={formik.touched[field] && Boolean(formik.errors[field])}
+              error={formik.touched[field] && !!formik.errors[field]}
               helperText={formik.touched[field] && formik.errors[field]}
             />
           );

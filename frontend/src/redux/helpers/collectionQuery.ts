@@ -1,11 +1,12 @@
-import { SERVER_ERROR, SETTING_CHANGED } from '../../constants/toast';
-import { IAPIError } from '../../types/error';
+import { COLLECTION_CREATE_MSG, SERVER_ERROR } from '../../constants/toast';
+import { ICollectionCreateResponse } from '../../types/collection';
+import type { IAPIError } from '../../types/error';
+import { ICreateCollectionForm } from '../../types/formik';
 import { BaseQuery } from '../../types/rtkApi';
-import { IUpdateSettingsResponse, IUpdateUserSettings } from '../../types/user';
 import { toastHandler } from '../../utils/toastHandlers';
 import { RootState } from '../store';
 
-export const userQuery: BaseQuery<IUpdateUserSettings, IUpdateSettingsResponse> = async (
+export const collectionQuery: BaseQuery<ICreateCollectionForm, ICollectionCreateResponse> = async (
   arg,
   { dispatch, queryFulfilled, getState }
 ) => {
@@ -16,7 +17,7 @@ export const userQuery: BaseQuery<IUpdateUserSettings, IUpdateSettingsResponse> 
   try {
     await queryFulfilled;
 
-    toastHandler(dispatch, SETTING_CHANGED[language], 'success');
+    toastHandler(dispatch, COLLECTION_CREATE_MSG[language], 'success');
   } catch (e) {
     const {
       error: {

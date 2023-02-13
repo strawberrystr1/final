@@ -1,133 +1,194 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { FileUploader } from 'react-drag-drop-files';
+import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import {
-  Box,
   Button,
   Dialog,
+  DialogActions,
   DialogContent,
   MenuItem,
   Select,
-  SelectChangeEvent,
   TextareaAutosize,
   TextField,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import { FormikProps, useFormik } from 'formik';
 
-import { FILE_TYPES } from '../../constants/base';
 import { AdditionalFields, Collection } from '../../constants/collection';
+import { useCreateMutation } from '../../redux/api/collection';
+import { ICreateCollectionForm } from '../../types/formik';
+import useValidationSchema from '../../utils/collectionValidationSchema';
 import { AdditionalField } from '../AdditionalField';
 import { CustomDialogTitle } from '../DialogTitle';
+import { FileUploader } from '../FileUploader';
 
 import { AdditionalItemsWrapper, DialogItem, Markdown } from './styled';
 
-import styles from './styles.module.css';
+const formikInitialValues: ICreateCollectionForm = {
+  name: '',
+  description: '',
+  theme: Collection.ALCOHOL,
+  image: null,
+  string1: '',
+  string2: '',
+  string3: '',
+  number1: '',
+  number2: '',
+  number3: '',
+  text1: '',
+  text2: '',
+  text3: '',
+  checkbox1: '',
+  checkbox2: '',
+  checkbox3: '',
+  date1: '',
+  date2: '',
+  date3: '',
+};
+
+export type FormikType = FormikProps<ICreateCollectionForm>;
 
 export const CreateCollectionPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEdditing, setIsEdditing] = useState(false);
-  const [markdown, setMarkdown] = useState('');
-  const [type, setType] = useState<Collection>(Collection.ALCOHOL);
-  const [image, setImage] = useState<File | null>(null);
   const textArea = useRef<HTMLTextAreaElement>(null);
+  const validationSchema = useValidationSchema();
+  const { t } = useTranslation();
+  const [createCollection] = useCreateMutation();
+
+  const handleSubmitForm = (values: ICreateCollectionForm) => {
+    createCollection(values);
+  };
+
+  const formik = useFormik({
+    initialValues: formikInitialValues,
+    onSubmit: handleSubmitForm,
+    validationSchema,
+  });
 
   useEffect(() => {
     if (isEdditing) {
       textArea.current?.focus();
-      textArea.current?.setSelectionRange(markdown.length, markdown.length);
+      textArea.current?.setSelectionRange(
+        formik.values.description.length,
+        formik.values.description.length
+      );
     }
   }, [isEdditing]);
 
   const handleButtonClick = () => setIsOpen(prev => !prev);
-  const handleDialogClose = () => setIsOpen(false);
+  const handleDialogClose = () => {
+    setIsOpen(false);
+    formik.resetForm();
+  };
 
-  const handleTextAreaInput = (e: ChangeEvent<HTMLTextAreaElement>) => setMarkdown(e.target.value);
   const handleTextAreaFocus = () => setIsEdditing(true);
   const handleTextAreaBlur = () => setIsEdditing(false);
 
-  const handleSelect = (e: SelectChangeEvent<string>) => setType(e.target.value as Collection);
-
-  const handleImageUpload = (file: File) => {
-    console.log(file, image);
-    setImage(file);
-  };
-
   return (
-    <Box>
+    <>
       <Button onClick={handleButtonClick} variant="contained">
-        <Typography sx={{ textTransform: 'none' }}>Create collection</Typography>
+        <Typography sx={{ textTransform: 'none' }}>{t('collection.create')}</Typography>
       </Button>
       <Dialog onClose={handleDialogClose} open={isOpen} maxWidth="lg" fullWidth={true}>
-        <CustomDialogTitle onClose={handleDialogClose}>
-          <Typography fontSize={24}>Create collection</Typography>
-        </CustomDialogTitle>
-        <DialogContent dividers={true}>
-          <DialogItem>
-            <Typography component="label" htmlFor="name">
-              Collection name
-            </Typography>
-            <TextField id="name" size="small" />
-          </DialogItem>
-          <DialogItem>
-            <Typography component="label" htmlFor="description">
-              Collection description
-            </Typography>
-            {isEdditing || !markdown ? (
-              <TextareaAutosize
-                id="description"
-                ref={textArea}
-                value={markdown}
-                onFocus={handleTextAreaFocus}
-                onChange={handleTextAreaInput}
-                onBlur={handleTextAreaBlur}
-                maxRows={10}
-                style={{
-                  padding: 10,
-                  fontSize: 18,
-                  maxHeight: 200,
-                  minHeight: 200,
-                  boxSizing: 'border-box',
-                  borderRadius: 5,
-                }}
+        <form onSubmit={formik.handleSubmit}>
+          <CustomDialogTitle onClose={handleDialogClose}>
+            <Typography fontSize={24}>{t('collection.create')}</Typography>
+          </CustomDialogTitle>
+          <DialogContent dividers={true}>
+            <DialogItem>
+              <Typography component="label" htmlFor="name">
+                {t('collection.name')}
+              </Typography>
+              <TextField
+                id="name"
+                size="small"
+                name="name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                error={formik.touched.name && !!formik.errors.name}
+                helperText={formik.touched.name && formik.errors.name}
               />
-            ) : (
-              <Markdown onClick={handleTextAreaFocus}>
-                <ReactMarkdown>{markdown}</ReactMarkdown>
-              </Markdown>
-            )}
-          </DialogItem>
-          <DialogItem>
-            <Typography component="label" htmlFor="type">
-              Collection type
-            </Typography>
-            <Select id="type" value={type} onChange={handleSelect}>
-              <MenuItem value={Collection.ALCOHOL}>Alcohol</MenuItem>
-              <MenuItem value={Collection.BOOKS}>Books</MenuItem>
-              <MenuItem value={Collection.MOVIES}>Movies</MenuItem>
-              <MenuItem value={Collection.HEROES}>Heroes</MenuItem>
-              <MenuItem value={Collection.CARS}>Cars</MenuItem>
-            </Select>
-          </DialogItem>
-          <DialogItem>
-            <Typography component="label">Collection image</Typography>
-            <FileUploader
-              classes={styles.drop}
-              types={FILE_TYPES}
-              handleChange={handleImageUpload}
-            />
-          </DialogItem>
-          <DialogItem>
-            <Typography component="label">Additional fields</Typography>
-            <AdditionalItemsWrapper>
-              <AdditionalField type={AdditionalFields.STRING} />
-              <AdditionalField type={AdditionalFields.NUMBER} />
-              <AdditionalField type={AdditionalFields.TEXT} />
-              <AdditionalField type={AdditionalFields.CHECKBOX} />
-              <AdditionalField type={AdditionalFields.DATE} />
-            </AdditionalItemsWrapper>
-          </DialogItem>
-        </DialogContent>
+            </DialogItem>
+            <DialogItem>
+              <Typography component="label" htmlFor="description">
+                {t('collection.description')}
+              </Typography>
+              {isEdditing || !formik.values.description ? (
+                <TextareaAutosize
+                  id="description"
+                  name="description"
+                  ref={textArea}
+                  value={formik.values.description}
+                  onFocus={handleTextAreaFocus}
+                  onChange={formik.handleChange}
+                  onBlur={handleTextAreaBlur}
+                  maxRows={10}
+                  style={{
+                    padding: 10,
+                    fontSize: 18,
+                    maxHeight: 200,
+                    minHeight: 200,
+                    boxSizing: 'border-box',
+                    borderRadius: 5,
+                    border: `${
+                      formik.touched.description && !!formik.errors.description
+                        ? '1px solid #ef6a67'
+                        : ''
+                    }`,
+                  }}
+                />
+              ) : (
+                <Markdown onClick={handleTextAreaFocus}>
+                  <ReactMarkdown>{formik.values.description}</ReactMarkdown>
+                </Markdown>
+              )}
+              {formik.touched.description && !!formik.errors.description && (
+                <Typography color="#ef6a67" fontSize={12} sx={{ ml: '14px', mt: '4px' }}>
+                  {formik.errors.description}
+                </Typography>
+              )}
+            </DialogItem>
+            <DialogItem>
+              <Typography component="label" htmlFor="type">
+                {t('collection.type')}
+              </Typography>
+              <Select
+                id="theme"
+                name="theme"
+                value={formik.values.theme}
+                onChange={formik.handleChange}
+              >
+                <MenuItem value={Collection.ALCOHOL}>{t('collection.alcohol')}</MenuItem>
+                <MenuItem value={Collection.BOOKS}>{t('collection.books')}</MenuItem>
+                <MenuItem value={Collection.MOVIES}>{t('collection.movies')}</MenuItem>
+                <MenuItem value={Collection.HEROES}>{t('collection.heroes')}</MenuItem>
+                <MenuItem value={Collection.CARS}>{t('collection.cars')}</MenuItem>
+              </Select>
+            </DialogItem>
+            <DialogItem>
+              <Typography component="label">{t('collection.image')}</Typography>
+              <FileUploader formik={formik} />
+              <Typography>{formik.values.image?.name}</Typography>
+            </DialogItem>
+            <DialogItem>
+              <Typography component="label">{t('collection.additional')}</Typography>
+              <AdditionalItemsWrapper>
+                <AdditionalField formik={formik} type={AdditionalFields.STRING} />
+                <AdditionalField formik={formik} type={AdditionalFields.NUMBER} />
+                <AdditionalField formik={formik} type={AdditionalFields.TEXT} />
+                <AdditionalField formik={formik} type={AdditionalFields.CHECKBOX} />
+                <AdditionalField formik={formik} type={AdditionalFields.DATE} />
+              </AdditionalItemsWrapper>
+            </DialogItem>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" type="submit">
+              {t('collection.create_btn')}
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
-    </Box>
+    </>
   );
 };

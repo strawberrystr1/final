@@ -22,7 +22,7 @@ const User = dbClient.define<Model<IUser, IUserCreation>>(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: true
     },
     password: {
       type: DataTypes.STRING,
@@ -34,7 +34,7 @@ const User = dbClient.define<Model<IUser, IUserCreation>>(
     },
     theme: {
       type: DataTypes.STRING,
-      defaultValue: "light"
+      defaultValue: "dark"
     }
   },
   { timestamps: false, freezeTableName: true }

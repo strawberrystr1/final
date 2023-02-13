@@ -11,3 +11,7 @@ export interface IUser {
 export type IUserCreation = Omit<IUser, "id" | "language" | "theme" | "role">;
 
 export type IUserLogin = Omit<IUserCreation, "name">;
+
+export type IUserSettings = Pick<IUser, "theme" | "language">;
+
+export type IAuthUser = Pick<IUser, "role" | "email" | "name" | 'theme' | 'id'>;

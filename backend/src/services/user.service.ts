@@ -1,10 +1,9 @@
 import bcrypt from "bcrypt";
 import { SALT_NUMBER } from "../constants/hash";
-import { USER_NOT_EXISTS } from "../constants/httpMessages";
 import User from "../models/user.model";
 import { HTTPCodes } from "../types/httpCodes";
 
-import { IUserCreation } from "../types/user";
+import { IUserCreation, IUserSettings } from "../types/user";
 import { createToken } from "../utils/createToken";
 
 export const createUser = async (user: IUserCreation) => {
@@ -72,4 +71,8 @@ export const loginUser = async (password: string, email: string) => {
   } else {
     throw new Error(`${HTTPCodes.BAD_REQUEST}`);
   }
+};
+
+export const updateSettings = async (data: IUserSettings, email: string) => {
+  await User.update(data, { where: { email } });
 };

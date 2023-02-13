@@ -11,5 +11,5 @@ export enum AdditionalFields {
   STRING = 'string',
   TEXT = 'text',
   DATE = 'date',
-  CHECKBOX = 'checkbox',
+  CHECKBOX = 'boolean',
 }

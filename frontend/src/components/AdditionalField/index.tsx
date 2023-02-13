@@ -1,19 +1,23 @@
 import { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, capitalize } from '@mui/material';
 import Button from '@mui/material/Button/Button';
 import Typography from '@mui/material/Typography';
 
 import { AdditionalFields } from '../../constants/collection';
+import { FormikType } from '../CreateCollectionPopup';
 
 import { Input } from './Input';
 
 interface IProps {
   type: AdditionalFields;
+  formik: FormikType;
 }
 
-export const AdditionalField: FC<IProps> = ({ type }) => {
+export const AdditionalField: FC<IProps> = ({ type, formik }) => {
   const [fields, setField] = useState(1);
+  const { t } = useTranslation();
 
   const incrementFields = () =>
     setField(prev => {
@@ -40,7 +44,7 @@ export const AdditionalField: FC<IProps> = ({ type }) => {
         width: '20%',
       }}
     >
-      <Typography>{capitalize(type)}</Typography>
+      <Typography>{capitalize(t(`collection.${type}`))}</Typography>
       <Box
         sx={{
           display: 'flex',
@@ -48,7 +52,14 @@ export const AdditionalField: FC<IProps> = ({ type }) => {
       >
         <Box>
           {new Array(fields).fill(1).map((_, i) => (
-            <Input key={i} totalAmount={fields} decrementFields={decrementFields} />
+            <Input
+              key={i}
+              totalAmount={fields}
+              decrementFields={decrementFields}
+              type={type}
+              index={i + 1}
+              formik={formik}
+            />
           ))}
         </Box>
         <Button
