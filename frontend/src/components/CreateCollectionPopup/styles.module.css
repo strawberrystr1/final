@@ -1,0 +1,16 @@
+.drop {
+  max-width: 100% !important;
+  height: 80px !important;
+  width: 100%;
+  border-color: white !important;
+}
+
+.drop > svg > * {
+  fill: white;
+}
+
+.drop > div > span {
+  color: white;
+  font-size: 16px;
+  max-width: 100% !important;
+}

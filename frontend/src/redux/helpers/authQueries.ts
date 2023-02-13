@@ -1,4 +1,4 @@
-import { LOGGED_IN } from '../../constants/toast';
+import { LOGGED_IN, SERVER_ERROR } from '../../constants/toast';
 import type { IAPIError } from '../../types/error';
 import { BaseQuery } from '../../types/rtkApi';
 import type { IRegisterUserPayload, IUserLoginPayload, IUserResponse } from '../../types/user';
@@ -22,6 +22,10 @@ export const authQuery: BaseQuery<IUserLoginPayload | IRegisterUserPayload, IUse
       },
     } = e as IAPIError;
 
-    toastHandler(dispatch, msg, 'error');
+    if (msg) {
+      toastHandler(dispatch, msg, 'error');
+    } else {
+      toastHandler(dispatch, SERVER_ERROR, 'error');
+    }
   }
 };

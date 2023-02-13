@@ -1,11 +1,16 @@
-import { DialogTitleProps } from '@mui/material';
 import { FC } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
+import { DialogTitle, DialogTitleProps, IconButton } from '@mui/material';
 
-export const CustomDialogTitle: FC<DialogTitleProps> = ({ children, onClose, ...other }) => {
+export const CustomDialogTitle: FC<DialogTitleProps & { onClose?: () => void }> = ({
+  children,
+  onClose,
+  ...other
+}) => {
   return (
     <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
       {children}
-      {onClose ? (
+      {onClose && (
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -18,7 +23,7 @@ export const CustomDialogTitle: FC<DialogTitleProps> = ({ children, onClose, ...
         >
           <CloseIcon />
         </IconButton>
-      ) : null}
+      )}
     </DialogTitle>
   );
 };

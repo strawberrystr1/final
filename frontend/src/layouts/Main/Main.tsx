@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react';
 import { Container } from '@mui/material';
 
-import { HEADER_HEIGHT } from '../../constants/size';
+import { HEADER_HEIGHT } from '../../constants/base';
 
 interface IProps {
   children: ReactNode;

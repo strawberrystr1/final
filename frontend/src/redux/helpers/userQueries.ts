@@ -1,4 +1,4 @@
-import { SETTING_CHANGED } from '../../constants/toast';
+import { SERVER_ERROR, SETTING_CHANGED } from '../../constants/toast';
 import { IAPIError } from '../../types/error';
 import { BaseQuery } from '../../types/rtkApi';
 import { IUpdateSettingsResponse, IUpdateUserSettings } from '../../types/user';
@@ -19,6 +19,10 @@ export const userQuery: BaseQuery<IUpdateUserSettings, IUpdateSettingsResponse> 
       },
     } = e as IAPIError;
 
-    toastHandler(dispatch, msg, 'error');
+    if (msg) {
+      toastHandler(dispatch, msg, 'error');
+    } else {
+      toastHandler(dispatch, SERVER_ERROR, 'error');
+    }
   }
 };

@@ -1,3 +1,4 @@
+import { POST_LOGIN, POST_REGISTER } from '../../constants/api';
 import type { IRegisterUserPayload, IUserLoginPayload, IUserResponse } from '../../types/user';
 import { authQuery } from '../helpers/authQueries';
 
@@ -7,7 +8,7 @@ const authApi = baseApi.injectEndpoints({
   endpoints: build => ({
     register: build.mutation<IUserResponse, IRegisterUserPayload>({
       query: body => ({
-        url: '/user/register',
+        url: POST_REGISTER,
         method: 'POST',
         body,
       }),
@@ -15,7 +16,7 @@ const authApi = baseApi.injectEndpoints({
     }),
     login: build.mutation<IUserResponse, IUserLoginPayload>({
       query: body => ({
-        url: '/user/login',
+        url: POST_LOGIN,
         method: 'POST',
         body,
       }),

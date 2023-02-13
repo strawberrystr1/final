@@ -1,3 +1,4 @@
+import { POST_SETTINGS } from '../../constants/api';
 import type { IUpdateSettingsResponse, IUpdateUserSettings } from '../../types/user';
 import { userQuery } from '../helpers/userQueries';
 
@@ -7,7 +8,7 @@ const userApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     updateSettings: builder.mutation<IUpdateSettingsResponse, IUpdateUserSettings>({
       query: body => ({
-        url: '/user/settings',
+        url: POST_SETTINGS,
         method: 'POST',
         body,
       }),

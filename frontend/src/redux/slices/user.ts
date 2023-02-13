@@ -13,7 +13,7 @@ interface IInitialState {
 }
 
 const initialState: IInitialState = {
-  isLogged: false,
+  isLogged: true,
   name: '',
   theme: 'dark',
   language: 'en',
