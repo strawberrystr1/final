@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -8,15 +8,20 @@ import { Avatar, IconButton, Typography } from '@mui/material';
 import capitalize from '@mui/material/utils/capitalize';
 import { useFormik } from 'formik';
 
+import routes from '../../constants/routes';
+import { useLoginMutation, useRegisterMutation } from '../../redux/api/auth';
 import useValidationSchema from '../../utils/validationSchema';
 
 import { ButtonsWrapper, Form, StyledField } from './styled';
 
 export const AuthForm = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const { t } = useTranslation();
   const validationSchema = useValidationSchema();
+  const [registerUser, { isLoading }] = useRegisterMutation();
+  const [loginUser, { isLoading: loginLoading }] = useLoginMutation();
 
   const isRegisterPage = location.pathname.match(/up/g);
 
@@ -35,6 +40,29 @@ export const AuthForm = () => {
 
   const handleClickShowPassword = () => {
     setShowPassword(prevState => !prevState);
+  };
+
+  const handleButtonClick = async () => {
+    if (isRegisterPage) {
+      await registerUser({
+        name: formik.values.name,
+        email: formik.values.email,
+        password: formik.values.password,
+      })
+        .unwrap()
+        .then(() => {
+          navigate('/');
+        });
+    } else {
+      await loginUser({
+        email: formik.values.email,
+        password: formik.values.password,
+      })
+        .unwrap()
+        .then(() => {
+          navigate('/');
+        });
+    }
   };
 
   return (
@@ -89,10 +117,15 @@ export const AuthForm = () => {
         }
       })}
       <ButtonsWrapper>
-        <LoadingButton type="submit" variant="contained" loading={false}>
+        <LoadingButton
+          type="submit"
+          variant="contained"
+          loading={isLoading || loginLoading}
+          onClick={handleButtonClick}
+        >
           {isRegisterPage ? t('auth.title_sup') : t('auth.title_sin')}
         </LoadingButton>
-        <Link to={isRegisterPage ? '/signin' : '/signup'}>
+        <Link to={isRegisterPage ? routes.SIGNIN : routes.SIGNUP}>
           <Typography>
             {isRegisterPage ? t('auth.change_btn_sup') : t('auth.change_btn_sin')}
           </Typography>

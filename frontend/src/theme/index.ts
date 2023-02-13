@@ -55,6 +55,19 @@ const darkThemeOptions: ThemeOptions = {
         },
       },
     },
+    MuiAlert: {
+      styleOverrides: {
+        standardError: {
+          backgroundColor: 'rgba(255, 0, 0, .7)',
+        },
+        icon: {
+          color: 'white !important',
+        },
+        standardSuccess: {
+          backgroundColor: 'rgba(3, 252, 48, .4)',
+        },
+      },
+    },
     MuiContainer: {
       styleOverrides: {
         root: ({ ownerState }) => ({

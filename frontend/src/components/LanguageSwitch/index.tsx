@@ -3,18 +3,21 @@ import { useTranslation } from 'react-i18next';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
+import { useUpdateSettingsMutation } from '../../redux/api/user';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { changeLanguage } from '../../redux/slices/user.slice';
+import { changeLanguage } from '../../redux/slices/user';
+import { Languages } from '../../types/base';
 
 const LanguageSwitch = () => {
   const dispatch = useAppDispatch();
   const { i18n } = useTranslation();
   const { language } = useAppSelector(state => state.user);
-
-  const handleToggle = (_: MouseEvent<HTMLElement>, newLang: string) => {
+  const [updateSettings] = useUpdateSettingsMutation();
+  const handleToggle = (_: MouseEvent<HTMLElement>, newLang: Languages) => {
     if (newLang !== null) {
       dispatch(changeLanguage());
       i18n.changeLanguage(newLang);
+      updateSettings({ language: newLang });
     }
   };
 
