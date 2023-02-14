@@ -12,12 +12,14 @@ import {
   TextField,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { FormikProps, useFormik } from 'formik';
 
 import { AdditionalFields, Collection } from '../../constants/collection';
 import { useCreateMutation } from '../../redux/api/collection';
 import { ICreateCollectionForm } from '../../types/formik';
 import useValidationSchema from '../../utils/collectionValidationSchema';
+import storage from '../../utils/firebase';
 import { AdditionalField } from '../AdditionalField';
 import { CustomDialogTitle } from '../DialogTitle';
 import { FileUploader } from '../FileUploader';
@@ -58,6 +60,21 @@ export const CreateCollectionPopup = () => {
 
   const handleSubmitForm = (values: ICreateCollectionForm) => {
     createCollection(values);
+    if (values.image) {
+      const storageRef = ref(storage, `/files/${values.image.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, values.image);
+      uploadTask.on(
+        'state_changed',
+        () => {},
+        () => {},
+        async () => {
+          const refer = ref(storage, '/mesh-gradient.png');
+          await getDownloadURL(refer).then(x => {
+            console.log(x);
+          });
+        }
+      );
+    }
   };
 
   const formik = useFormik({

@@ -90,6 +90,20 @@ const darkThemeOptions: ThemeOptions = {
         },
       },
     },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#868d92',
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          color: darkFontColor,
+        },
+      },
+    },
   },
 };
 
@@ -159,6 +173,21 @@ export const lightThemeOptions: ThemeOptions = {
           '*::-webkit-scrollbar-thumb': {
             backgroundColor: '#b8b8b8',
           },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#d8d8d8',
+          color: 'black',
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          color: lightFontColor,
         },
       },
     },

@@ -1,7 +1,9 @@
 export interface INumberModel {
   id: number;
   name: string;
-  value: number;
 }
 
-export type INumberCreation = Omit<INumberModel, "id">;
+export type INUmberFieldWithCollection = INumberModel & {
+  collectionId: number;
+};
+export type INumberCreation = Omit<INUmberFieldWithCollection, "id">;

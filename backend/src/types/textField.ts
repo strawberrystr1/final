@@ -1,7 +1,9 @@
 export interface ITextFieldModel {
   id: number;
   name: string;
-  value: string;
 }
 
-export type ITextFieldCreation = Omit<ITextFieldModel, "id">;
+export type ITextFieldWithCollection = ITextFieldModel & {
+  collectionId: number;
+};
+export type ITextFieldCreation = Omit<ITextFieldWithCollection, "id">;

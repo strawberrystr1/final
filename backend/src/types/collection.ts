@@ -1,9 +1,18 @@
+import { ICheckboxFieldWithCollection } from "./checkboxField";
+import { IDateFieldWithCollection } from "./dateField";
+import { ICollectionItemModel } from "./item";
+import { INUmberFieldWithCollection } from "./numberField";
+import { IStringFieldWithCollection } from "./stringField";
+import { ITextFieldWithCollection } from "./textField";
+import { IUser } from "./user";
+
 export interface ICollection {
   id: number;
   name: string;
   description: string;
   theme: string;
   image?: string;
+  userId: number;
 }
 
 export interface ICollectionAdditionalFields {
@@ -22,8 +31,16 @@ export interface ICollectionAdditionalFields {
   date1?: string;
   date2?: string;
   date3?: string;
-  userId: number;
 }
 
 export type ICollectionCreate = Omit<ICollection, "id"> &
   ICollectionAdditionalFields;
+
+export interface ICollectionWithAdditionalField extends ICollection {
+  checkboxes: ICheckboxFieldWithCollection[];
+  dates: IDateFieldWithCollection[];
+  numbers: INUmberFieldWithCollection[];
+  strings: IStringFieldWithCollection[];
+  texts: ITextFieldWithCollection[];
+  user: IUser;
+}

@@ -1,5 +1,5 @@
-import { COLLECTION_CREATE } from '../../constants/api';
-import { ICollectionCreateResponse } from '../../types/collection';
+import { COLLECTION_CREATE, USER_COLLECTIONS } from '../../constants/api';
+import { IUserCollectionsResponse } from '../../types/collection';
 import { ICreateCollectionForm } from '../../types/formik';
 import { collectionQuery } from '../helpers/collectionQuery';
 
@@ -7,7 +7,7 @@ import baseApi from './baseClient';
 
 const collectionApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    create: builder.mutation<ICollectionCreateResponse, ICreateCollectionForm>({
+    create: builder.mutation<void, ICreateCollectionForm>({
       query: body => ({
         url: COLLECTION_CREATE,
         method: 'POST',
@@ -15,7 +15,12 @@ const collectionApi = baseApi.injectEndpoints({
       }),
       onQueryStarted: collectionQuery,
     }),
+    getUserCollection: builder.query<IUserCollectionsResponse[], number>({
+      query: args => ({
+        url: `${USER_COLLECTIONS}?userId=${args}`,
+      }),
+    }),
   }),
 });
 
-export const { useCreateMutation } = collectionApi;
+export const { useCreateMutation, useGetUserCollectionQuery } = collectionApi;

@@ -20,10 +20,6 @@ const CheckboxField = dbClient.define<
       type: DataTypes.STRING,
       allowNull: false
     },
-    value: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    }
   },
   { timestamps: false, freezeTableName: true }
 );

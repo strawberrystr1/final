@@ -1,7 +1,9 @@
 export interface ICheckboxFieldModel {
   id: number;
   name: string;
-  value: boolean;
 }
 
-export type ICheckboxFieldCreation = Omit<ICheckboxFieldModel, "id">;
+export type ICheckboxFieldWithCollection = ICheckboxFieldModel & {
+  collectionId: number;
+};
+export type ICheckboxFieldCreation = Omit<ICheckboxFieldWithCollection, "id">;

@@ -1,4 +1,4 @@
-import { Languages, Themes } from './base';
+import { Languages, Roles, Themes } from './base';
 
 export interface IRegisterUserPayload {
   name: string;
@@ -8,11 +8,11 @@ export interface IRegisterUserPayload {
 
 export interface IUserResponse {
   id: number;
-  role: 'user' | 'admin';
+  role: Roles;
   name: string;
   email: string;
-  language: 'en' | 'ru';
-  theme: 'light' | 'dark';
+  language: Languages;
+  theme: Themes;
   token: string;
 }
 

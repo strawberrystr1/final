@@ -50,8 +50,8 @@ export const AuthForm = () => {
         password: formik.values.password,
       })
         .unwrap()
-        .then(() => {
-          navigate('/');
+        .then(user => {
+          navigate(`/profile/${user.id}`);
         });
     } else {
       await loginUser({
@@ -59,8 +59,8 @@ export const AuthForm = () => {
         password: formik.values.password,
       })
         .unwrap()
-        .then(() => {
-          navigate('/');
+        .then(user => {
+          navigate(`/profile/${user.id}`);
         });
     }
   };

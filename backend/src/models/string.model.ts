@@ -17,10 +17,6 @@ const StringField = dbClient.define<
       type: DataTypes.STRING,
       allowNull: false
     },
-    value: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
   },
   { timestamps: false, freezeTableName: true }
 );

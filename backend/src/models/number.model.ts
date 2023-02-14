@@ -15,10 +15,6 @@ const NumberField = dbClient.define<Model<INumberModel, INumberCreation>>(
       type: DataTypes.STRING,
       allowNull: false
     },
-    value: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    }
   },
   { timestamps: false, freezeTableName: true }
 );

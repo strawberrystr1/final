@@ -15,10 +15,6 @@ const TextField = dbClient.define<Model<ITextFieldModel, ITextFieldCreation>>(
       type: DataTypes.STRING,
       allowNull: false
     },
-    value: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    }
   },
   { timestamps: false, freezeTableName: true }
 );

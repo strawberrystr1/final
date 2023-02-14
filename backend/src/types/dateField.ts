@@ -1,7 +1,9 @@
 export interface IDateFieldModel {
   id: number;
   name: string;
-  value: Date;
 }
 
-export type IDateFieldCreation = Omit<IDateFieldModel, "id">;
+export type IDateFieldWithCollection = IDateFieldModel & {
+  collectionId: number;
+};
+export type IDateFieldCreation = Omit<IDateFieldWithCollection, "id">;

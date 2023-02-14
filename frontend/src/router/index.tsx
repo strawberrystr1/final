@@ -1,18 +1,23 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import { Home, Signin, Signup } from '../pages';
+import routes from '../constants/routes';
+import { Home, Profile, Signin, Signup } from '../pages';
 
 export default createBrowserRouter([
   {
-    path: '/',
+    path: routes.HOME,
     element: <Home />,
   },
   {
-    path: '/signup',
+    path: routes.SIGNUP,
     element: <Signup />,
   },
   {
-    path: '/signin',
+    path: routes.SIGNIN,
     element: <Signin />,
+  },
+  {
+    path: routes.PROFILE,
+    element: <Profile />,
   },
 ]);

@@ -1,7 +1,10 @@
 export interface IStringFieldModel {
   id: number;
   name: string;
-  value: string;
 }
 
-export type IStringFieldCreation = Omit<IStringFieldModel, "id">;
+export type IStringFieldWithCollection = IStringFieldModel & {
+  collectionId: number;
+};
+
+export type IStringFieldCreation = Omit<IStringFieldWithCollection, "id">;

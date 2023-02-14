@@ -35,7 +35,7 @@ export const createUser = async (user: IUserCreation) => {
     theme,
     id,
     name: userName,
-    token: createToken(userName, email, role)
+    token: createToken(userName, email, role, id, theme, language)
   };
 };
 
@@ -64,7 +64,14 @@ export const loginUser = async (password: string, email: string) => {
       role: user.role,
       id: user.id,
       language: user.language,
-      token: createToken(user.name, user.email, user.role),
+      token: createToken(
+        user.name,
+        user.email,
+        user.role,
+        user.id,
+        user.theme,
+        user.language
+      ),
       email: user.email,
       theme: user.theme
     };

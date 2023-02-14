@@ -10,15 +10,17 @@ interface IInitialState {
   language: Languages;
   role: Roles;
   token: string;
+  id: number;
 }
 
 const initialState: IInitialState = {
-  isLogged: true,
+  isLogged: false,
   name: '',
   theme: 'dark',
   language: 'en',
   role: 'user',
   token: '',
+  id: 0,
 };
 
 const userSlice = createSlice({
@@ -32,7 +34,7 @@ const userSlice = createSlice({
       state.theme = state.theme === 'dark' ? 'light' : 'dark';
     },
     loginUser: (state, action: PayloadAction<IUserResponse>) => {
-      const { name, role, theme, language, token } = action.payload;
+      const { name, role, theme, language, token, id } = action.payload;
 
       return {
         isLogged: true,
@@ -41,6 +43,7 @@ const userSlice = createSlice({
         theme,
         language,
         token,
+        id,
       };
     },
     logoutUser: () => {
