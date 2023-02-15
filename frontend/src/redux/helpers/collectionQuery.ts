@@ -1,11 +1,11 @@
 import { COLLECTION_CREATE_MSG, SERVER_ERROR } from '../../constants/toast';
 import type { IAPIError } from '../../types/error';
-import { ICreateCollectionForm } from '../../types/formik';
+import { ICreateCollectionPayload } from '../../types/formik';
 import { BaseQuery } from '../../types/rtkApi';
 import { toastHandler } from '../../utils/toastHandlers';
 import { RootState } from '../store';
 
-export const collectionQuery: BaseQuery<ICreateCollectionForm, void> = async (
+export const collectionQuery: BaseQuery<ICreateCollectionPayload, void> = async (
   arg,
   { dispatch, queryFulfilled, getState }
 ) => {

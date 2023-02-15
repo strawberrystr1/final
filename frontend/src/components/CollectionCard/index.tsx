@@ -14,7 +14,7 @@ interface IProps {
   collection: IUserCollectionsResponse;
 }
 
-export const CollectionItem: FC<IProps> = ({ collection }) => {
+export const CollectionCard: FC<IProps> = ({ collection }) => {
   const { name, image, description, theme, id } = collection;
 
   return (

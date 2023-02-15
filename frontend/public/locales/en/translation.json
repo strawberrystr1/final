@@ -43,9 +43,13 @@
     "date": "date field",
     "boolean": "boolean field",
     "dragging": "Drop the files here...",
-    "file": "Drag drop some file here, or click to select file"
+    "file": "Drag drop some file here, or click to select file",
+    "empty": "You don&apos;t have any collections"
   },
   "placeholder": {
     "field_name": "Field name"
+  },
+  "tooltip": {
+    "avatar": "Profile"
   }
 }

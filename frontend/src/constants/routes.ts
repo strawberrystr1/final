@@ -2,5 +2,7 @@ export default {
   HOME: '/',
   SIGNUP: '/signup',
   SIGNIN: '/signin',
-  PROFILE: '/profile/:id',
+  PROFILE_ID: '/profile/:id',
+  PROFILE: '/profile',
+  COLLECTION_ID: '/collection/:id',
 };

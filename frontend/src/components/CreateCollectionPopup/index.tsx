@@ -59,21 +59,17 @@ export const CreateCollectionPopup = () => {
   const [createCollection] = useCreateMutation();
 
   const handleSubmitForm = (values: ICreateCollectionForm) => {
-    createCollection(values);
     if (values.image) {
       const storageRef = ref(storage, `/files/${values.image.name}`);
       const uploadTask = uploadBytesResumable(storageRef, values.image);
-      uploadTask.on(
-        'state_changed',
-        () => {},
-        () => {},
-        async () => {
-          const refer = ref(storage, '/mesh-gradient.png');
-          await getDownloadURL(refer).then(x => {
-            console.log(x);
-          });
-        }
-      );
+      uploadTask.then(() => {
+        const refer = ref(storage, `/files/${values.image?.name}`);
+        getDownloadURL(refer).then(url => {
+          createCollection({ ...values, image: url });
+        });
+      });
+    } else {
+      createCollection({ ...values, image: '' });
     }
   };
 

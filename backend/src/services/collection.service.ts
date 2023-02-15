@@ -1,17 +1,20 @@
+import { Model } from "sequelize";
 import { additionalTypes } from "../constants/additional";
 import CheckboxField from "../models/checkbox.model";
 import Collection from "../models/collection.model";
 import DateField from "../models/date.model";
+import CollectionItem from "../models/item.model";
 import NumberField from "../models/number.model";
 import StringField from "../models/string.model";
 import TextField from "../models/text.model";
 import User from "../models/user.model";
 import {
   ICollectionCreate,
-  ICollectionWithAdditionalField
+  ICollectionWithAdditionalField,
+  ICollectionWithItems
 } from "../types/collection";
 import { IAuthUser } from "../types/user";
-import { getAdditionalFieldsData } from "../utils/mappers";
+import { getAdditionalFieldsData, mapAdditionalField } from "../utils/mappers";
 
 export const createCollection = async (
   data: Omit<ICollectionCreate, "userId">,
@@ -67,11 +70,7 @@ export const getCollections = async (userId?: number) => {
         name: collection.user.name,
         id: collection.user.id
       },
-      checkboxes: collection.checkboxes.map(el => el.name),
-      strings: collection.strings.map(el => el.name),
-      dates: collection.dates.map(el => el.name),
-      numbers: collection.numbers.map(el => el.name),
-      texts: collection.texts.map(el => el.name)
+      ...mapAdditionalField(collection)
     };
   });
 };
@@ -96,6 +95,37 @@ const createAdditionalField = (
         break;
     }
   });
+};
+
+export const getOneCollection = async (
+  userId: number,
+  collectionId: number
+) => {
+  const collection = (
+    await Collection.findOne({
+      where: {
+        id: collectionId,
+        userId
+      },
+      include: [
+        CheckboxField,
+        DateField,
+        NumberField,
+        StringField,
+        TextField,
+        CollectionItem
+      ]
+    })
+  )?.toJSON();
+
+  if (!collection) {
+    return { msg: "No such collection" };
+  }
+
+  return {
+    ...collection,
+    ...mapAdditionalField(collection as ICollectionWithAdditionalField)
+  };
 };
 
 const createCollectionStringField = async (name: string, id: number) => {

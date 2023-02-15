@@ -51,7 +51,7 @@ export const AuthForm = () => {
       })
         .unwrap()
         .then(user => {
-          navigate(`/profile/${user.id}`);
+          navigate(`${routes.PROFILE}/${user.id}`);
         });
     } else {
       await loginUser({
@@ -60,7 +60,7 @@ export const AuthForm = () => {
       })
         .unwrap()
         .then(user => {
-          navigate(`/profile/${user.id}`);
+          navigate(`${routes.PROFILE}/${user.id}`);
         });
     }
   };

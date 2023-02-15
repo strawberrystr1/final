@@ -1,13 +1,13 @@
-import { COLLECTION_CREATE, USER_COLLECTIONS } from '../../constants/api';
+import { COLLECTION_CREATE, ONE_COLLECTION, USER_COLLECTIONS } from '../../constants/api';
 import { IUserCollectionsResponse } from '../../types/collection';
-import { ICreateCollectionForm } from '../../types/formik';
+import { ICreateCollectionPayload } from '../../types/formik';
 import { collectionQuery } from '../helpers/collectionQuery';
 
 import baseApi from './baseClient';
 
 const collectionApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    create: builder.mutation<void, ICreateCollectionForm>({
+    create: builder.mutation<void, ICreateCollectionPayload>({
       query: body => ({
         url: COLLECTION_CREATE,
         method: 'POST',
@@ -15,12 +15,18 @@ const collectionApi = baseApi.injectEndpoints({
       }),
       onQueryStarted: collectionQuery,
     }),
-    getUserCollection: builder.query<IUserCollectionsResponse[], number>({
-      query: args => ({
-        url: `${USER_COLLECTIONS}?userId=${args}`,
+    getUserCollection: builder.query<IUserCollectionsResponse[], void>({
+      query: () => ({
+        url: USER_COLLECTIONS,
+      }),
+    }),
+    getOneCollection: builder.query<IUserCollectionsResponse, number>({
+      query: arg => ({
+        url: `${ONE_COLLECTION}/${arg}`,
       }),
     }),
   }),
 });
 
-export const { useCreateMutation, useGetUserCollectionQuery } = collectionApi;
+export const { useCreateMutation, useGetUserCollectionQuery, useGetOneCollectionQuery } =
+  collectionApi;

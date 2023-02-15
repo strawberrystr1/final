@@ -1,23 +1,31 @@
+import { useTranslation } from 'react-i18next';
+import { Masonry } from '@mui/lab';
 import { Box, Typography } from '@mui/material';
 
 import { useGetUserCollectionQuery } from '../../redux/api/collection';
-import { useAppSelector } from '../../redux/hooks';
-import { CollectionItem } from '../CollectionItem';
+import { CollectionCard } from '../CollectionCard';
+import Loader from '../Loader';
 
 export const CollectionList = () => {
-  const { id } = useAppSelector(state => state.user);
-  const { data } = useGetUserCollectionQuery(id);
+  const { data, isLoading } = useGetUserCollectionQuery();
+  const { t } = useTranslation();
 
   return (
-    <>
+    <Box sx={{ pt: 2 }}>
       <Typography component="h2" fontSize={30}>
         Your collections
       </Typography>
-      <Box sx={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-        {data?.map(item => (
-          <CollectionItem collection={item} key={item.id} />
-        ))}
-      </Box>
-    </>
+      {isLoading ? (
+        <Loader />
+      ) : data ? (
+        <Masonry columns={3} spacing={1}>
+          {data.map(item => (
+            <CollectionCard collection={item} key={item.id} />
+          ))}
+        </Masonry>
+      ) : (
+        <Typography>{t('collection.empty')}</Typography>
+      )}
+    </Box>
   );
 };

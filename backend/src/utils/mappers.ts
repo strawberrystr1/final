@@ -1,4 +1,5 @@
 import { additionalTypes } from "../constants/additional";
+import { ICollectionWithAdditionalField } from "../types/collection";
 
 export const getAdditionalFieldsData = (data: Record<string, string>) => {
   const mapped: Record<string | number, string[]> = {};
@@ -20,4 +21,16 @@ export const getAdditionalFieldsData = (data: Record<string, string>) => {
   }
 
   return mapped;
+};
+
+export const mapAdditionalField = (
+  collection: ICollectionWithAdditionalField
+) => {
+  return {
+    checkboxes: collection.checkboxes.map(el => el.name),
+    strings: collection.strings.map(el => el.name),
+    dates: collection.dates.map(el => el.name),
+    numbers: collection.numbers.map(el => el.name),
+    texts: collection.texts.map(el => el.name)
+  };
 };

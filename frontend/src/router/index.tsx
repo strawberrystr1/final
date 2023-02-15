@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import routes from '../constants/routes';
-import { Home, Profile, Signin, Signup } from '../pages';
+import { Collection, Home, Profile, Signin, Signup } from '../pages';
 
 export default createBrowserRouter([
   {
@@ -17,7 +17,11 @@ export default createBrowserRouter([
     element: <Signin />,
   },
   {
-    path: routes.PROFILE,
+    path: routes.PROFILE_ID,
     element: <Profile />,
+  },
+  {
+    path: routes.COLLECTION_ID,
+    element: <Collection />,
   },
 ]);

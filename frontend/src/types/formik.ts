@@ -21,3 +21,7 @@ export interface ICreateCollectionForm {
   date2: string;
   date3: string;
 }
+
+export interface ICreateCollectionPayload extends Omit<ICreateCollectionForm, 'image'> {
+  image: string;
+}

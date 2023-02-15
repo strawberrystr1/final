@@ -44,3 +44,7 @@ export interface ICollectionWithAdditionalField extends ICollection {
   texts: ITextFieldWithCollection[];
   user: IUser;
 }
+
+export interface ICollectionWithItems extends ICollectionWithAdditionalField {
+  items: ICollectionItemModel[];
+}
