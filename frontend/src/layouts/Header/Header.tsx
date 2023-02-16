@@ -36,12 +36,12 @@ const Header = () => {
             {!isLogged && (
               <>
                 <Button variant="contained">
-                  <Link to={routes.SIGNUP} style={{ textDecoration: 'none' }}>
+                  <Link to={routes.SIGNIN} style={{ textDecoration: 'none' }}>
                     <Typography>{t('auth.title_sin')}</Typography>
                   </Link>
                 </Button>
                 <Button variant="contained">
-                  <Link to={routes.SIGNIN} style={{ textDecoration: 'none' }}>
+                  <Link to={routes.SIGNUP} style={{ textDecoration: 'none' }}>
                     <Typography>{t('auth.title_sup')}</Typography>
                   </Link>
                 </Button>

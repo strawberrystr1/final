@@ -1,5 +1,3 @@
-import { IAdditionalField } from './base';
-
 export interface IUserCollectionsResponse {
   id: number;
   name: string;
@@ -7,9 +5,9 @@ export interface IUserCollectionsResponse {
   theme: string;
   image: string | null;
   userId: number;
-  checkboxes: IAdditionalField[];
-  dates: IAdditionalField[];
-  numbers: IAdditionalField[];
-  strings: IAdditionalField[];
-  texts: IAdditionalField[];
+  checkboxes: string[];
+  dates: string[];
+  numbers: string[];
+  strings: string[];
+  texts: string[];
 }

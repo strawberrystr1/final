@@ -13,7 +13,8 @@ const Tag = dbClient.define<Model<ITagModel, ITagCreation>>(
     },
     tag: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true,
     }
   },
   { timestamps: false, freezeTableName: true }

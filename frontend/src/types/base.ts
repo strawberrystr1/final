@@ -12,3 +12,10 @@ export type JWTUser = IUserResponse & {
 export interface IAdditionalField {
   name: string;
 }
+
+export interface ITag {
+  id: string;
+  text: string;
+}
+
+export type FormikItemCreate = Record<string, string | number | boolean | Date>;

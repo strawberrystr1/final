@@ -41,15 +41,25 @@
     "string": "string field",
     "text": "text field",
     "date": "date field",
-    "boolean": "boolean field",
+    "checkbox": "boolean field",
     "dragging": "Drop the files here...",
     "file": "Drag drop some file here, or click to select file",
     "empty": "You don&apos;t have any collections"
   },
   "placeholder": {
-    "field_name": "Field name"
+    "field_name": "Field name",
+    "tags": "Enter tag",
+    "item_name": "Item name"
   },
   "tooltip": {
     "avatar": "Profile"
+  },
+  "item": {
+    "create": "Add collection item",
+    "create_btn": "Add",
+    "name": "Item name",
+    "tags": "Item tags",
+    "name_required": "Name is required",
+    "name_min": "Name must be 4 or more characters"
   }
 }

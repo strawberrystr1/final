@@ -36,7 +36,7 @@ export const createCollection = async (
   ).toJSON();
 
   const mapped = getAdditionalFieldsData(rest);
-  createAdditionalField(mapped, collection.id);
+  await Promise.all(createAdditionalField(mapped, collection.id));
 
   return collection;
 };
@@ -95,6 +95,8 @@ const createAdditionalField = (
         break;
     }
   });
+
+  return promises;
 };
 
 export const getOneCollection = async (
