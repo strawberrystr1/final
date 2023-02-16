@@ -17,6 +17,8 @@ export const DateField: FC<IProps> = ({ name, formik }) => {
         value={formik.values[name]}
         size="small"
         type="date"
+        error={formik.touched[name] && !!formik.errors[name]}
+        helperText={formik.touched[name] && formik.errors[name]}
       />
     </Box>
   );

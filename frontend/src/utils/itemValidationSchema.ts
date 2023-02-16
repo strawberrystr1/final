@@ -1,15 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 
-const useValidationSchema = () => {
-  const { t } = useTranslation();
+import { FormikItemCreate } from '../types/base';
 
-  const validationSchema = yup.object({
-    itemName: yup
-      .string()
-      .required(t('item.name_required') as string)
-      .min(4, t('item.name_min') as string),
-  });
+import { prepareYupObject } from './mappers';
+
+const useValidationSchema = (values: FormikItemCreate) => {
+  const { t } = useTranslation();
+  const schema = prepareYupObject(values, t);
+
+  const validationSchema = yup.object().shape(schema);
 
   return validationSchema;
 };

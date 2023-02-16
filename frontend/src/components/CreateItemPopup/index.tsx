@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -28,14 +28,19 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [tags, setTags] = useState<ITag[]>([]);
-  const validationSchema = useValidationSchema();
+
+  const initialValues = useMemo(() => {
+    return getFormikInitialValuesForAdditionalField(additionalFields, 'itemName');
+  }, []);
+
+  const validationSchema = useValidationSchema(initialValues);
 
   const handleSubmitForm = (values: FormikItemCreate) => {
     console.log(values);
   };
 
   const formik = useFormik({
-    initialValues: getFormikInitialValuesForAdditionalField(additionalFields, 'itemName'),
+    initialValues,
     onSubmit: handleSubmitForm,
     validationSchema,
   });
@@ -46,6 +51,10 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields }) => {
   };
 
   const handleButtonClick = () => setIsOpen(prev => !prev);
+
+  useEffect(() => {
+    console.log(formik.values);
+  }, [formik]);
 
   return (
     <>

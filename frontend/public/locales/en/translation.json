@@ -61,5 +61,6 @@
     "tags": "Item tags",
     "name_required": "Name is required",
     "name_min": "Name must be 4 or more characters"
-  }
+  },
+  "field_required": "Field is required"
 }

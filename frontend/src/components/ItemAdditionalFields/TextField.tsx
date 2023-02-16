@@ -16,6 +16,8 @@ export const TextField: FC<IProps> = ({ name, formik }) => {
         onChange={formik.handleChange}
         value={formik.values[name]}
         size="small"
+        error={formik.touched[name] && !!formik.errors[name]}
+        helperText={formik.touched[name] && formik.errors[name]}
       />
     </Box>
   );

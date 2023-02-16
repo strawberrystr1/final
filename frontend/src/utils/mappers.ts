@@ -1,3 +1,6 @@
+import { TFunction } from 'i18next';
+import { boolean, date, number, string } from 'yup';
+
 import { additionalTypes } from '../constants/base';
 import { AdditionalFields } from '../constants/collection';
 import { FormikItemCreate } from '../types/base';
@@ -44,7 +47,7 @@ export const getFormikInitialValuesForAdditionalField = (
         break;
       case AdditionalFields.DATE:
         value.forEach(el => {
-          acc[el] = new Date();
+          acc[el] = '';
         });
         break;
       default:
@@ -62,4 +65,25 @@ export const getFormikInitialValuesForAdditionalField = (
   });
 
   return mapped;
+};
+
+export const prepareYupObject = (
+  values: FormikItemCreate,
+  t: TFunction<'translation', undefined, 'translation'>
+) => {
+  return Object.fromEntries(
+    Object.entries(values).map(item => {
+      const [key, value] = item;
+      switch (typeof value) {
+        case 'string':
+          return [key, string().required(t('field_required') || '')];
+        case 'number':
+          return [key, number().required(t('field_required') || '')];
+        case 'boolean':
+          return [key, boolean().required(t('field_required') || '')];
+        default:
+          return [key, date().required(t('field_required') || '')];
+      }
+    })
+  );
 };
