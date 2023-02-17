@@ -82,15 +82,25 @@ const createAdditionalField = (
   const promises = additionalTypes.map(type => {
     switch (type) {
       case "string":
-        return data[type].map(el => createCollectionStringField(el, id));
+        return data[type].map((el, i) =>
+          createCollectionStringField(el, id, `string${i + 1}`)
+        );
       case "text":
-        return data[type].map(el => createCollectionTextField(el, id));
+        return data[type].map((el, i) =>
+          createCollectionTextField(el, id, `text${i + 1}`)
+        );
       case "checkbox":
-        return data[type].map(el => createCollectionCheckboxField(el, id));
+        return data[type].map((el, i) =>
+          createCollectionCheckboxField(el, id, `checkbox${i + 1}`)
+        );
       case "number":
-        return data[type].map(el => createCollectionNumberField(el, id));
+        return data[type].map((el, i) =>
+          createCollectionNumberField(el, id, `number${i + 1}`)
+        );
       case "date":
-        return data[type].map(el => createCollectionDateField(el, id));
+        return data[type].map((el, i) =>
+          createCollectionDateField(el, id, `date${i + 1}`)
+        );
       default:
         break;
     }
@@ -130,22 +140,42 @@ export const getOneCollection = async (
   };
 };
 
-const createCollectionStringField = async (name: string, id: number) => {
-  return await StringField.create({ name, collectionId: id });
+const createCollectionStringField = async (
+  name: string,
+  id: number,
+  fieldName: string
+) => {
+  return await StringField.create({ name, collectionId: id, fieldName });
 };
 
-const createCollectionTextField = async (name: string, id: number) => {
-  return await TextField.create({ name, collectionId: id });
+const createCollectionTextField = async (
+  name: string,
+  id: number,
+  fieldName: string
+) => {
+  return await TextField.create({ name, collectionId: id, fieldName });
 };
 
-const createCollectionDateField = async (name: string, id: number) => {
-  return await DateField.create({ name, collectionId: id });
+const createCollectionDateField = async (
+  name: string,
+  id: number,
+  fieldName: string
+) => {
+  return await DateField.create({ name, collectionId: id, fieldName });
 };
 
-const createCollectionNumberField = async (name: string, id: number) => {
-  return await NumberField.create({ name, collectionId: id });
+const createCollectionNumberField = async (
+  name: string,
+  id: number,
+  fieldName: string
+) => {
+  return await NumberField.create({ name, collectionId: id, fieldName });
 };
 
-const createCollectionCheckboxField = async (name: string, id: number) => {
-  return await CheckboxField.create({ name, collectionId: id });
+const createCollectionCheckboxField = async (
+  name: string,
+  id: number,
+  fieldName: string
+) => {
+  return await CheckboxField.create({ name, collectionId: id, fieldName });
 };

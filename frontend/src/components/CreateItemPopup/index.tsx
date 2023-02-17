@@ -12,9 +12,13 @@ import {
 import { useFormik } from 'formik';
 
 import { additionalTypes } from '../../constants/base';
+import { useCreateCollectionItemMutation } from '../../redux/api/collection';
 import { FormikItemCreate, ITag } from '../../types/base';
 import useValidationSchema from '../../utils/itemValidationSchema';
-import { getFormikInitialValuesForAdditionalField } from '../../utils/mappers';
+import {
+  getFormikInitialValuesForAdditionalField,
+  prepareFieldForRequest,
+} from '../../utils/mappers';
 import { DialogItem } from '../CreateCollectionPopup/styled';
 import { CustomDialogTitle } from '../DialogTitle';
 import { itemsAdditionalField } from '../ItemAdditionalFields';
@@ -22,12 +26,14 @@ import { TagsField } from '../TagsField';
 
 interface IProps {
   additionalFields: Record<string, string[]>;
+  collectionId: string;
 }
 
-export const CreateItemPopup: FC<IProps> = ({ additionalFields }) => {
+export const CreateItemPopup: FC<IProps> = ({ additionalFields, collectionId }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [tags, setTags] = useState<ITag[]>([]);
+  const [createItem, { data }] = useCreateCollectionItemMutation();
 
   const initialValues = useMemo(() => {
     return getFormikInitialValuesForAdditionalField(additionalFields, 'itemName');
@@ -36,8 +42,13 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields }) => {
   const validationSchema = useValidationSchema(initialValues);
 
   const handleSubmitForm = (values: FormikItemCreate) => {
-    console.log(values);
+    console.log(prepareFieldForRequest(values));
+    createItem({ ...values, tags: tags.map(e => e.text), id: collectionId });
   };
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   const formik = useFormik({
     initialValues,
@@ -51,10 +62,6 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields }) => {
   };
 
   const handleButtonClick = () => setIsOpen(prev => !prev);
-
-  useEffect(() => {
-    console.log(formik.values);
-  }, [formik]);
 
   return (
     <>

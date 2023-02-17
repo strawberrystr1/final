@@ -1,6 +1,7 @@
 export interface ICheckboxFieldModel {
   id: number;
   name: string;
+  fieldName: string;
 }
 
 export type ICheckboxFieldWithCollection = ICheckboxFieldModel & {

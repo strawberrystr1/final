@@ -22,7 +22,7 @@ export const CurrentCollection = () => {
     <Loader />
   ) : (
     <FlexWrapper>
-      <CreateItemPopup additionalFields={additionalFields} />
+      <CreateItemPopup additionalFields={additionalFields} collectionId={collectionId} />
     </FlexWrapper>
   );
 };

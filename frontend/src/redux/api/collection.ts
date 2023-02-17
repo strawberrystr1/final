@@ -1,5 +1,10 @@
-import { COLLECTION_CREATE, ONE_COLLECTION, USER_COLLECTIONS } from '../../constants/api';
-import { IUserCollectionsResponse } from '../../types/collection';
+import {
+  COLLECTION_CREATE,
+  CREATE_COLLECTION_ITEM,
+  ONE_COLLECTION,
+  USER_COLLECTIONS,
+} from '../../constants/api';
+import { ICreateItemPayload, IUserCollectionsResponse } from '../../types/collection';
 import { ICreateCollectionPayload } from '../../types/formik';
 import { collectionQuery } from '../helpers/collectionQuery';
 
@@ -25,8 +30,19 @@ const collectionApi = baseApi.injectEndpoints({
         url: `${ONE_COLLECTION}/${arg}`,
       }),
     }),
+    createCollectionItem: builder.mutation<void, ICreateItemPayload>({
+      query: ({ id, ...body }) => ({
+        url: CREATE_COLLECTION_ITEM(id),
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useCreateMutation, useGetUserCollectionQuery, useGetOneCollectionQuery } =
-  collectionApi;
+export const {
+  useCreateMutation,
+  useGetUserCollectionQuery,
+  useGetOneCollectionQuery,
+  useCreateCollectionItemMutation,
+} = collectionApi;

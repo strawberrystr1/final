@@ -87,3 +87,22 @@ export const prepareYupObject = (
     })
   );
 };
+
+export const prepareFieldForRequest = (values: FormikItemCreate) => {
+  console.log('values: ', values);
+  Object.fromEntries(
+    Object.entries(values).map(item => {
+      const [key, value] = item;
+      switch (typeof value) {
+        case 'string':
+          return [key, value];
+        case 'number':
+          return [key, value];
+        case 'boolean':
+          return [key, value];
+        default:
+          return [key, value];
+      }
+    })
+  );
+};

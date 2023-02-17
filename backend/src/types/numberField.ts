@@ -1,6 +1,7 @@
 export interface INumberModel {
   id: number;
   name: string;
+  fieldName: string;
 }
 
 export type INUmberFieldWithCollection = INumberModel & {

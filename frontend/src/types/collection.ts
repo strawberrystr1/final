@@ -11,3 +11,9 @@ export interface IUserCollectionsResponse {
   strings: string[];
   texts: string[];
 }
+
+export interface ICreateItemPayload {
+  id: string;
+  tags: string[];
+  [key: string]: string | number | boolean | string[] | Date;
+}

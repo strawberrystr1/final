@@ -15,6 +15,7 @@ const DateField = dbClient.define<Model<IDateFieldModel, IDateFieldCreation>>(
       type: DataTypes.STRING,
       allowNull: false
     },
+    fieldName: DataTypes.STRING,
   },
   { timestamps: false, freezeTableName: true }
 );

@@ -1,7 +1,9 @@
 import { additionalTypes } from "../constants/additional";
 import { ICollectionWithAdditionalField } from "../types/collection";
+import { AdditionalFields } from "../types/item";
 
 export const getAdditionalFieldsData = (data: Record<string, string>) => {
+  console.log("data: ", data);
   const mapped: Record<string | number, string[]> = {};
 
   for (let key in data) {
@@ -33,4 +35,10 @@ export const mapAdditionalField = (
     numbers: collection.numbers.map(el => el.name),
     texts: collection.texts.map(el => el.name)
   };
+};
+
+export const createCollecionItemValues = (
+  values: Record<string, AdditionalFields | string[]>
+) => {
+  
 };

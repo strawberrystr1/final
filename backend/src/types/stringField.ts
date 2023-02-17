@@ -1,6 +1,7 @@
 export interface IStringFieldModel {
   id: number;
   name: string;
+  fieldName: string;
 }
 
 export type IStringFieldWithCollection = IStringFieldModel & {

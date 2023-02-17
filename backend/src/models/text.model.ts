@@ -15,6 +15,7 @@ const TextField = dbClient.define<Model<ITextFieldModel, ITextFieldCreation>>(
       type: DataTypes.STRING,
       allowNull: false
     },
+    fieldName: DataTypes.STRING,
   },
   { timestamps: false, freezeTableName: true }
 );
