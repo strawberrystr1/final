@@ -1,4 +1,3 @@
-import { Model } from "sequelize";
 import { additionalTypes } from "../constants/additional";
 import CheckboxField from "../models/checkbox.model";
 import Collection from "../models/collection.model";
@@ -6,12 +5,12 @@ import DateField from "../models/date.model";
 import CollectionItem from "../models/item.model";
 import NumberField from "../models/number.model";
 import StringField from "../models/string.model";
+import Tag from "../models/tag.model";
 import TextField from "../models/text.model";
-import User from "../models/user.model";
 import {
   ICollectionCreate,
   ICollectionWithAdditionalField,
-  ICollectionWithItems
+  IFullCollectionResponse
 } from "../types/collection";
 import { IAuthUser } from "../types/user";
 import { getAdditionalFieldsData, mapAdditionalField } from "../utils/mappers";
@@ -41,7 +40,9 @@ export const createCollection = async (
   return collection;
 };
 
-export const getCollections = async (userId?: number) => {
+export const getCollections = async (
+  userId?: number
+): Promise<IFullCollectionResponse[]> => {
   const whereOptions = userId
     ? {
         userId
@@ -52,12 +53,15 @@ export const getCollections = async (userId?: number) => {
     await Collection.findAll({
       where: whereOptions,
       include: [
-        User,
         CheckboxField,
         DateField,
         NumberField,
         StringField,
-        TextField
+        TextField,
+        {
+          model: CollectionItem,
+          include: [Tag]
+        }
       ],
       order: [["id", "DESC"]]
     })
@@ -66,10 +70,6 @@ export const getCollections = async (userId?: number) => {
   return collections.map(collection => {
     return {
       ...collection,
-      user: {
-        name: collection.user.name,
-        id: collection.user.id
-      },
       ...mapAdditionalField(collection)
     };
   });
@@ -112,31 +112,34 @@ const createAdditionalField = (
 export const getOneCollection = async (
   userId: number,
   collectionId: number
-) => {
-  const collection = (
-    await Collection.findOne({
-      where: {
-        id: collectionId,
-        userId
-      },
-      include: [
-        CheckboxField,
-        DateField,
-        NumberField,
-        StringField,
-        TextField,
-        CollectionItem
-      ]
-    })
-  )?.toJSON();
+): Promise<IFullCollectionResponse | void> => {
+  const collection = await Collection.findOne({
+    where: {
+      id: collectionId,
+      userId
+    },
+    include: [
+      CheckboxField,
+      DateField,
+      NumberField,
+      StringField,
+      TextField,
+      {
+        model: CollectionItem,
+        include: [Tag]
+      }
+    ]
+  });
 
   if (!collection) {
-    return { msg: "No such collection" };
+    return;
   }
 
+  const created = collection.toJSON() satisfies ICollectionWithAdditionalField;
+
   return {
-    ...collection,
-    ...mapAdditionalField(collection as ICollectionWithAdditionalField)
+    ...created,
+    ...mapAdditionalField(created)
   };
 };
 

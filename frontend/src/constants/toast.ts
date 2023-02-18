@@ -15,3 +15,8 @@ export const COLLECTION_CREATE_MSG = {
   ru: 'Коллекция создана',
   en: 'Collection created',
 };
+
+export const COLLECTION_ITEM_CREATE_MSG = {
+  ru: 'Айтем создан',
+  en: 'Item created',
+};

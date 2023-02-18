@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { WithContext as ReactTags } from 'react-tag-input';
 
 import { useAppSelector } from '../../redux/hooks';
-import { ITag } from '../../types/base';
+import { IFieldTag } from '../../types/base';
 
 import './styles.css';
 
 interface IProps {
-  tags: ITag[];
-  setTags: Dispatch<SetStateAction<ITag[]>>;
-  suggestion: ITag[];
+  tags: IFieldTag[];
+  setTags: Dispatch<SetStateAction<IFieldTag[]>>;
+  suggestion: IFieldTag[];
 }
 
 const KeyCodes = {
@@ -27,7 +27,7 @@ export const TagsField: FC<IProps> = ({ tags, setTags, suggestion }) => {
   const handleDeleteTag = (index: number) => {
     setTags(prev => prev.filter((el, i) => i !== index));
   };
-  const handleAddTag = (tag: ITag) => {
+  const handleAddTag = (tag: IFieldTag) => {
     setTags(prev => [...prev, tag]);
   };
 

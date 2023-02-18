@@ -13,9 +13,20 @@ export interface IAdditionalField {
   name: string;
 }
 
-export interface ITag {
+export interface IFieldTag {
   id: string;
   text: string;
 }
 
-export type FormikItemCreate = Record<string, string | number | boolean | Date>;
+export type AdditionalFields = string | number | boolean | Date;
+export type FormikItemCreate = Record<string, AdditionalFields>;
+
+export type FormikItemCreatePayload = Record<
+  string,
+  { fieldKey: string; fieldValue: AdditionalFields }
+>;
+
+export interface IToastMessage {
+  ru: string;
+  en: string;
+}

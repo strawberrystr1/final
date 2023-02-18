@@ -16,12 +16,20 @@ export interface ICollectionItemModel {
   date1?: Date;
   date2?: Date;
   date3?: Date;
+  collectionId?: number;
 }
 
-export type ICollectionItemCreation = Omit<ICollectionItemModel, "id">;
+export type ICollectionItemCreation = Omit<ICollectionItemModel, "id"> & {
+  collectionId: number;
+};
 export type AdditionalFields = string | number | boolean | Date;
 export interface ICreateCollectionItemPayload {
   itemName: string;
   tags: string[];
-  [key: string]: AdditionalFields | string[];
+  [key: string]: ICreateCollectionItemExtraFields | string | string[];
 }
+
+export type ICreateCollectionItemExtraFields = Record<
+  string,
+  { fieldKey: string; fieldValue: AdditionalFields }
+>;

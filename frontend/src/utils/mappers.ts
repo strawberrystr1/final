@@ -3,14 +3,15 @@ import { boolean, date, number, string } from 'yup';
 
 import { additionalTypes } from '../constants/base';
 import { AdditionalFields } from '../constants/collection';
-import { FormikItemCreate } from '../types/base';
-import { IUserCollectionsResponse } from '../types/collection';
+import { FormikItemCreate, FormikItemCreatePayload } from '../types/base';
+import { IUserCollections, IUserCollectionsResponse } from '../types/collection';
 
-export const getItemAdditionalField = (data: IUserCollectionsResponse | undefined) => {
+export const getItemAdditionalField = (data: IUserCollectionsResponse) => {
   const mapped: Record<string, string[]> = {};
 
   additionalTypes.forEach(item => {
-    const additionalArray = data?.[item as keyof IUserCollectionsResponse];
+    const additionalArray = data[item as keyof IUserCollections];
+
     if (Array.isArray(additionalArray) && !!additionalArray.length) {
       mapped[item] = additionalArray;
     }
@@ -88,21 +89,29 @@ export const prepareYupObject = (
   );
 };
 
-export const prepareFieldForRequest = (values: FormikItemCreate) => {
-  console.log('values: ', values);
-  Object.fromEntries(
-    Object.entries(values).map(item => {
-      const [key, value] = item;
-      switch (typeof value) {
-        case 'string':
-          return [key, value];
-        case 'number':
-          return [key, value];
-        case 'boolean':
-          return [key, value];
-        default:
-          return [key, value];
+export const prepareFieldForRequest = (
+  values: FormikItemCreate,
+  initialFields: Record<string, string[]>
+) => {
+  const mapped: FormikItemCreatePayload = {};
+
+  Object.entries(initialFields).forEach(([key, value]) => {
+    Object.entries(values).forEach(([fieldKey, fieldValue]) => {
+      const index = value.findIndex(e => e === fieldKey);
+      if (index !== -1) {
+        const nextKey = key === 'checkboxes' ? key.slice(0, -2) : key.slice(0, -1);
+        mapped[`${nextKey}${index + 1}`] = {
+          fieldValue:
+            nextKey === 'date'
+              ? new Date(fieldValue as string)
+              : nextKey === 'checkbox'
+              ? !!fieldValue
+              : fieldValue,
+          fieldKey,
+        };
       }
-    })
-  );
+    });
+  });
+
+  return mapped;
 };

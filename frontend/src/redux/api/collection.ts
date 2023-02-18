@@ -4,6 +4,7 @@ import {
   ONE_COLLECTION,
   USER_COLLECTIONS,
 } from '../../constants/api';
+import { COLLECTION_CREATE_MSG, COLLECTION_ITEM_CREATE_MSG } from '../../constants/toast';
 import { ICreateItemPayload, IUserCollectionsResponse } from '../../types/collection';
 import { ICreateCollectionPayload } from '../../types/formik';
 import { collectionQuery } from '../helpers/collectionQuery';
@@ -18,7 +19,7 @@ const collectionApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      onQueryStarted: collectionQuery,
+      onQueryStarted: collectionQuery<ICreateCollectionPayload, void>(COLLECTION_CREATE_MSG),
     }),
     getUserCollection: builder.query<IUserCollectionsResponse[], void>({
       query: () => ({
@@ -27,7 +28,7 @@ const collectionApi = baseApi.injectEndpoints({
     }),
     getOneCollection: builder.query<IUserCollectionsResponse, number>({
       query: arg => ({
-        url: `${ONE_COLLECTION}/${arg}`,
+        url: `${ONE_COLLECTION}${arg}`,
       }),
     }),
     createCollectionItem: builder.mutation<void, ICreateItemPayload>({
@@ -36,6 +37,7 @@ const collectionApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
+      onQueryStarted: collectionQuery<ICreateItemPayload, void>(COLLECTION_ITEM_CREATE_MSG),
     }),
   }),
 });

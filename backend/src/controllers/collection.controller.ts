@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { SOMETHING_WRONG } from "../constants/httpMessages";
+import { NO_COLLECTION_FOUND, SOMETHING_WRONG, WRONG_URL_PARAMS } from "../constants/httpMessages";
 import {
   createCollection,
   getCollections,
@@ -8,6 +8,7 @@ import {
 import { ICollectionCreate } from "../types/collection";
 import { HTTPCodes } from "../types/httpCodes";
 import { IAuthUser } from "../types/user";
+import { mapResponseFields } from "../utils/mappers";
 
 export const handleCreateCollection = async (
   req: Request<{}, {}, ICollectionCreate>,
@@ -38,7 +39,9 @@ export const handleGetCollections = async (req: Request, res: Response) => {
 
     const collections = await getCollections();
 
-    res.json(collections);
+    const response = mapResponseFields(collections);
+
+    res.json(response);
   } catch (e) {
     res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
   }
@@ -52,9 +55,15 @@ export const handleGetOneCollection = async (req: Request, res: Response) => {
     if (typeof collectionId === "string") {
       const collection = await getOneCollection(id, +collectionId);
 
-      res.json(collection);
+      if (collection) {
+        const response = mapResponseFields([collection]);
+
+        res.json(response[0]);
+      } else {
+        res.status(HTTPCodes.NOT_FOUND).json({ msg: NO_COLLECTION_FOUND })
+      }
     } else {
-      res.status(HTTPCodes.BAD_REQUEST).json({ msg: "Wrong request params" });
+      res.status(HTTPCodes.BAD_REQUEST).json({ msg: WRONG_URL_PARAMS });
     }
   } catch (e) {
     res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });

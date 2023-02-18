@@ -1,14 +1,8 @@
-import CheckboxField from "../models/checkbox.model";
-import Collection from "../models/collection.model";
-import DateField from "../models/date.model";
 import CollectionItem from "../models/item.model";
-import NumberField from "../models/number.model";
-import StringField from "../models/string.model";
-import TextField from "../models/text.model";
-import {
-  ICreateCollectionItemPayload,
-} from "../types/item";
+import Tag from "../models/tag.model";
+import { ICreateCollectionItemPayload } from "../types/item";
 import { createCollecionItemValues } from "../utils/mappers";
+import { createTags } from "./tag.service";
 
 export const createItem = async (
   data: ICreateCollectionItemPayload,
@@ -16,16 +10,27 @@ export const createItem = async (
 ) => {
   const { tags, itemName, ...rest } = data;
 
-  const collectionField = await Collection.findByPk(collectionId, {
-    include: [NumberField, StringField, TextField, CheckboxField, DateField]
-  });
-
   const creationValues = createCollecionItemValues(rest);
 
-  const item = await CollectionItem.create({
-    name: itemName
+  const item = await CollectionItem.create(
+    {
+      name: itemName,
+      ...creationValues,
+      collectionId
+    },
+    { returning: true }
+  );
+
+  createTags(tags, item.toJSON().id);
+
+  return item;
+};
+
+export const getCollectionItems = async (collectionId: number) => {
+  const items = await CollectionItem.findAll({
+    where: { collectionId },
+    include: [Tag]
   });
 
-  console.log(collectionField?.toJSON(), rest);
-  return data;
+  return items;
 };

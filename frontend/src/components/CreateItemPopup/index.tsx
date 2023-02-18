@@ -13,7 +13,7 @@ import { useFormik } from 'formik';
 
 import { additionalTypes } from '../../constants/base';
 import { useCreateCollectionItemMutation } from '../../redux/api/collection';
-import { FormikItemCreate, ITag } from '../../types/base';
+import { FormikItemCreate, IFieldTag } from '../../types/base';
 import useValidationSchema from '../../utils/itemValidationSchema';
 import {
   getFormikInitialValuesForAdditionalField,
@@ -32,8 +32,8 @@ interface IProps {
 export const CreateItemPopup: FC<IProps> = ({ additionalFields, collectionId }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [tags, setTags] = useState<ITag[]>([]);
-  const [createItem, { data }] = useCreateCollectionItemMutation();
+  const [tags, setTags] = useState<IFieldTag[]>([]);
+  const [createItem, { isSuccess }] = useCreateCollectionItemMutation();
 
   const initialValues = useMemo(() => {
     return getFormikInitialValuesForAdditionalField(additionalFields, 'itemName');
@@ -42,19 +42,27 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields, collectionId }) 
   const validationSchema = useValidationSchema(initialValues);
 
   const handleSubmitForm = (values: FormikItemCreate) => {
-    console.log(prepareFieldForRequest(values));
-    createItem({ ...values, tags: tags.map(e => e.text), id: collectionId });
+    const payloadValues = prepareFieldForRequest(values, additionalFields);
+    createItem({
+      ...payloadValues,
+      itemName: values.itemName as string,
+      tags: tags.map(e => e.text),
+      id: collectionId,
+    });
   };
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   const formik = useFormik({
     initialValues,
     onSubmit: handleSubmitForm,
     validationSchema,
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsOpen(false);
+      formik.resetForm();
+    }
+  }, [isSuccess]);
 
   const handleDialogClose = () => {
     setIsOpen(false);
@@ -64,7 +72,7 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields, collectionId }) 
   const handleButtonClick = () => setIsOpen(prev => !prev);
 
   return (
-    <>
+    <Box>
       <Button onClick={handleButtonClick} variant="contained">
         <Typography sx={{ textTransform: 'none' }}>{t('item.create')}</Typography>
       </Button>
@@ -110,6 +118,6 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields, collectionId }) 
           </DialogActions>
         </form>
       </Dialog>
-    </>
+    </Box>
   );
 };

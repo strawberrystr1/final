@@ -42,9 +42,24 @@ export interface ICollectionWithAdditionalField extends ICollection {
   numbers: INUmberFieldWithCollection[];
   strings: IStringFieldWithCollection[];
   texts: ITextFieldWithCollection[];
-  user: IUser;
+  items: ICollectionItemModel[];
 }
 
 export interface ICollectionWithItems extends ICollectionWithAdditionalField {
+  items: ICollectionItemModel[];
+}
+
+export interface IFullCollectionResponse {
+  id: number;
+  name: string;
+  description: string;
+  theme: string;
+  image?: string;
+  userId: number;
+  checkboxes: string[];
+  dates: string[];
+  numbers: string[];
+  strings: string[];
+  texts: string[];
   items: ICollectionItemModel[];
 }
