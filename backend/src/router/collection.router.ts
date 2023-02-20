@@ -6,11 +6,12 @@ import {
   handleDelete,
   handleGetCollections,
   handleGetOneCollection,
-  handleUpdateCollection
+  handleUpdateCollection,
 } from "../controllers/collection.controller";
 import {
   handleCreateItem,
-  handleGetAllCollectionItems
+  handleGetAllCollectionItems,
+  handleGetOneCollectionItem
 } from "../controllers/item.controller";
 
 const router = Router();
@@ -25,6 +26,11 @@ router.get(
   "/:collectionId/item",
   passport.authenticate("jwt", { session: false }),
   handleGetAllCollectionItems
+);
+router.get(
+  "/:collectionId/item/:itemId",
+  passport.authenticate("jwt", { session: false }),
+  handleGetOneCollectionItem
 );
 router.post(
   "/:collectionId/item/create",

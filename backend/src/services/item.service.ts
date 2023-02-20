@@ -1,4 +1,6 @@
+import Comment from "../models/comment.model";
 import CollectionItem from "../models/item.model";
+import Like from "../models/like.model";
 import Tag from "../models/tag.model";
 import { ICreateCollectionItemPayload } from "../types/item";
 import { createCollecionItemValues } from "../utils/mappers";
@@ -33,4 +35,10 @@ export const getCollectionItems = async (collectionId: number) => {
   });
 
   return items;
+};
+
+export const getOneItem = async (id: string) => {
+  return await CollectionItem.findByPk(+id, {
+    include: [Tag, Like, Comment]
+  });
 };

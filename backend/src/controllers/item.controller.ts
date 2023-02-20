@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
-import { SOMETHING_WRONG } from "../constants/httpMessages";
-import { createItem, getCollectionItems } from "../services/item.service";
+import { SOMETHING_WRONG, WRONG_URL_PARAMS } from "../constants/httpMessages";
+import { createItem, getCollectionItems, getOneItem } from "../services/item.service";
 import { HTTPCodes } from "../types/httpCodes";
 import { ICreateCollectionItemPayload } from "../types/item";
 
@@ -30,7 +30,25 @@ export const handleGetAllCollectionItems = async (
 
     res.json(items);
   } catch (e) {
-    console.log("e: ", e);
+    res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
+  }
+};
+
+export const handleGetOneCollectionItem = async (
+  req: Request<{ itemId: string }>,
+  res: Response
+) => {
+  try {
+    const { itemId } = req.params;
+
+    if (!itemId) {
+      res.status(HTTPCodes.BAD_REQUEST).json({ msg: WRONG_URL_PARAMS });
+    }
+
+    const item = await getOneItem(itemId);
+
+    res.json(item);
+  } catch (e) {
     res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
   }
 };

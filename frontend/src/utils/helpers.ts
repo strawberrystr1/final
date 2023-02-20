@@ -10,3 +10,11 @@ type Keys = keyof PossibleKeys;
 export const getFieldName = (field: AdditionalFields): Keys => {
   return field === 'checkbox' ? `${field}es` : `${field}s`;
 };
+
+export const extractIds = (path: string) => {
+  return path
+    .split('/')
+    .map(e => +e)
+    .filter(e => e)
+    .map(e => `${e}`);
+};

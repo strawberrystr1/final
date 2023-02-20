@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import routes from '../constants/routes';
-import { Collection, Home, Profile, Signin, Signup } from '../pages';
+import { Collection, Home, Item, Profile, Signin, Signup } from '../pages';
 
 export default createBrowserRouter([
   {
@@ -23,5 +23,9 @@ export default createBrowserRouter([
   {
     path: routes.COLLECTION_ID,
     element: <Collection />,
+  },
+  {
+    path: routes.ITEM_ID,
+    element: <Item />,
   },
 ]);

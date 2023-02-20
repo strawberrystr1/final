@@ -5,4 +5,5 @@ export default {
   PROFILE_ID: '/profile/:id',
   PROFILE: '/profile',
   COLLECTION_ID: '/collection/:id',
+  ITEM_ID: '/collection/:id/:itemId',
 };
