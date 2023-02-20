@@ -2,6 +2,7 @@ export interface IDateFieldModel {
   id: number;
   name: string;
   fieldName: string;
+  collectionId?: number;
 }
 
 export type IDateFieldWithCollection = IDateFieldModel & {

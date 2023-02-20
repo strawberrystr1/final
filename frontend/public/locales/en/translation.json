@@ -44,7 +44,12 @@
     "checkbox": "boolean field",
     "dragging": "Drop the files here...",
     "file": "Drag drop some file here, or click to select file",
-    "empty": "You don&apos;t have any collections"
+    "empty": "You don&apos;t have any collections",
+    "edit": "Edit collection",
+    "delete": "Delete collection",
+    "open": "Open collection",
+    "update": "Update collection",
+    "delete_confirmation": "Are you sure you want to delete this collection?"
   },
   "placeholder": {
     "field_name": "Field name",
@@ -60,7 +65,10 @@
     "name": "Item name",
     "tags": "Item tags",
     "name_required": "Name is required",
-    "name_min": "Name must be 4 or more characters"
+    "name_min": "Name must be 4 or more characters",
+    "empty_table": "This collection does not have any items"
   },
-  "field_required": "Field is required"
+  "field_required": "Field is required",
+  "confirm": "Confirm",
+  "cancel": "Cancel"
 }

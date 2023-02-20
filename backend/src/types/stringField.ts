@@ -2,6 +2,7 @@ export interface IStringFieldModel {
   id: number;
   name: string;
   fieldName: string;
+  collectionId?: number;
 }
 
 export type IStringFieldWithCollection = IStringFieldModel & {

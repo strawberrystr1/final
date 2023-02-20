@@ -13,10 +13,11 @@ import { Input } from './Input';
 interface IProps {
   type: AdditionalFields;
   formik: FormikType;
+  initialAmount: number;
 }
 
-export const AdditionalField: FC<IProps> = ({ type, formik }) => {
-  const [fields, setField] = useState(1);
+export const AdditionalField: FC<IProps> = ({ type, formik, initialAmount }) => {
+  const [fields, setField] = useState(initialAmount);
   const { t } = useTranslation();
 
   const incrementFields = () =>

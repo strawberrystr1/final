@@ -36,6 +36,8 @@ export interface ICollectionAdditionalFields {
 export type ICollectionCreate = Omit<ICollection, "id"> &
   ICollectionAdditionalFields;
 
+export type ICollectionUpdate = Omit<ICollectionCreate, "userId">;
+
 export interface ICollectionWithAdditionalField extends ICollection {
   checkboxes: ICheckboxFieldWithCollection[];
   dates: IDateFieldWithCollection[];

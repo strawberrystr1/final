@@ -5,5 +5,6 @@ export const POST_LOGIN = '/user/login';
 export const COLLECTION_CREATE = '/collection/create';
 export const USER_COLLECTIONS = '/collection';
 export const ONE_COLLECTION = '/collection/';
+export const UPDATE_COLLECTION = (id: number) => `${ONE_COLLECTION}/${id}/update`;
 export const CREATE_COLLECTION_ITEM = (id: string) => `/collection/${id}/item/create`;
 export const GET_COLLECTION_ITEMS = (id: string) => `/collection/${id}/item`;

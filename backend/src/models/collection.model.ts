@@ -25,7 +25,7 @@ const Collection = dbClient.define<Model<ICollection, ICollectionCreate>>(
     },
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     image: DataTypes.STRING
   },

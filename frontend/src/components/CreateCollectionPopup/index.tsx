@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import {
@@ -12,69 +12,56 @@ import {
   TextField,
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { FormikProps, useFormik } from 'formik';
 
 import { AdditionalFields, Collection } from '../../constants/collection';
-import { useCreateMutation } from '../../redux/api/collection';
+import { useCreateMutation, useUpdateCollectionMutation } from '../../redux/api/collection';
+import { IUserCollectionsResponse } from '../../types/collection';
 import { ICreateCollectionForm } from '../../types/formik';
 import useValidationSchema from '../../utils/collectionValidationSchema';
-import storage from '../../utils/firebase';
+import { createOrUpdateCollection } from '../../utils/formik';
+import { getCreateCollectionFormikInitalState } from '../../utils/formikInitialState';
+import { getFieldName } from '../../utils/helpers';
 import { AdditionalField } from '../AdditionalField';
 import { CustomDialogTitle } from '../DialogTitle';
 import { FileUploader } from '../FileUploader';
 
 import { AdditionalItemsWrapper, DialogItem, Markdown } from './styled';
 
-const formikInitialValues: ICreateCollectionForm = {
-  name: '',
-  description: '',
-  theme: Collection.ALCOHOL,
-  image: null,
-  string1: '',
-  string2: '',
-  string3: '',
-  number1: '',
-  number2: '',
-  number3: '',
-  text1: '',
-  text2: '',
-  text3: '',
-  checkbox1: '',
-  checkbox2: '',
-  checkbox3: '',
-  date1: '',
-  date2: '',
-  date3: '',
-};
-
 export type FormikType = FormikProps<ICreateCollectionForm>;
 
-export const CreateCollectionPopup = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface IProps {
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  currentCollection?: IUserCollectionsResponse;
+}
+
+export const CreateCollectionPopup: FC<IProps> = ({ isOpen, currentCollection, setIsOpen }) => {
   const [isEdditing, setIsEdditing] = useState(false);
   const textArea = useRef<HTMLTextAreaElement>(null);
   const validationSchema = useValidationSchema();
   const { t } = useTranslation();
-  const [createCollection] = useCreateMutation();
+  const [createCollection, { isSuccess }] = useCreateMutation();
+  const [updateCollection, { isSuccess: isSuccessUpdate }] = useUpdateCollectionMutation();
 
   const handleSubmitForm = (values: ICreateCollectionForm) => {
-    if (values.image) {
-      const storageRef = ref(storage, `/files/${values.image.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, values.image);
-      uploadTask.then(() => {
-        const refer = ref(storage, `/files/${values.image?.name}`);
-        getDownloadURL(refer).then(url => {
-          createCollection({ ...values, image: url });
-        });
+    if (currentCollection) {
+      createOrUpdateCollection(values, {
+        callback: updateCollection,
+        type: 'update',
+        id: currentCollection.id,
+        image: currentCollection.image,
       });
     } else {
-      createCollection({ ...values, image: '' });
+      createOrUpdateCollection(values, {
+        callback: createCollection,
+        type: 'create',
+      });
     }
   };
 
   const formik = useFormik({
-    initialValues: formikInitialValues,
+    initialValues: getCreateCollectionFormikInitalState(currentCollection),
     onSubmit: handleSubmitForm,
     validationSchema,
   });
@@ -89,7 +76,13 @@ export const CreateCollectionPopup = () => {
     }
   }, [isEdditing]);
 
-  const handleButtonClick = () => setIsOpen(prev => !prev);
+  useEffect(() => {
+    if (isSuccess || isSuccessUpdate) {
+      formik.resetForm();
+      setIsOpen(false);
+    }
+  }, [isSuccess, isSuccessUpdate]);
+
   const handleDialogClose = () => {
     setIsOpen(false);
     formik.resetForm();
@@ -100,13 +93,12 @@ export const CreateCollectionPopup = () => {
 
   return (
     <>
-      <Button onClick={handleButtonClick} variant="contained">
-        <Typography sx={{ textTransform: 'none' }}>{t('collection.create')}</Typography>
-      </Button>
       <Dialog onClose={handleDialogClose} open={isOpen} maxWidth="lg" fullWidth={true}>
         <form onSubmit={formik.handleSubmit}>
           <CustomDialogTitle onClose={handleDialogClose}>
-            <Typography fontSize={24}>{t('collection.create')}</Typography>
+            <Typography fontSize={24}>
+              {currentCollection ? t('collection.update') : t('collection.create')}
+            </Typography>
           </CustomDialogTitle>
           <DialogContent dividers={true}>
             <DialogItem>
@@ -187,17 +179,20 @@ export const CreateCollectionPopup = () => {
             <DialogItem>
               <Typography component="label">{t('collection.additional')}</Typography>
               <AdditionalItemsWrapper>
-                <AdditionalField formik={formik} type={AdditionalFields.STRING} />
-                <AdditionalField formik={formik} type={AdditionalFields.NUMBER} />
-                <AdditionalField formik={formik} type={AdditionalFields.TEXT} />
-                <AdditionalField formik={formik} type={AdditionalFields.CHECKBOX} />
-                <AdditionalField formik={formik} type={AdditionalFields.DATE} />
+                {Object.values(AdditionalFields).map(field => (
+                  <AdditionalField
+                    formik={formik}
+                    initialAmount={currentCollection?.[getFieldName(field)].length || 1}
+                    type={field}
+                    key={field}
+                  />
+                ))}
               </AdditionalItemsWrapper>
             </DialogItem>
           </DialogContent>
           <DialogActions>
             <Button variant="contained" type="submit">
-              {t('collection.create_btn')}
+              {currentCollection ? t('collection.update') : t('collection.create_btn')}
             </Button>
           </DialogActions>
         </form>

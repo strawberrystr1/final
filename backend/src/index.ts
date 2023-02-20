@@ -46,25 +46,25 @@ const runServer = async () => {
     User.belongsToMany(Like, { through: UsersLike });
     Like.belongsToMany(User, { through: UsersLike });
 
-    Collection.hasMany(CollectionItem);
+    Collection.hasMany(CollectionItem, { onDelete: "CASCADE" });
     CollectionItem.belongsTo(Collection);
 
     CollectionItem.hasMany(Like);
     Like.belongsTo(CollectionItem);
 
-    Collection.hasMany(CheckboxField);
+    Collection.hasMany(CheckboxField, { onDelete: "CASCADE" });
     CheckboxField.belongsTo(Collection);
 
-    Collection.hasMany(NumberField);
+    Collection.hasMany(NumberField, { onDelete: "CASCADE" });
     NumberField.belongsTo(Collection);
 
-    Collection.hasMany(StringField);
+    Collection.hasMany(StringField, { onDelete: "CASCADE" });
     StringField.belongsTo(Collection);
 
-    Collection.hasMany(TextField);
+    Collection.hasMany(TextField, { onDelete: "CASCADE" });
     TextField.belongsTo(Collection);
 
-    Collection.hasMany(DateField);
+    Collection.hasMany(DateField, { onDelete: "CASCADE" });
     DateField.belongsTo(Collection);
 
     CollectionItem.hasMany(Comment);

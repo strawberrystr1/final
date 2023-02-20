@@ -25,3 +25,7 @@ export interface ICreateCollectionForm {
 export interface ICreateCollectionPayload extends Omit<ICreateCollectionForm, 'image'> {
   image: string;
 }
+
+export interface IUpdateCollectionPayload extends ICreateCollectionPayload {
+  id: number;
+}

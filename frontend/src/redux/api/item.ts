@@ -9,6 +9,8 @@ const itemsApi = baseApi.injectEndpoints({
       query: id => ({
         url: GET_COLLECTION_ITEMS(id),
       }),
+      providesTags: result =>
+        result ? [...result.map(({ id }) => ({ type: 'Item' as const, id })), 'Item'] : ['Item'],
     }),
   }),
 });

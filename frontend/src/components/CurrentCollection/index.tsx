@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { Divider } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 
 import { useGetOneCollectionQuery } from '../../redux/api/collection';
 import { getItemAdditionalField } from '../../utils/mappers';
@@ -13,6 +14,7 @@ import { FlexWrapper, RowItem, RowWrapper, TableWrapper } from './styled';
 export const CurrentCollection = () => {
   const { pathname } = useLocation();
   const collectionId = pathname.replace(/\D/g, '');
+  const { t } = useTranslation();
 
   const { data, isLoading } = useGetOneCollectionQuery(+collectionId);
 
@@ -40,7 +42,7 @@ export const CurrentCollection = () => {
           ))}
           <RowItem>Tags</RowItem>
         </RowWrapper>
-        {data &&
+        {data && data.items.length > 0 ? (
           data.items.map(item => (
             <CollectionItem
               key={item.id}
@@ -48,7 +50,12 @@ export const CurrentCollection = () => {
               additionalFields={additionalFields}
               collectionId={data.id}
             />
-          ))}
+          ))
+        ) : (
+          <Typography textAlign="center" fontSize={22}>
+            {t('item.empty_table')}
+          </Typography>
+        )}
       </TableWrapper>
     </FlexWrapper>
   );

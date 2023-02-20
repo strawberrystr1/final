@@ -16,7 +16,17 @@ export const COLLECTION_CREATE_MSG = {
   en: 'Collection created',
 };
 
+export const COLLECTION_UPDATE_MSG = {
+  ru: 'Коллекция обновлена',
+  en: 'Collection updated',
+};
+
 export const COLLECTION_ITEM_CREATE_MSG = {
   ru: 'Айтем создан',
   en: 'Item created',
+};
+
+export const COLLECTION_DELETE = {
+  ru: 'Коллекция была удалена',
+  en: 'Collection was deleted',
 };

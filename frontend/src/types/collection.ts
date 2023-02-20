@@ -1,3 +1,5 @@
+import { Collection } from '../constants/collection';
+
 import { FormikItemCreatePayload } from './base';
 import { IItem, ITag } from './item';
 
@@ -5,7 +7,7 @@ export interface IUserCollections {
   id: number;
   name: string;
   description: string;
-  theme: string;
+  theme: Collection;
   image: string | null;
   userId: number;
   checkboxes: string[];

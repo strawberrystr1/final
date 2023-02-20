@@ -3,8 +3,10 @@ import passport from "passport";
 
 import {
   handleCreateCollection,
+  handleDelete,
   handleGetCollections,
-  handleGetOneCollection
+  handleGetOneCollection,
+  handleUpdateCollection
 } from "../controllers/collection.controller";
 import {
   handleCreateItem,
@@ -29,7 +31,11 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   handleCreateItem
 );
-
+router.post(
+  "/:collectionId/update",
+  passport.authenticate("jwt", { session: false }),
+  handleUpdateCollection
+);
 router.get(
   "/:collectionId",
   passport.authenticate("jwt", { session: false }),
@@ -39,6 +45,11 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   handleGetCollections
+);
+router.delete(
+  "/:collectionId",
+  passport.authenticate("jwt", { session: false }),
+  handleDelete
 );
 
 export default router;
