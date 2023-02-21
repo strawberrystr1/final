@@ -1,10 +1,11 @@
 import { TFunction } from 'i18next';
 import { boolean, date, number, string } from 'yup';
 
-import { additionalTypes } from '../constants/base';
+import { ADDITIONAL_FIELDS_AMOUNT, additionalTypes } from '../constants/base';
 import { AdditionalFields } from '../constants/collection';
-import { FormikItemCreate, FormikItemCreatePayload } from '../types/base';
+import { AdditionalFieldsTypes, FormikItemCreate, FormikItemCreatePayload } from '../types/base';
 import { IUserCollections, IUserCollectionsResponse } from '../types/collection';
+import { IItem } from '../types/item';
 
 export const getItemAdditionalField = (data: IUserCollectionsResponse) => {
   const mapped: Record<string, string[]> = {};
@@ -16,6 +17,29 @@ export const getItemAdditionalField = (data: IUserCollectionsResponse) => {
       mapped[item] = additionalArray;
     }
   });
+
+  return mapped;
+};
+
+export const getSingleItemFields = (data: IItem) => {
+  const mapped: Record<string, AdditionalFieldsTypes> = {};
+
+  for (const key in data) {
+    const additionalType = Object.values(AdditionalFields).find(e => {
+      const regExp = new RegExp(`${e}.*`);
+      if (regExp.test(key)) return true;
+      return false;
+    });
+
+    if (additionalType) {
+      for (let i = 0; i < ADDITIONAL_FIELDS_AMOUNT; i++) {
+        const value = data[key as keyof Omit<IItem, 'tags' | 'comments' | 'likes'>];
+        if (value) {
+          mapped[key] = value;
+        }
+      }
+    }
+  }
 
   return mapped;
 };

@@ -10,7 +10,7 @@ import { StringField } from './StringField';
 import { TextField } from './TextField';
 
 export interface IProps {
-  name: string;
+  name: keyof FormikItemCreate;
   formik: FormikProps<FormikItemCreate>;
 }
 

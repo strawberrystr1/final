@@ -18,12 +18,12 @@ export interface IFieldTag {
   text: string;
 }
 
-export type AdditionalFields = string | number | boolean | Date;
-export type FormikItemCreate = Record<string, AdditionalFields>;
+export type AdditionalFieldsTypes = string | number | boolean | Date;
+export type FormikItemCreate = Record<string, AdditionalFieldsTypes>;
 
 export type FormikItemCreatePayload = Record<
   string,
-  { fieldKey: string; fieldValue: AdditionalFields }
+  { fieldKey: string; fieldValue: AdditionalFieldsTypes }
 >;
 
 export interface IToastMessage {

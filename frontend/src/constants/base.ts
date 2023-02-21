@@ -4,3 +4,4 @@ export const COLLECTION_CARD_IMAGE_HEIGHT = 150;
 export const COLLECTION_CARD_WIDTH = 'calc((100% - 20px) / 3)';
 export const COLLECTION_CARD_DESCRIPTION_HEIGHT = 150;
 export const additionalTypes = ['strings', 'numbers', 'dates', 'checkboxes', 'texts'];
+export const ADDITIONAL_FIELDS_AMOUNT = 3;

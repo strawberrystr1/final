@@ -1,5 +1,6 @@
 import ItemsTag from "../models/itemsTag.model";
 import Tag from "../models/tag.model";
+import { mapTags } from "../utils/mappers";
 
 export const createTag = async (tag: string) => {
   const [tagCreated, created] = await Tag.findOrCreate({
@@ -23,16 +24,22 @@ export const createTags = async (tags: string[], itemId: number) => {
   const junctionPromises = createdTags.map(tag => {
     if (tag) {
       const { id } = tag;
-      return updateTagIemJunction(id, itemId);
+      return updateTagItemJunction(id, itemId);
     }
   });
 
   await Promise.all(junctionPromises);
 };
 
-const updateTagIemJunction = async (tagId: number, itemId: number) => {
+const updateTagItemJunction = async (tagId: number, itemId: number) => {
   await ItemsTag.create({
     itemId,
     tagId
   });
+};
+
+export const getAllTags = async () => {
+  const tags = await Tag.findAll();
+
+  return mapTags(tags);
 };

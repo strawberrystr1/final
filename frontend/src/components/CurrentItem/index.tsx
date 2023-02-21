@@ -1,13 +1,33 @@
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import { Divider, Typography } from '@mui/material';
 
-import { useGetOneItemQuery } from '../../redux/api/item';
-import { extractIds } from '../../utils/helpers';
+import { IItem } from '../../types/item';
+import { getSingleItemFields } from '../../utils/mappers';
+
+import { ItemRow, Wrapper } from './styled';
 
 export const CurrentItem = () => {
-  const { pathname } = useLocation();
-  const [collectionId, itemId] = extractIds(pathname);
-  const { data } = useGetOneItemQuery([collectionId, itemId]);
-  console.log('data: ', data);
+  const { state } = useLocation();
+  const { t } = useTranslation();
 
-  return <div>CurrentItem</div>;
+  const additionalFields = useMemo(() => {
+    return getSingleItemFields(state as IItem);
+  }, []);
+
+  return (
+    <Wrapper>
+      <ItemRow>
+        <Typography fontSize={18} fontWeight={600} sx={{ width: 120 }}>
+          {t('item.name')}:
+        </Typography>
+        <Typography sx={{ pl: 1, wordBreak: 'break-word' }}>{state.name}</Typography>
+      </ItemRow>
+      <Divider />
+      {Object.entries(additionalFields).map(([key, value]) => (
+        <ItemRow key={key}>{value.toString()}</ItemRow>
+      ))}
+    </Wrapper>
+  );
 };

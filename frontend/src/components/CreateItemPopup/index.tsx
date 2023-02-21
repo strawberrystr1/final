@@ -13,6 +13,7 @@ import { useFormik } from 'formik';
 
 import { additionalTypes } from '../../constants/base';
 import { useCreateCollectionItemMutation } from '../../redux/api/collection';
+import { useGetAllTagsQuery } from '../../redux/api/tags';
 import { FormikItemCreate, IFieldTag } from '../../types/base';
 import useValidationSchema from '../../utils/itemValidationSchema';
 import {
@@ -34,6 +35,7 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields, collectionId }) 
   const [isOpen, setIsOpen] = useState(false);
   const [tags, setTags] = useState<IFieldTag[]>([]);
   const [createItem, { isSuccess }] = useCreateCollectionItemMutation();
+  const { data: suggestions } = useGetAllTagsQuery();
 
   const initialValues = useMemo(() => {
     return getFormikInitialValuesForAdditionalField(additionalFields, 'itemName');
@@ -98,7 +100,7 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields, collectionId }) 
             </DialogItem>
             <DialogItem>
               <Typography>{t('item.tags')}</Typography>
-              <TagsField tags={tags} setTags={setTags} suggestion={[{ id: 'asd', text: 'asd' }]} />
+              <TagsField tags={tags} setTags={setTags} suggestion={suggestions || []} />
             </DialogItem>
             <DialogItem>
               {additionalTypes.map(key => (

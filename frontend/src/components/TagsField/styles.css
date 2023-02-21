@@ -75,7 +75,9 @@
 .ReactTags__suggestions {
   position: absolute;
   z-index: 200;
+  color: black;
 }
+
 .ReactTags__suggestions ul {
   list-style-type: none;
   box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);

@@ -17,6 +17,7 @@ export const CurrentCollection = () => {
   const { t } = useTranslation();
 
   const { data, isLoading } = useGetOneCollectionQuery(+collectionId);
+  console.log('data: ', data);
 
   const additionalFields = useMemo(() => {
     if (data) {

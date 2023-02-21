@@ -13,7 +13,7 @@ interface IProps {
 export const CollectionItem: FC<IProps> = ({ item, additionalFields, collectionId }) => {
   const fields = Object.values(additionalFields).flat(1);
   return (
-    <StyledLink to={`/collection/${collectionId}/${item.id}`}>
+    <StyledLink to={`/collection/${collectionId}/${item.id}`} state={item}>
       <RowWrapper>
         <RowItem>{item.id}</RowItem>
         <RowItem>{trim(item.name)}</RowItem>

@@ -10,3 +10,4 @@ export const CREATE_COLLECTION_ITEM = (id: string) => `/collection/${id}/item/cr
 export const GET_COLLECTION_ITEMS = (id: string) => `/collection/${id}/item`;
 export const GET_ONE_ITEM = (collectionId: string, itemId: string) =>
   `${GET_COLLECTION_ITEMS(collectionId)}/${itemId}`;
+export const GET_ALL_TAGS = '/tags/';

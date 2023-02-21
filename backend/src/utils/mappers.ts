@@ -1,3 +1,4 @@
+import { Model } from "sequelize";
 import { additionalTypes } from "../constants/additional";
 import {
   ICollectionWithAdditionalField,
@@ -8,6 +9,7 @@ import {
   ICollectionItemModel,
   ICreateCollectionItemPayload
 } from "../types/item";
+import { ITagCreation, ITagModel } from "../types/tag";
 
 export const getAdditionalFieldsData = (data: Record<string, string>) => {
   const mapped: Record<string | number, string[]> = {};
@@ -68,7 +70,7 @@ const mapItems = (
 
   for (const key in item) {
     const typedKey = key as keyof ICollectionItemModel;
-    if (item[typedKey] || typeof item[typedKey] === 'boolean') {
+    if (item[typedKey] || typeof item[typedKey] === "boolean") {
       const pureKey = typedKey.slice(0, -1);
       const type = additionalTypes.find(e => e === pureKey);
       if (type) {
@@ -126,6 +128,16 @@ export const mapResponseFields = (collections: IFullCollectionResponse[]) => {
     return {
       ...collection,
       items: mappedItems
+    };
+  });
+};
+
+export const mapTags = (tags: Model<ITagModel, ITagCreation>[]) => {
+  return tags.map(tag => {
+    const data = tag.toJSON();
+    return {
+      id: data.tag,
+      text: data.tag
     };
   });
 };
