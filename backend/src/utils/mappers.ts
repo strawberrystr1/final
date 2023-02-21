@@ -58,7 +58,7 @@ export const createCollecionItemValues = (
   );
 };
 
-const mapItems = (
+export const mapItems = (
   item: ICollectionItemModel,
   checkboxes: string[],
   dates: string[],

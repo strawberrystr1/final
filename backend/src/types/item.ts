@@ -1,3 +1,8 @@
+import { ICollectionWithAdditionalField } from "./collection";
+import { ICommentModel } from "./comment";
+import { ILikeModel } from "./like";
+import { ITagModel } from "./tag";
+
 export interface ICollectionItemModel {
   id: number;
   name: string;
@@ -22,6 +27,14 @@ export interface ICollectionItemModel {
 export type ICollectionItemCreation = Omit<ICollectionItemModel, "id"> & {
   collectionId: number;
 };
+
+export interface ICollectionItemWithAllFields extends ICollectionItemModel {
+  collection: Omit<ICollectionWithAdditionalField, "tags">;
+  comments: ICommentModel[];
+  likes: ILikeModel[];
+  tags: ITagModel[];
+}
+
 export type AdditionalFields = string | number | boolean | Date;
 export interface ICreateCollectionItemPayload {
   itemName: string;

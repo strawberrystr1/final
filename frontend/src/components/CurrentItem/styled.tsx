@@ -8,4 +8,5 @@ export const Wrapper = styled(Box)`
 export const ItemRow = styled(Box)`
   display: flex;
   align-items: flex-start;
+  padding: 4px 0;
 `;

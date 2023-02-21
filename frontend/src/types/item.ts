@@ -1,3 +1,7 @@
+import { IUserCollections } from './collection';
+import { IComment } from './comment';
+import { ILike } from './like';
+
 export interface IItem {
   string1?: string;
   string2?: string;
@@ -16,6 +20,13 @@ export interface IItem {
   date3?: string;
   name: string;
   id: number;
+  tags: ITag[];
+}
+
+export interface IItemWithAllFields extends IItem {
+  collection: IUserCollections;
+  comments: IComment[];
+  likes: ILike[];
   tags: ITag[];
 }
 

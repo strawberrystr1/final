@@ -62,11 +62,15 @@
   "item": {
     "create": "Add collection item",
     "create_btn": "Add",
+    "updae_btn": "Update",
     "name": "Item name",
     "tags": "Item tags",
     "name_required": "Name is required",
     "name_min": "Name must be 4 or more characters",
-    "empty_table": "This collection does not have any items"
+    "empty_table": "This collection does not have any items",
+    "edit": "Edit item",
+    "delete": "Delete item",
+    "update": "Update item"
   },
   "field_required": "Field is required",
   "confirm": "Confirm",

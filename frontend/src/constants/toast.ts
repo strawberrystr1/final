@@ -30,3 +30,8 @@ export const COLLECTION_DELETE = {
   ru: 'Коллекция была удалена',
   en: 'Collection was deleted',
 };
+
+export const ITEM_DELETE = {
+  ru: 'Айтем был удален',
+  en: 'Item was deleted',
+};

@@ -6,10 +6,11 @@ import {
   handleDelete,
   handleGetCollections,
   handleGetOneCollection,
-  handleUpdateCollection,
+  handleUpdateCollection
 } from "../controllers/collection.controller";
 import {
   handleCreateItem,
+  handleDeleteItem,
   handleGetAllCollectionItems,
   handleGetOneCollectionItem
 } from "../controllers/item.controller";
@@ -31,6 +32,11 @@ router.get(
   "/:collectionId/item/:itemId",
   passport.authenticate("jwt", { session: false }),
   handleGetOneCollectionItem
+);
+router.delete(
+  "/:collectionId/item/:itemId",
+  passport.authenticate("jwt", { session: false }),
+  handleDeleteItem
 );
 router.post(
   "/:collectionId/item/create",

@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -15,9 +15,11 @@ import { additionalTypes } from '../../constants/base';
 import { useCreateCollectionItemMutation } from '../../redux/api/collection';
 import { useGetAllTagsQuery } from '../../redux/api/tags';
 import { FormikItemCreate, IFieldTag } from '../../types/base';
+import { IItemWithAllFields } from '../../types/item';
 import useValidationSchema from '../../utils/itemValidationSchema';
 import {
   getFormikInitialValuesForAdditionalField,
+  mapTags,
   prepareFieldForRequest,
 } from '../../utils/mappers';
 import { DialogItem } from '../CreateCollectionPopup/styled';
@@ -28,17 +30,27 @@ import { TagsField } from '../TagsField';
 interface IProps {
   additionalFields: Record<string, string[]>;
   collectionId: string;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  currentItem?: IItemWithAllFields;
 }
 
-export const CreateItemPopup: FC<IProps> = ({ additionalFields, collectionId }) => {
+export const CreateItemPopup: FC<IProps> = ({
+  additionalFields,
+  collectionId,
+  isOpen,
+  setIsOpen,
+  currentItem,
+}) => {
   const { t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
-  const [tags, setTags] = useState<IFieldTag[]>([]);
+  const [tags, setTags] = useState<IFieldTag[]>(() =>
+    currentItem ? mapTags(currentItem.tags) : []
+  );
   const [createItem, { isSuccess }] = useCreateCollectionItemMutation();
   const { data: suggestions } = useGetAllTagsQuery();
 
   const initialValues = useMemo(() => {
-    return getFormikInitialValuesForAdditionalField(additionalFields, 'itemName');
+    return getFormikInitialValuesForAdditionalField(additionalFields, ['itemName'], currentItem);
   }, []);
 
   const validationSchema = useValidationSchema(initialValues);
@@ -71,17 +83,14 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields, collectionId }) 
     formik.resetForm();
   };
 
-  const handleButtonClick = () => setIsOpen(prev => !prev);
-
   return (
     <Box>
-      <Button onClick={handleButtonClick} variant="contained">
-        <Typography sx={{ textTransform: 'none' }}>{t('item.create')}</Typography>
-      </Button>
       <Dialog onClose={handleDialogClose} open={isOpen} maxWidth="lg" fullWidth={true}>
         <form onSubmit={formik.handleSubmit}>
           <CustomDialogTitle onClose={handleDialogClose}>
-            <Typography fontSize={24}>{t('item.create')}</Typography>
+            <Typography fontSize={24}>
+              {currentItem ? t('item.update') : t('item.create')}
+            </Typography>
           </CustomDialogTitle>
           <DialogContent dividers={true}>
             <DialogItem>
@@ -89,7 +98,7 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields, collectionId }) 
                 {t('item.name')}
               </Typography>
               <TextField
-                value={formik.values.name}
+                value={formik.values.itemName}
                 name="itemName"
                 id="itemName"
                 onChange={formik.handleChange}
@@ -115,7 +124,7 @@ export const CreateItemPopup: FC<IProps> = ({ additionalFields, collectionId }) 
           </DialogContent>
           <DialogActions>
             <Button variant="contained" type="submit">
-              {t('item.create_btn')}
+              {currentItem ? t('item.update_btn') : t('item.create_btn')}
             </Button>
           </DialogActions>
         </form>

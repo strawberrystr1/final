@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { Divider, Typography } from '@mui/material';
+import { Button, Divider, Typography } from '@mui/material';
 
 import { useGetOneCollectionQuery } from '../../redux/api/collection';
 import { getItemAdditionalField } from '../../utils/mappers';
@@ -14,10 +14,10 @@ import { FlexWrapper, RowItem, RowWrapper, TableWrapper } from './styled';
 export const CurrentCollection = () => {
   const { pathname } = useLocation();
   const collectionId = pathname.replace(/\D/g, '');
+  const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
   const { data, isLoading } = useGetOneCollectionQuery(+collectionId);
-  console.log('data: ', data);
 
   const additionalFields = useMemo(() => {
     if (data) {
@@ -28,11 +28,21 @@ export const CurrentCollection = () => {
 
   const fields = Object.values(additionalFields).flat(1);
 
+  const handleButtonClick = () => setIsOpen(prev => !prev);
+
   return isLoading ? (
     <Loader />
   ) : (
     <FlexWrapper>
-      <CreateItemPopup additionalFields={additionalFields} collectionId={collectionId} />
+      <Button onClick={handleButtonClick} variant="contained" sx={{ width: 'max-content' }}>
+        <Typography sx={{ textTransform: 'none' }}>{t('item.create')}</Typography>
+      </Button>
+      <CreateItemPopup
+        additionalFields={additionalFields}
+        collectionId={collectionId}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
       <Divider sx={{ mt: 1, mb: 1 }} />
       <TableWrapper>
         <RowWrapper>

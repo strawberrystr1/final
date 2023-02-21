@@ -1,9 +1,21 @@
+import CheckboxField from "../models/checkbox.model";
+import Collection from "../models/collection.model";
 import Comment from "../models/comment.model";
+import DateField from "../models/date.model";
 import CollectionItem from "../models/item.model";
 import Like from "../models/like.model";
+import NumberField from "../models/number.model";
+import StringField from "../models/string.model";
 import Tag from "../models/tag.model";
-import { ICreateCollectionItemPayload } from "../types/item";
-import { createCollecionItemValues } from "../utils/mappers";
+import TextField from "../models/text.model";
+import {
+  ICollectionItemWithAllFields,
+  ICreateCollectionItemPayload
+} from "../types/item";
+import {
+  createCollecionItemValues,
+  mapAdditionalField
+} from "../utils/mappers";
 import { createTags } from "./tag.service";
 
 export const createItem = async (
@@ -38,7 +50,40 @@ export const getCollectionItems = async (collectionId: number) => {
 };
 
 export const getOneItem = async (id: string) => {
-  return await CollectionItem.findByPk(+id, {
-    include: [Tag, Like, Comment]
-  });
+  const item = (
+    await CollectionItem.findByPk(+id, {
+      include: [
+        Tag,
+        Like,
+        Comment,
+        {
+          model: Collection,
+          include: [
+            StringField,
+            NumberField,
+            TextField,
+            DateField,
+            CheckboxField
+          ]
+        }
+      ]
+    })
+  )?.toJSON() as ICollectionItemWithAllFields | undefined;
+
+  if (item) {
+    const { collection } = item;
+
+    return {
+      ...item,
+      collection: {
+        ...collection,
+        ...mapAdditionalField(collection)
+      }
+    };
+  }
+  return {};
+};
+
+export const deleteItem = async (id: number) => {
+  await CollectionItem.destroy({ where: { id } });
 };

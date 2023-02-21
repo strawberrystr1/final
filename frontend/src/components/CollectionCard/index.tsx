@@ -22,17 +22,13 @@ import {
   COLLECTION_CARD_WIDTH,
 } from '../../constants/base';
 import { useDeleteCollectionMutation } from '../../redux/api/collection';
+import { ModalTypes } from '../../types/base';
 import { IUserCollectionsResponse } from '../../types/collection';
 import { ConfirmationModal } from '../ConfirmationModal';
 import { CreateCollectionPopup } from '../CreateCollectionPopup';
 
 interface IProps {
   collection: IUserCollectionsResponse;
-}
-
-enum ModalTypes {
-  CONFIRM,
-  CREATE,
 }
 
 export const CollectionCard: FC<IProps> = ({ collection }) => {

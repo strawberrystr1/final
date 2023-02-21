@@ -5,10 +5,16 @@ import { IUserCollectionsResponse } from '../types/collection';
 type PossibleKeys = OmitNever<{
   [P in keyof IUserCollectionsResponse]: IUserCollectionsResponse[P] extends string[] ? P : never;
 }>;
-type Keys = keyof PossibleKeys;
+export type AdditionalFieldPluralKeys = keyof PossibleKeys;
 
-export const getFieldName = (field: AdditionalFields): Keys => {
+export const getFieldName = (field: AdditionalFields): AdditionalFieldPluralKeys => {
   return field === 'checkbox' ? `${field}es` : `${field}s`;
+};
+
+export const revertFieldName = (field: AdditionalFieldPluralKeys) => {
+  return field === 'checkboxes'
+    ? (field.slice(0, -2) as AdditionalFields)
+    : (field.slice(0, -1) as AdditionalFields);
 };
 
 export const extractIds = (path: string) => {
@@ -17,4 +23,9 @@ export const extractIds = (path: string) => {
     .map(e => +e)
     .filter(e => e)
     .map(e => `${e}`);
+};
+
+export const formatDateForInput = (date: string) => {
+  const dateObj = new Date(date);
+  return dateObj.toLocaleDateString().split('.').reverse().join('-');
 };

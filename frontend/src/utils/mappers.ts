@@ -5,9 +5,11 @@ import { ADDITIONAL_FIELDS_AMOUNT, additionalTypes } from '../constants/base';
 import { AdditionalFields } from '../constants/collection';
 import { AdditionalFieldsTypes, FormikItemCreate, FormikItemCreatePayload } from '../types/base';
 import { IUserCollections, IUserCollectionsResponse } from '../types/collection';
-import { IItem } from '../types/item';
+import { IItem, IItemWithAllFields, ITag } from '../types/item';
 
-export const getItemAdditionalField = (data: IUserCollectionsResponse) => {
+import { formatDateForInput } from './helpers';
+
+export const getItemAdditionalField = (data: IUserCollectionsResponse | IUserCollections) => {
   const mapped: Record<string, string[]> = {};
 
   additionalTypes.forEach(item => {
@@ -46,7 +48,8 @@ export const getSingleItemFields = (data: IItem) => {
 
 export const getFormikInitialValuesForAdditionalField = (
   data: Record<string, string[]>,
-  ...rest: string[]
+  predefinedFields: string[],
+  currentItem?: IItemWithAllFields
 ) => {
   const fields = Object.entries(data);
 
@@ -56,28 +59,31 @@ export const getFormikInitialValuesForAdditionalField = (
 
     switch (nextKey) {
       case AdditionalFields.STRING:
-        value.forEach(el => {
-          acc[el] = '';
+        value.forEach((el, i) => {
+          acc[el] = currentItem?.[`string${i + 1}` as keyof Omit<IItem, 'tags'>] || '';
         });
         break;
       case AdditionalFields.NUMBER:
-        value.forEach(el => {
-          acc[el] = 0;
+        value.forEach((el, i) => {
+          acc[el] = currentItem?.[`number${i + 1}` as keyof Omit<IItem, 'tags'>] || 0;
         });
         break;
       case AdditionalFields.TEXT:
-        value.forEach(el => {
-          acc[el] = '';
+        value.forEach((el, i) => {
+          acc[el] = currentItem?.[`text${i + 1}` as keyof Omit<IItem, 'tags'>] || '';
         });
         break;
       case AdditionalFields.DATE:
-        value.forEach(el => {
-          acc[el] = '';
+        value.forEach((el, i) => {
+          acc[el] =
+            formatDateForInput(
+              currentItem?.[`date${i + 1}` as keyof Omit<IItem, 'tags'>] as string
+            ) || '';
         });
         break;
       default:
-        value.forEach(el => {
-          acc[el] = false;
+        value.forEach((el, i) => {
+          acc[el] = currentItem?.[`checkbox${i + 1}` as keyof Omit<IItem, 'tags'>] || false;
         });
         break;
     }
@@ -85,8 +91,12 @@ export const getFormikInitialValuesForAdditionalField = (
     return acc;
   }, {});
 
-  rest.forEach(key => {
-    mapped[key] = '';
+  predefinedFields.forEach(key => {
+    if (key === 'itemName') {
+      mapped[key] = currentItem?.name || '';
+    } else {
+      mapped[key] = '';
+    }
   });
 
   return mapped;
@@ -138,4 +148,8 @@ export const prepareFieldForRequest = (
   });
 
   return mapped;
+};
+
+export const mapTags = (tags: ITag[]) => {
+  return tags.map(tag => ({ id: tag.tag, text: tag.tag }));
 };

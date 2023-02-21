@@ -9,3 +9,5 @@ export const NO_COLLECTION_FOUND = "Collection with such ID was not found";
 export const COLLECTION_DELETED = "Collection was deleted";
 export const NO_UPDATE_DATA = "Update data was not provided";
 export const COLLECTION_UPDATED = "Collection was updated";
+export const ITEM_DELETED = "Item was seleted";
+export const ITEM_UPDATED = "Item was updated";

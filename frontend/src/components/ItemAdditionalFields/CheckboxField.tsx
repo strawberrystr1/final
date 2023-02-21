@@ -16,6 +16,7 @@ export const CheckboxField: FC<IProps> = ({ name, formik }) => {
         onChange={formik.handleChange}
         value={formik.values[name]}
         size="small"
+        checked={formik.values[name] as boolean}
       />
     </Box>
   );
