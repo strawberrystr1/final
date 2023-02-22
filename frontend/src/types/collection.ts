@@ -27,3 +27,11 @@ export interface ICreateItemPayload {
   itemName: string;
   [key: string]: string | FormikItemCreatePayload | string[];
 }
+
+export interface IUpdateItemPayload {
+  collectionId: string;
+  itemId: string;
+  tags: string[];
+  itemName: string;
+  [key: string]: string | FormikItemCreatePayload | string[];
+}

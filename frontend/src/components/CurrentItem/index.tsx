@@ -14,6 +14,7 @@ import { getItemAdditionalField } from '../../utils/mappers';
 import { ConfirmationModal } from '../ConfirmationModal';
 import { CreateItemPopup } from '../CreateItemPopup';
 import { itemsAdditionalFieldViews } from '../ItemAdditionalViews';
+import { LikesSection } from '../LikesSection';
 
 import { ItemRow, Wrapper } from './styled';
 
@@ -100,6 +101,7 @@ export const CurrentItem = () => {
               );
             })
           )}
+          <LikesSection collectionId={collectionId} itemId={itemId} />
         </>
       )}
       <ConfirmationModal

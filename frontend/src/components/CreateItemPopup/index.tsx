@@ -13,6 +13,7 @@ import { useFormik } from 'formik';
 
 import { additionalTypes } from '../../constants/base';
 import { useCreateCollectionItemMutation } from '../../redux/api/collection';
+import { useUpdateItemMutation } from '../../redux/api/item';
 import { useGetAllTagsQuery } from '../../redux/api/tags';
 import { FormikItemCreate, IFieldTag } from '../../types/base';
 import { IItemWithAllFields } from '../../types/item';
@@ -47,6 +48,7 @@ export const CreateItemPopup: FC<IProps> = ({
     currentItem ? mapTags(currentItem.tags) : []
   );
   const [createItem, { isSuccess }] = useCreateCollectionItemMutation();
+  const [updateItem, { isSuccess: isUpdateSuccess }] = useUpdateItemMutation();
   const { data: suggestions } = useGetAllTagsQuery();
 
   const initialValues = useMemo(() => {
@@ -57,12 +59,22 @@ export const CreateItemPopup: FC<IProps> = ({
 
   const handleSubmitForm = (values: FormikItemCreate) => {
     const payloadValues = prepareFieldForRequest(values, additionalFields);
-    createItem({
-      ...payloadValues,
-      itemName: values.itemName as string,
-      tags: tags.map(e => e.text),
-      id: collectionId,
-    });
+    if (currentItem) {
+      updateItem({
+        ...payloadValues,
+        itemName: values.itemName as string,
+        tags: tags.map(e => e.text),
+        collectionId: collectionId,
+        itemId: `${currentItem.id}`,
+      });
+    } else {
+      createItem({
+        ...payloadValues,
+        itemName: values.itemName as string,
+        tags: tags.map(e => e.text),
+        id: collectionId,
+      });
+    }
   };
 
   const formik = useFormik({
@@ -72,11 +84,11 @@ export const CreateItemPopup: FC<IProps> = ({
   });
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || isUpdateSuccess) {
       setIsOpen(false);
       formik.resetForm();
     }
-  }, [isSuccess]);
+  }, [isSuccess, isUpdateSuccess]);
 
   const handleDialogClose = () => {
     setIsOpen(false);

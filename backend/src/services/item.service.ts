@@ -54,7 +54,6 @@ export const getOneItem = async (id: string) => {
     await CollectionItem.findByPk(+id, {
       include: [
         Tag,
-        Like,
         Comment,
         {
           model: Collection,
@@ -86,4 +85,20 @@ export const getOneItem = async (id: string) => {
 
 export const deleteItem = async (id: number) => {
   await CollectionItem.destroy({ where: { id } });
+};
+
+export const updateCollectionItem = async (
+  id: string,
+  data: ICreateCollectionItemPayload
+) => {
+  const { tags, itemName, ...rest } = data;
+
+  const updateValues = createCollecionItemValues(rest);
+
+  await CollectionItem.update(
+    { ...updateValues, name: itemName },
+    { where: { id } }
+  );
+
+  createTags(tags, +id);
 };

@@ -32,9 +32,12 @@ export const createTags = async (tags: string[], itemId: number) => {
 };
 
 const updateTagItemJunction = async (tagId: number, itemId: number) => {
-  await ItemsTag.create({
-    itemId,
-    tagId
+  await ItemsTag.findOrCreate({
+    where: {
+      itemId,
+      tagId
+    },
+    defaults: { itemId, tagId }
   });
 };
 

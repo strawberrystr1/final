@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import {
   ITEM_DELETED,
+  ITEM_UPDATED,
   SOMETHING_WRONG,
   WRONG_URL_PARAMS
 } from "../constants/httpMessages";
@@ -9,8 +10,10 @@ import {
   createItem,
   deleteItem,
   getCollectionItems,
-  getOneItem
+  getOneItem,
+  updateCollectionItem
 } from "../services/item.service";
+import { getItemLikes } from "../services/like.service";
 import { HTTPCodes } from "../types/httpCodes";
 import { ICreateCollectionItemPayload } from "../types/item";
 
@@ -78,6 +81,45 @@ export const handleDeleteItem = async (
     await deleteItem(+itemId);
 
     res.json({ msg: ITEM_DELETED });
+  } catch (e) {
+    res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
+  }
+};
+
+export const handleUpdateItem = async (
+  req: Request<{ itemId: string }, {}, ICreateCollectionItemPayload>,
+  res: Response
+) => {
+  try {
+    const { itemId } = req.params;
+
+    if (!itemId) {
+      res.status(HTTPCodes.BAD_REQUEST).json({ msg: WRONG_URL_PARAMS });
+      return;
+    }
+
+    const data = req.body;
+    await updateCollectionItem(itemId, data);
+
+    res.json({ msg: ITEM_UPDATED });
+  } catch (e) {
+    res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
+  }
+};
+
+export const handleGetItemLikes = async (
+  req: Request<{ itemId: string }>,
+  res: Response
+) => {
+  try {
+    const { itemId } = req.params;
+    if (!itemId) {
+      res.status(HTTPCodes.BAD_REQUEST).json({ msg: WRONG_URL_PARAMS });
+      return;
+    }
+
+    const likes = getItemLikes(itemId);
+    res.json(likes);
   } catch (e) {
     res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
   }

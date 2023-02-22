@@ -1,5 +1,6 @@
-import { DELETE_ITEM, GET_COLLECTION_ITEMS, GET_ONE_ITEM } from '../../constants/api';
-import { ITEM_DELETE } from '../../constants/toast';
+import { DELETE_ITEM, GET_COLLECTION_ITEMS, GET_ONE_ITEM, UPDATE_ITEM } from '../../constants/api';
+import { ITEM_DELETE, ITEM_UPDATE } from '../../constants/toast';
+import { IUpdateItemPayload } from '../../types/collection';
 import { IItem, IItemWithAllFields } from '../../types/item';
 import { collectionQuery } from '../helpers/collectionQuery';
 
@@ -29,7 +30,21 @@ const itemsApi = baseApi.injectEndpoints({
       invalidatesTags: ['Item', 'Collection'],
       onQueryStarted: collectionQuery<[string, string], void>(ITEM_DELETE),
     }),
+    updateItem: builder.mutation<void, IUpdateItemPayload>({
+      query: ({ collectionId, itemId, ...body }) => ({
+        url: UPDATE_ITEM(collectionId as string, itemId as string),
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Item', 'Collection'],
+      onQueryStarted: collectionQuery<IUpdateItemPayload, void>(ITEM_UPDATE),
+    }),
   }),
 });
 
-export const { useGetCollectionItemsQuery, useGetOneItemQuery, useDeleteItemMutation } = itemsApi;
+export const {
+  useGetCollectionItemsQuery,
+  useGetOneItemQuery,
+  useDeleteItemMutation,
+  useUpdateItemMutation,
+} = itemsApi;

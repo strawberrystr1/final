@@ -35,3 +35,8 @@ export const ITEM_DELETE = {
   ru: 'Айтем был удален',
   en: 'Item was deleted',
 };
+
+export const ITEM_UPDATE = {
+  ru: 'Айтем обновлен',
+  en: 'Item updated',
+};

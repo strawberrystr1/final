@@ -52,14 +52,16 @@ export const TextField: FC<IProps> = ({ name, formik }) => {
         <Box
           onClick={handleInputFocus}
           sx={{
-            height: 40,
+            maxHeight: 40,
             borderRadius: '5px',
             border: `1px solid ${
               theme === 'dark' ? 'rgba(255, 255, 255, 0.23)' : 'rgba(0, 0,0, 0.23)'
             }`,
             mb: '7px',
             padding: '8px',
-            width: 250,
+            width: 350,
+            wordBreak: 'break-word',
+            overflow: 'auto',
           }}
         >
           <ReactMarkdown>{formik.values[name] as string}</ReactMarkdown>

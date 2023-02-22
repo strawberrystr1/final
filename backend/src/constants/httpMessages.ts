@@ -11,3 +11,4 @@ export const NO_UPDATE_DATA = "Update data was not provided";
 export const COLLECTION_UPDATED = "Collection was updated";
 export const ITEM_DELETED = "Item was seleted";
 export const ITEM_UPDATED = "Item was updated";
+export const LIKE_UPDATED = "Like was updated";

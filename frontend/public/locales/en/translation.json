@@ -62,7 +62,7 @@
   "item": {
     "create": "Add collection item",
     "create_btn": "Add",
-    "updae_btn": "Update",
+    "update_btn": "Update",
     "name": "Item name",
     "tags": "Item tags",
     "name_required": "Name is required",
