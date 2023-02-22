@@ -6,7 +6,8 @@ import {
   handleGetAllCollectionItems,
   handleGetOneCollectionItem,
   handleUpdateItem,
-  handleGetItemLikes
+  handleGetItemLikes,
+  handleSSE
 } from "../controllers/item.controller";
 import { handleUpdateLike } from "../controllers/like.controller";
 
@@ -16,6 +17,11 @@ router.get(
   "/:collectionId/item",
   passport.authenticate("jwt", { session: false }),
   handleGetAllCollectionItems
+);
+router.post(
+  "/:collectionId/item/create",
+  passport.authenticate("jwt", { session: false }),
+  handleCreateItem
 );
 router.get(
   "/:collectionId/item/:itemId/likes",
@@ -27,6 +33,7 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   handleUpdateLike
 );
+router.get("/:collectionId/item/:itemId/stream", handleSSE);
 router.get(
   "/:collectionId/item/:itemId",
   passport.authenticate("jwt", { session: false }),
@@ -41,11 +48,6 @@ router.post(
   "/:collectionId/item/:itemId",
   passport.authenticate("jwt", { session: false }),
   handleUpdateItem
-);
-router.post(
-  "/:collectionId/item/create",
-  passport.authenticate("jwt", { session: false }),
-  handleCreateItem
 );
 
 export default router;

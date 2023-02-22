@@ -9,13 +9,21 @@ const likesApi = baseApi.injectEndpoints({
       query: arg => ({
         url: GET_LIKES(...arg),
       }),
+      providesTags: result =>
+        result
+          ? [{ type: 'Likes' as const, id: 'LIKES' }, 'Likes']
+          : [{ type: 'Likes', id: 'LIKES' }],
     }),
-    updateLike: builder.mutation<void, IUpdateLikePayload>({
+    updateLike: builder.mutation<ILike, IUpdateLikePayload>({
       query: ({ collectionId, itemId, ...body }) => ({
         url: UPDATE_LIKES(collectionId, itemId),
         method: 'POST',
-        body,
+        body: {
+          ...body,
+          itemId,
+        },
       }),
+      invalidatesTags: [{ type: 'Likes', id: 'LIKES' }],
     }),
   }),
 });

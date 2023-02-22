@@ -9,6 +9,7 @@ import {
   ICollectionItemModel,
   ICreateCollectionItemPayload
 } from "../types/item";
+import { ILikeWithUsers } from "../types/like";
 import { ITagCreation, ITagModel } from "../types/tag";
 
 export const getAdditionalFieldsData = (data: Record<string, string>) => {
@@ -140,4 +141,12 @@ export const mapTags = (tags: Model<ITagModel, ITagCreation>[]) => {
       text: data.tag
     };
   });
+};
+
+export const mapLike = (like: ILikeWithUsers) => {
+  if (!like) return like;
+  return {
+    ...like,
+    users: like.users.map(e => e.id)
+  };
 };

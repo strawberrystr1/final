@@ -14,8 +14,10 @@ import {
   updateCollectionItem
 } from "../services/item.service";
 import { getItemLikes } from "../services/like.service";
+import { ICommentModel } from "../types/comment";
 import { HTTPCodes } from "../types/httpCodes";
 import { ICreateCollectionItemPayload } from "../types/item";
+import { ILikeWithUsers } from "../types/like";
 
 export const handleCreateItem = async (
   req: Request<{ collectionId: number }, {}, ICreateCollectionItemPayload>,
@@ -118,9 +120,38 @@ export const handleGetItemLikes = async (
       return;
     }
 
-    const likes = getItemLikes(itemId);
+    const likes = await getItemLikes(itemId);
     res.json(likes);
   } catch (e) {
     res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
   }
+};
+
+let clients: { id: number; res: Response }[] = [];
+
+export const sendItemUpdatesToAll = <T>(data: T) => {
+  clients.forEach(client =>
+    client.res.write(`data: ${JSON.stringify(data)}\n\n`, "utf-8")
+  );
+};
+
+export const handleSSE = async (req: Request, res: Response) => {
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    Connection: "keep-alive",
+    "Access-Control-Allow-Origin": "*"
+  });
+  res.write("retry: 10000\n", "utf-8");
+  res.flushHeaders();
+
+  const clientId = Date.now();
+
+  clients.push({
+    id: clientId,
+    res
+  });
+
+  req.on("close", () => {
+    clients = clients.filter(client => client.id !== clientId);
+  });
 };

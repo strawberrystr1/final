@@ -8,7 +8,7 @@ import {
   handleGetOneCollection,
   handleUpdateCollection
 } from "../controllers/collection.controller";
-import itemsRouter from "./item";
+import itemsRouter from "./item.router";
 
 const router = Router();
 

@@ -16,3 +16,5 @@ export const UPDATE_ITEM = GET_ONE_ITEM;
 export const GET_LIKES = (collectionId: string, itemId: string) =>
   `${GET_ONE_ITEM(collectionId, itemId)}/likes`;
 export const UPDATE_LIKES = GET_LIKES;
+export const SSE_STREAM = (collectionId: string, itemId: string) =>
+  `${GET_ONE_ITEM(collectionId, itemId)}/stream`;
