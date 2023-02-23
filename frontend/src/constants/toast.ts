@@ -40,3 +40,8 @@ export const ITEM_UPDATE = {
   ru: 'Айтем обновлен',
   en: 'Item updated',
 };
+
+export const COMMENT_CREATED = {
+  ru: 'Комментарий создан',
+  en: 'Comment created',
+};

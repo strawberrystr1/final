@@ -10,6 +10,7 @@ import {
   handleSSE
 } from "../controllers/item.controller";
 import { handleUpdateLike } from "../controllers/like.controller";
+import commentRouter from "./comment.router";
 
 const router = Router();
 
@@ -18,6 +19,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   handleGetAllCollectionItems
 );
+router.use("/:collectionId/item", commentRouter);
 router.post(
   "/:collectionId/item/create",
   passport.authenticate("jwt", { session: false }),
@@ -34,11 +36,7 @@ router.post(
   handleUpdateLike
 );
 router.get("/:collectionId/item/:itemId/stream", handleSSE);
-router.get(
-  "/:collectionId/item/:itemId",
-  passport.authenticate("jwt", { session: false }),
-  handleGetOneCollectionItem
-);
+router.get("/:collectionId/item/:itemId", handleGetOneCollectionItem);
 router.delete(
   "/:collectionId/item/:itemId",
   passport.authenticate("jwt", { session: false }),

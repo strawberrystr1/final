@@ -1,27 +1,32 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useCallback, useEffect } from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Box, IconButton, Typography } from '@mui/material';
 
-import { API_URL, SSE_STREAM } from '../../constants/api';
 import { useGetItemLikesQuery, useUpdateLikeMutation } from '../../redux/api/likes';
 import { useAppSelector } from '../../redux/hooks';
-import { IComment } from '../../types/comment';
-import { ILike } from '../../types/like';
 
 import { Wrapper } from './styled';
 
 interface IProps {
   collectionId: string;
   itemId: string;
+  likesCount: number;
+  currentLikeId: number;
+  setLikesCount: Dispatch<SetStateAction<number>>;
+  setCurrentLikeId: Dispatch<SetStateAction<number>>;
 }
 
-export const LikesSection: FC<IProps> = ({ collectionId, itemId }) => {
+export const LikesSection: FC<IProps> = ({
+  collectionId,
+  itemId,
+  likesCount,
+  setLikesCount,
+  currentLikeId,
+  setCurrentLikeId,
+}) => {
   const { id } = useAppSelector(state => state.user);
   const { data } = useGetItemLikesQuery([collectionId, itemId]);
-  const [likesCount, setLikesCount] = useState(0);
-  const [currentLikeId, setCurrentLikeId] = useState(-1);
-  console.log('data: ', data);
   const [updateLike] = useUpdateLikeMutation();
 
   useEffect(() => {
@@ -34,22 +39,6 @@ export const LikesSection: FC<IProps> = ({ collectionId, itemId }) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    const sse = new EventSource(`${API_URL}${SSE_STREAM(collectionId, itemId)}`);
-
-    sse.onmessage = e => {
-      const parsed: ILike | IComment = JSON.parse(e.data);
-      if ('count' in parsed) {
-        setLikesCount(parsed.count);
-        setCurrentLikeId(parsed.id);
-      }
-    };
-
-    return () => {
-      sse.close();
-    };
-  }, []);
-
   const handleClick = useCallback(() => {
     if (!data || !data?.users.includes(id) || currentLikeId < 0) {
       updateLike({
@@ -57,7 +46,7 @@ export const LikesSection: FC<IProps> = ({ collectionId, itemId }) => {
         itemId,
         userId: id,
         type: 'add',
-        currentCount: data?.count || 1,
+        currentCount: likesCount || 1,
         id: currentLikeId < 0 ? undefined : currentLikeId,
       });
     } else {
@@ -66,11 +55,11 @@ export const LikesSection: FC<IProps> = ({ collectionId, itemId }) => {
         itemId,
         userId: id,
         type: 'remove',
-        currentCount: data?.count || 1,
+        currentCount: likesCount || 1,
         id: currentLikeId,
       });
     }
-  }, [data, currentLikeId]);
+  }, [data, currentLikeId, likesCount]);
 
   return (
     <Wrapper>

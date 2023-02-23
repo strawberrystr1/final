@@ -54,7 +54,8 @@
   "placeholder": {
     "field_name": "Field name",
     "tags": "Enter tag",
-    "item_name": "Item name"
+    "item_name": "Item name",
+    "comment": "Enter comment"
   },
   "tooltip": {
     "avatar": "Profile"
@@ -74,5 +75,7 @@
   },
   "field_required": "Field is required",
   "confirm": "Confirm",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "send": "Send",
+  "no_comments": "This item does not have any comments"
 }

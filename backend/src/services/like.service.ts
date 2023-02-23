@@ -15,14 +15,6 @@ export const getItemLikes = async (id: string) => {
 
 export const updateLike = async (data: IUpdateLikePayload) => {
   const { id, userId, type, itemId, currentCount } = data;
-  console.log(
-    "id, userId, type, itemId, currentCount: ",
-    id,
-    userId,
-    type,
-    itemId,
-    currentCount
-  );
 
   if (!id && type === "add") {
     const like = await Like.create(
@@ -44,7 +36,6 @@ export const updateLike = async (data: IUpdateLikePayload) => {
     return like[0];
   } else {
     if (currentCount - 1 === 0) {
-      console.log("delte");
       await Like.destroy({ where: { id } });
       await updateUserLikeJunction(userId, id as number, true);
       sendItemUpdatesToAll({ count: 0 });

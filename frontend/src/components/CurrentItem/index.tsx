@@ -5,12 +5,17 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Divider, IconButton, Tooltip, Typography } from '@mui/material';
 
+import { API_URL, SSE_STREAM } from '../../constants/api';
 import { additionalTypes } from '../../constants/base';
+import { useGetItemCommentsQuery } from '../../redux/api/comment';
 import { useDeleteItemMutation, useGetOneItemQuery } from '../../redux/api/item';
 import { ModalTypes } from '../../types/base';
+import { IComment } from '../../types/comment';
 import { IItem } from '../../types/item';
+import { ILike } from '../../types/like';
 import { AdditionalFieldPluralKeys, extractIds, revertFieldName } from '../../utils/helpers';
 import { getItemAdditionalField } from '../../utils/mappers';
+import { CommentsSection } from '../CommentsSection';
 import { ConfirmationModal } from '../ConfirmationModal';
 import { CreateItemPopup } from '../CreateItemPopup';
 import { itemsAdditionalFieldViews } from '../ItemAdditionalViews';
@@ -25,6 +30,19 @@ export const CurrentItem = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [openType, setOpenType] = useState<ModalTypes>();
   const [title, setTitle] = useState('');
+
+  const [likesCount, setLikesCount] = useState(0);
+  const [currentLikeId, setCurrentLikeId] = useState(-1);
+
+  const [commentsData, setCommentsData] = useState<IComment[]>([]);
+  const { data: comments } = useGetItemCommentsQuery([collectionId, itemId]);
+
+  useEffect(() => {
+    if (comments) {
+      setCommentsData(comments);
+    }
+  }, [comments]);
+
   const navigate = useNavigate();
 
   const { data, isLoading } = useGetOneItemQuery([collectionId, itemId]);
@@ -43,6 +61,24 @@ export const CurrentItem = () => {
       navigate(-1);
     }
   }, [isSuccess, isUninitialized]);
+
+  useEffect(() => {
+    const sse = new EventSource(`${API_URL}${SSE_STREAM(collectionId, itemId)}`);
+
+    sse.onmessage = e => {
+      const parsed: ILike | IComment = JSON.parse(e.data);
+      if ('count' in parsed) {
+        setLikesCount(parsed.count);
+        setCurrentLikeId(parsed.id);
+      } else {
+        setCommentsData(prev => [...prev, parsed]);
+      }
+    };
+
+    return () => {
+      sse.close();
+    };
+  }, []);
 
   const closeHandler = () => setIsOpen(false);
   const handleConfirm = () => {
@@ -101,7 +137,19 @@ export const CurrentItem = () => {
               );
             })
           )}
-          <LikesSection collectionId={collectionId} itemId={itemId} />
+          <LikesSection
+            collectionId={collectionId}
+            itemId={itemId}
+            likesCount={likesCount}
+            currentLikeId={currentLikeId}
+            setLikesCount={setLikesCount}
+            setCurrentLikeId={setCurrentLikeId}
+          />
+          <CommentsSection
+            collectionId={collectionId}
+            itemId={itemId}
+            commentsData={commentsData}
+          />
         </>
       )}
       <ConfirmationModal

@@ -25,7 +25,6 @@ router.post(
 );
 router.get(
   "/:collectionId",
-  passport.authenticate("jwt", { session: false }),
   handleGetOneCollection
 );
 router.delete(
@@ -35,7 +34,6 @@ router.delete(
 );
 router.get(
   "/",
-  passport.authenticate("jwt", { session: false }),
   handleGetCollections
 );
 

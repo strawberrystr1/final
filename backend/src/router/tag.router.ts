@@ -7,7 +7,6 @@ const router = Router();
 
 router.get(
   "/",
-  passport.authenticate("jwt", { session: false }),
   handleGetAllTags
 );
 
