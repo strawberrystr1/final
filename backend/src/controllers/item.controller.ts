@@ -14,10 +14,8 @@ import {
   updateCollectionItem
 } from "../services/item.service";
 import { getItemLikes } from "../services/like.service";
-import { ICommentModel } from "../types/comment";
 import { HTTPCodes } from "../types/httpCodes";
 import { ICreateCollectionItemPayload } from "../types/item";
-import { ILikeWithUsers } from "../types/like";
 
 export const handleCreateItem = async (
   req: Request<{ collectionId: number }, {}, ICreateCollectionItemPayload>,

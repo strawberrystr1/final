@@ -38,13 +38,15 @@ export const handleCreateCollection = async (
 
 export const handleGetCollections = async (req: Request, res: Response) => {
   try {
-    const { id } = req.user as IAuthUser;
+    if (req.user) {
+      const { id } = req.user as IAuthUser;
 
-    if (id) {
-      const collections = await getCollections(id);
+      if (id) {
+        const collections = await getCollections(id);
 
-      res.json(collections);
-      return;
+        res.json(collections);
+        return;
+      }
     }
 
     const collections = await getCollections();
@@ -60,10 +62,9 @@ export const handleGetCollections = async (req: Request, res: Response) => {
 export const handleGetOneCollection = async (req: Request, res: Response) => {
   try {
     const { collectionId } = req.params;
-    const { id } = req.user as IAuthUser;
 
     if (typeof collectionId === "string") {
-      const collection = await getOneCollection(id, +collectionId);
+      const collection = await getOneCollection(+collectionId);
 
       if (collection) {
         const response = mapResponseFields([collection]);

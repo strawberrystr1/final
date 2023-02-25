@@ -22,6 +22,7 @@ import Tag from "./models/tag.model";
 import ItemsTag from "./models/itemsTag.model";
 
 import "./middlewares/passport.middleware";
+import { client } from "./elastic";
 
 const runServer = async () => {
   const app = express();
@@ -75,7 +76,7 @@ const runServer = async () => {
 
     await dbClient.authenticate();
     await dbClient.sync({ alter: true });
-
+    
     app.listen(port, () => console.log("server is up at", port));
   } catch (e) {
     console.log(e);

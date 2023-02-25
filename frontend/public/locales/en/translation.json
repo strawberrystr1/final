@@ -44,7 +44,7 @@
     "checkbox": "boolean field",
     "dragging": "Drop the files here...",
     "file": "Drag drop some file here, or click to select file",
-    "empty": "You don&apos;t have any collections",
+    "empty": "You don't have any collections",
     "edit": "Edit collection",
     "delete": "Delete collection",
     "open": "Open collection",
@@ -77,5 +77,6 @@
   "confirm": "Confirm",
   "cancel": "Cancel",
   "send": "Send",
-  "no_comments": "This item does not have any comments"
+  "no_comments": "This item does not have any comments",
+  "clear_search": "Clear"
 }

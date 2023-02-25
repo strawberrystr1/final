@@ -1,3 +1,4 @@
+import { client } from "../elastic";
 import ItemsTag from "../models/itemsTag.model";
 import Tag from "../models/tag.model";
 import { mapTags } from "../utils/mappers";
@@ -29,6 +30,8 @@ export const createTags = async (tags: string[], itemId: number) => {
   });
 
   await Promise.all(junctionPromises);
+
+  return createdTags.map(e => e.tag).join(",");
 };
 
 const updateTagItemJunction = async (tagId: number, itemId: number) => {

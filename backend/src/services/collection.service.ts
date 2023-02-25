@@ -77,13 +77,11 @@ export const getCollections = async (
 };
 
 export const getOneCollection = async (
-  userId: number,
   collectionId: number
 ): Promise<IFullCollectionResponse | void> => {
   const collection = await Collection.findOne({
     where: {
-      id: collectionId,
-      userId
+      id: collectionId
     },
     include: [
       CheckboxField,

@@ -4,6 +4,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import { AppBar, Avatar, Button, Container, Tooltip, Typography } from '@mui/material';
 
 import LanguageSwitch from '../../components/LanguageSwitch';
+import { SearchBlock } from '../../components/SearchBlock';
 import ThemeSwitcher from '../../components/ThemeSwitcher';
 import routes from '../../constants/routes';
 import { useAppSelector } from '../../redux/hooks';
@@ -23,6 +24,7 @@ const Header = () => {
               <Typography>Home</Typography>
             </Link>
           </Button>
+          <SearchBlock />
           <ControlsWrapper sx={{ width: !isLogged ? '30%' : '20%' }}>
             <ThemeSwitcher />
             <LanguageSwitch />

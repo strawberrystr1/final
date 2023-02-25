@@ -87,6 +87,7 @@ export const CreateItemPopup: FC<IProps> = ({
     if (isSuccess || isUpdateSuccess) {
       setIsOpen(false);
       formik.resetForm();
+      setTags([]);
     }
   }, [isSuccess, isUpdateSuccess]);
 

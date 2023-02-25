@@ -1,9 +1,9 @@
+import { client } from "../elastic";
 import CheckboxField from "../models/checkbox.model";
 import Collection from "../models/collection.model";
 import Comment from "../models/comment.model";
 import DateField from "../models/date.model";
 import CollectionItem from "../models/item.model";
-import Like from "../models/like.model";
 import NumberField from "../models/number.model";
 import StringField from "../models/string.model";
 import Tag from "../models/tag.model";
@@ -12,6 +12,7 @@ import {
   ICollectionItemWithAllFields,
   ICreateCollectionItemPayload
 } from "../types/item";
+import { createIndex } from "../utils/elastic";
 import {
   createCollecionItemValues,
   mapAdditionalField
@@ -35,7 +36,9 @@ export const createItem = async (
     { returning: true }
   );
 
-  createTags(tags, item.toJSON().id);
+  const createdTags = await createTags(tags, item.toJSON().id);
+
+  createIndex(item.toJSON(), [["tags", createdTags]], true);
 
   return item;
 };
@@ -95,10 +98,12 @@ export const updateCollectionItem = async (
 
   const updateValues = createCollecionItemValues(rest);
 
-  await CollectionItem.update(
+  const [_, item] = await CollectionItem.update(
     { ...updateValues, name: itemName },
-    { where: { id } }
+    { where: { id }, returning: true }
   );
 
-  createTags(tags, +id);
+  const createdTags = await createTags(tags, +id);
+
+  createIndex(item[0].toJSON(), [["tags", createdTags]]);
 };

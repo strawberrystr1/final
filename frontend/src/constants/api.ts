@@ -21,3 +21,4 @@ export const SSE_STREAM = (collectionId: string, itemId: string) =>
 export const GET_COMMENTS = (collectionId: string, itemId: string) =>
   `${GET_ONE_ITEM(collectionId, itemId)}/comment`;
 export const CREATE_COMMENT = GET_COMMENTS;
+export const SEARCH_ITEMS = (query: string) => `/search?query=${encodeURI(query)}`;

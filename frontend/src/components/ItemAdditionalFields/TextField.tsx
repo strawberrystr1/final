@@ -53,6 +53,7 @@ export const TextField: FC<IProps> = ({ name, formik }) => {
           onClick={handleInputFocus}
           sx={{
             maxHeight: 40,
+            minHeight: 40,
             borderRadius: '5px',
             border: `1px solid ${
               theme === 'dark' ? 'rgba(255, 255, 255, 0.23)' : 'rgba(0, 0,0, 0.23)'
