@@ -72,7 +72,8 @@
     "empty_table": "This collection does not have any items",
     "edit": "Edit item",
     "delete": "Delete item",
-    "update": "Update item"
+    "update": "Update item",
+    "lattest": "Last added items"
   },
   "field_required": "Field is required",
   "confirm": "Confirm",

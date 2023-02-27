@@ -21,6 +21,7 @@ export interface IItem {
   name: string;
   id: number;
   tags: ITag[];
+  collectionId: number;
 }
 
 export interface IItemWithAllFields extends IItem {

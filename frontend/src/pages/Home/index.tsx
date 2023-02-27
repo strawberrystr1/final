@@ -1,3 +1,7 @@
+import { Box } from '@mui/material';
+
+import { BiggestCollections } from '../../components/BiggestCollectionsBlock';
+import { LattestItemsBlock } from '../../components/LattestItemsBlock';
 import { Header, Main } from '../../layouts';
 
 const Home = () => {
@@ -5,7 +9,10 @@ const Home = () => {
     <>
       <Header />
       <Main>
-        <div>2</div>
+        <Box>
+          <LattestItemsBlock />
+          <BiggestCollections />
+        </Box>
       </Main>
     </>
   );

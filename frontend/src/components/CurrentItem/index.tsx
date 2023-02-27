@@ -148,13 +148,11 @@ export const CurrentItem = () => {
             currentLikeId={currentLikeId}
             setLikesCount={setLikesCount}
             setCurrentLikeId={setCurrentLikeId}
-            isOwner={isOwner}
           />
           <CommentsSection
             collectionId={collectionId}
             itemId={itemId}
             commentsData={commentsData}
-            isOwner={isOwner}
           />
         </>
       )}

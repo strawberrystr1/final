@@ -22,3 +22,4 @@ export const GET_COMMENTS = (collectionId: string, itemId: string) =>
   `${GET_ONE_ITEM(collectionId, itemId)}/comment`;
 export const CREATE_COMMENT = GET_COMMENTS;
 export const SEARCH_ITEMS = (query: string) => `/search?query=${encodeURI(query)}`;
+export const GET_LATTEST_ITEMS = `${USER_COLLECTIONS}/item/lattest`;

@@ -12,13 +12,12 @@ interface IProps {
   collectionId: string;
   itemId: string;
   commentsData: IComment[];
-  isOwner: boolean;
 }
 
-export const CommentsSection: FC<IProps> = ({ collectionId, itemId, commentsData, isOwner }) => {
+export const CommentsSection: FC<IProps> = ({ collectionId, itemId, commentsData }) => {
   const [comment, setComment] = useState('');
   const [createComment] = useCreateItemCommentMutation();
-  const { id, theme } = useAppSelector(state => state.user);
+  const { id, theme, isLogged } = useAppSelector(state => state.user);
   const { t } = useTranslation();
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value);
@@ -45,7 +44,7 @@ export const CommentsSection: FC<IProps> = ({ collectionId, itemId, commentsData
           onClick={handleCommentCreate}
           variant="contained"
           sx={{ alignSelf: 'flex-end', mt: 1 }}
-          disabled={!comment || !isOwner}
+          disabled={!comment || !isLogged}
         >
           {t('send')}
         </Button>

@@ -1,4 +1,10 @@
-import { DELETE_ITEM, GET_COLLECTION_ITEMS, GET_ONE_ITEM, UPDATE_ITEM } from '../../constants/api';
+import {
+  DELETE_ITEM,
+  GET_COLLECTION_ITEMS,
+  GET_LATTEST_ITEMS,
+  GET_ONE_ITEM,
+  UPDATE_ITEM,
+} from '../../constants/api';
 import { ITEM_DELETE, ITEM_UPDATE } from '../../constants/toast';
 import { IUpdateItemPayload } from '../../types/collection';
 import { IItem, IItemWithAllFields } from '../../types/item';
@@ -39,6 +45,11 @@ const itemsApi = baseApi.injectEndpoints({
       invalidatesTags: ['Item', 'Collection'],
       onQueryStarted: collectionQuery<IUpdateItemPayload, void>(ITEM_UPDATE),
     }),
+    getLattestItems: builder.query<IItemWithAllFields[], null>({
+      query: () => ({
+        url: GET_LATTEST_ITEMS,
+      }),
+    }),
   }),
 });
 
@@ -47,4 +58,5 @@ export const {
   useGetOneItemQuery,
   useDeleteItemMutation,
   useUpdateItemMutation,
+  useGetLattestItemsQuery,
 } = itemsApi;
