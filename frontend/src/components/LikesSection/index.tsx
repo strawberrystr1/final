@@ -15,6 +15,7 @@ interface IProps {
   currentLikeId: number;
   setLikesCount: Dispatch<SetStateAction<number>>;
   setCurrentLikeId: Dispatch<SetStateAction<number>>;
+  isOwner: boolean;
 }
 
 export const LikesSection: FC<IProps> = ({
@@ -24,6 +25,7 @@ export const LikesSection: FC<IProps> = ({
   setLikesCount,
   currentLikeId,
   setCurrentLikeId,
+  isOwner,
 }) => {
   const { id } = useAppSelector(state => state.user);
   const { data } = useGetItemLikesQuery([collectionId, itemId]);
@@ -64,7 +66,7 @@ export const LikesSection: FC<IProps> = ({
   return (
     <Wrapper>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <IconButton onClick={handleClick}>
+        <IconButton onClick={handleClick} disabled={!isOwner}>
           {data?.users?.includes(id) && likesCount > 0 ? (
             <FavoriteIcon htmlColor="red" />
           ) : (

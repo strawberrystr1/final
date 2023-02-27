@@ -21,6 +21,7 @@ import {
   COLLECTION_CARD_IMAGE_HEIGHT,
   COLLECTION_CARD_WIDTH,
 } from '../../constants/base';
+import { useOwner } from '../../hooks/useOwner';
 import { useDeleteCollectionMutation } from '../../redux/api/collection';
 import { ModalTypes } from '../../types/base';
 import { IUserCollectionsResponse } from '../../types/collection';
@@ -38,7 +39,8 @@ export const CollectionCard: FC<IProps> = ({ collection }) => {
   const [title, setTitle] = useState('');
   const [deleteCollection, { isLoading, isUninitialized }] = useDeleteCollectionMutation();
 
-  const { name, image, description, theme, id } = collection;
+  const { name, image, description, theme, id, userId } = collection;
+  const isOwner = useOwner(userId);
 
   const closeHandler = () => setIsOpen(false);
   const handleConfirm = () => {
@@ -64,18 +66,20 @@ export const CollectionCard: FC<IProps> = ({ collection }) => {
     <Card sx={{ width: COLLECTION_CARD_WIDTH, display: 'flex', flexDirection: 'column' }}>
       <CardHeader
         action={
-          <Box>
-            <Tooltip title={t('collection.edit')}>
-              <IconButton onClick={handleEditClick}>
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={t('collection.delete')}>
-              <IconButton onClick={handleDeleteClick}>
-                <DeleteForeverIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
+          isOwner && (
+            <Box>
+              <Tooltip title={t('collection.edit')}>
+                <IconButton onClick={handleEditClick}>
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={t('collection.delete')}>
+                <IconButton onClick={handleDeleteClick}>
+                  <DeleteForeverIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )
         }
         title={name}
         titleTypographyProps={{ fontSize: 18 }}

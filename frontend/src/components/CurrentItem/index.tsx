@@ -7,6 +7,7 @@ import { Box, Divider, IconButton, Tooltip, Typography } from '@mui/material';
 
 import { API_URL, SSE_STREAM } from '../../constants/api';
 import { additionalTypes } from '../../constants/base';
+import { useOwner } from '../../hooks/useOwner';
 import { useGetItemCommentsQuery } from '../../redux/api/comment';
 import { useDeleteItemMutation, useGetOneItemQuery } from '../../redux/api/item';
 import { ModalTypes } from '../../types/base';
@@ -24,7 +25,7 @@ import { LikesSection } from '../LikesSection';
 import { ItemRow, Wrapper } from './styled';
 
 export const CurrentItem = () => {
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
   const { t } = useTranslation();
   const [collectionId, itemId] = extractIds(pathname);
   const [isOpen, setIsOpen] = useState(false);
@@ -36,6 +37,7 @@ export const CurrentItem = () => {
 
   const [commentsData, setCommentsData] = useState<IComment[]>([]);
   const { data: comments } = useGetItemCommentsQuery([collectionId, itemId]);
+  const isOwner = useOwner(state?.userId);
 
   useEffect(() => {
     if (comments) {
@@ -105,18 +107,20 @@ export const CurrentItem = () => {
               </Typography>
               <Typography sx={{ pl: 1, wordBreak: 'break-word' }}>{data.name}</Typography>
             </ItemRow>
-            <Box>
-              <Tooltip title={t('item.edit')}>
-                <IconButton onClick={handleEditClick}>
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title={t('item.delete')}>
-                <IconButton onClick={handleDeleteClick}>
-                  <DeleteForeverIcon />
-                </IconButton>
-              </Tooltip>
-            </Box>
+            {isOwner && (
+              <Box>
+                <Tooltip title={t('item.edit')}>
+                  <IconButton onClick={handleEditClick}>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={t('item.delete')}>
+                  <IconButton onClick={handleDeleteClick}>
+                    <DeleteForeverIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            )}
           </ItemRow>
           <Divider />
           {additionalTypes.map(key =>
@@ -144,28 +148,34 @@ export const CurrentItem = () => {
             currentLikeId={currentLikeId}
             setLikesCount={setLikesCount}
             setCurrentLikeId={setCurrentLikeId}
+            isOwner={isOwner}
           />
           <CommentsSection
             collectionId={collectionId}
             itemId={itemId}
             commentsData={commentsData}
+            isOwner={isOwner}
           />
         </>
       )}
-      <ConfirmationModal
-        title={title}
-        isOpen={isOpen && openType === ModalTypes.CONFIRM}
-        cancelHandler={closeHandler}
-        confirmHandler={handleConfirm}
-      />
-      {openType === ModalTypes.CREATE && (
-        <CreateItemPopup
-          additionalFields={additionalFields}
-          isOpen={isOpen}
-          collectionId={collectionId}
-          setIsOpen={setIsOpen}
-          currentItem={data}
-        />
+      {isOwner && (
+        <>
+          <ConfirmationModal
+            title={title}
+            isOpen={isOpen && openType === ModalTypes.CONFIRM}
+            cancelHandler={closeHandler}
+            confirmHandler={handleConfirm}
+          />
+          {openType === ModalTypes.CREATE && (
+            <CreateItemPopup
+              additionalFields={additionalFields}
+              isOpen={isOpen}
+              collectionId={collectionId}
+              setIsOpen={setIsOpen}
+              currentItem={data}
+            />
+          )}
+        </>
       )}
     </Wrapper>
   );

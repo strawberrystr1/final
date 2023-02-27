@@ -1,9 +1,20 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TagCloud } from 'react-tagcloud';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { Box, IconButton, OutlinedInput, Popover, Tooltip } from '@mui/material';
+import {
+  Box,
+  ClickAwayListener,
+  IconButton,
+  OutlinedInput,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 
 import { useSearchQuery } from '../../redux/api/search';
+
+import { TagsPopover } from './styled';
+import { Tag } from './Tag';
 
 export const SearchBlock = () => {
   const [value, setValue] = useState('');
@@ -12,11 +23,13 @@ export const SearchBlock = () => {
   const { t } = useTranslation();
 
   const { data } = useSearchQuery(value);
-  console.log('data: ', data);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
   const handleButtonClick = () => setValue('');
-  const closePopover = () => setIsOpen(false);
+  const closePopover = () => {
+    setIsOpen(false);
+    setValue('');
+  };
 
   useEffect(() => {
     if (value) {
@@ -40,22 +53,21 @@ export const SearchBlock = () => {
           </Tooltip>
         }
       />
-      <Popover
-        open={isOpen}
-        onClose={closePopover}
-        anchorEl={anchorElem.current}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        sx={{ width: 200, height: 200 }}
-      >
-        The content of the Popover.
-      </Popover>
+      <ClickAwayListener onClickAway={closePopover}>
+        <TagsPopover open={isOpen} anchorEl={anchorElem.current}>
+          {data && data.length > 0 ? (
+            <TagCloud
+              minSize={12}
+              maxSize={35}
+              tags={data}
+              renderer={Tag}
+              disableRandomColor={true}
+            />
+          ) : (
+            <Typography>{t('no_items')}</Typography>
+          )}
+        </TagsPopover>
+      </ClickAwayListener>
     </Box>
   );
 };

@@ -12,9 +12,10 @@ interface IProps {
   collectionId: string;
   itemId: string;
   commentsData: IComment[];
+  isOwner: boolean;
 }
 
-export const CommentsSection: FC<IProps> = ({ collectionId, itemId, commentsData }) => {
+export const CommentsSection: FC<IProps> = ({ collectionId, itemId, commentsData, isOwner }) => {
   const [comment, setComment] = useState('');
   const [createComment] = useCreateItemCommentMutation();
   const { id, theme } = useAppSelector(state => state.user);
@@ -44,7 +45,7 @@ export const CommentsSection: FC<IProps> = ({ collectionId, itemId, commentsData
           onClick={handleCommentCreate}
           variant="contained"
           sx={{ alignSelf: 'flex-end', mt: 1 }}
-          disabled={!comment}
+          disabled={!comment || !isOwner}
         >
           {t('send')}
         </Button>

@@ -12,9 +12,6 @@ export const CollectionList = () => {
 
   return (
     <Box sx={{ pt: 2 }}>
-      <Typography component="h2" fontSize={30}>
-        Your collections
-      </Typography>
       {isLoading ? (
         <Loader />
       ) : data ? (

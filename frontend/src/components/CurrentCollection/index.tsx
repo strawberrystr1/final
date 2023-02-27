@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { Button, Divider, Typography } from '@mui/material';
 
+import { useOwner } from '../../hooks/useOwner';
 import { useGetOneCollectionQuery } from '../../redux/api/collection';
 import { getItemAdditionalField } from '../../utils/mappers';
 import { CollectionItem } from '../CollectionItem';
@@ -18,6 +19,7 @@ export const CurrentCollection = () => {
   const { t } = useTranslation();
 
   const { data, isLoading } = useGetOneCollectionQuery(+collectionId);
+  const isOwner = useOwner(data?.userId);
 
   const additionalFields = useMemo(() => {
     if (data) {
@@ -34,15 +36,19 @@ export const CurrentCollection = () => {
     <Loader />
   ) : (
     <FlexWrapper>
-      <Button onClick={handleButtonClick} variant="contained" sx={{ width: 'max-content' }}>
-        <Typography sx={{ textTransform: 'none' }}>{t('item.create')}</Typography>
-      </Button>
-      <CreateItemPopup
-        additionalFields={additionalFields}
-        collectionId={collectionId}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
+      {isOwner && (
+        <>
+          <Button onClick={handleButtonClick} variant="contained" sx={{ width: 'max-content' }}>
+            <Typography sx={{ textTransform: 'none' }}>{t('item.create')}</Typography>
+          </Button>
+          <CreateItemPopup
+            additionalFields={additionalFields}
+            collectionId={collectionId}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+          />
+        </>
+      )}
       <Divider sx={{ mt: 1, mb: 1 }} />
       <TableWrapper>
         <RowWrapper>
@@ -60,6 +66,7 @@ export const CurrentCollection = () => {
               item={item}
               additionalFields={additionalFields}
               collectionId={data.id}
+              userId={data.userId}
             />
           ))
         ) : (

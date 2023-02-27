@@ -16,7 +16,6 @@ const router = Router();
 
 router.get(
   "/:collectionId/item",
-  passport.authenticate("jwt", { session: false }),
   handleGetAllCollectionItems
 );
 router.use("/:collectionId/item", commentRouter);
@@ -27,7 +26,6 @@ router.post(
 );
 router.get(
   "/:collectionId/item/:itemId/likes",
-  passport.authenticate("jwt", { session: false }),
   handleGetItemLikes
 );
 router.post(

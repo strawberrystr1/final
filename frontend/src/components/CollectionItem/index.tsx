@@ -8,12 +8,13 @@ interface IProps {
   item: IItem;
   additionalFields: Record<string, string[]>;
   collectionId: number;
+  userId: number;
 }
 
-export const CollectionItem: FC<IProps> = ({ item, additionalFields, collectionId }) => {
+export const CollectionItem: FC<IProps> = ({ item, additionalFields, collectionId, userId }) => {
   const fields = Object.values(additionalFields).flat(1);
   return (
-    <StyledLink to={`/collection/${collectionId}/${item.id}`}>
+    <StyledLink to={`/collection/${collectionId}/${item.id}`} state={{ userId }}>
       <RowWrapper>
         <RowItem>{item.id}</RowItem>
         <RowItem>{trim(item.name)}</RowItem>

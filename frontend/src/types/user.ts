@@ -23,4 +23,6 @@ export interface IUpdateUserSettings {
   language?: Languages;
 }
 
-export interface IUpdateSettingsResponse {}
+export interface IUpdateSettingsResponse {
+  msg: string;
+}

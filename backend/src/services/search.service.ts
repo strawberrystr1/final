@@ -1,4 +1,5 @@
 import { client } from "../elastic";
+import { IHitResult } from "../types/search";
 
 export const searchItems = async (query: string) => {
   const results = await client.search({
@@ -51,5 +52,9 @@ export const searchItems = async (query: string) => {
     }
   });
 
-  return results.hits.hits;
+  return results.hits.hits.map(el => ({
+    value: `${(el._source as IHitResult).collectionId}/${
+      (el._source as IHitResult).id
+    }`
+  }));
 };
