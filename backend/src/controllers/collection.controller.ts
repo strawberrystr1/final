@@ -11,6 +11,7 @@ import {
 import {
   createCollection,
   deleteCollection,
+  getBiggestCollections,
   getCollections,
   getOneCollection,
   updateCollection
@@ -38,15 +39,12 @@ export const handleCreateCollection = async (
 
 export const handleGetCollections = async (req: Request, res: Response) => {
   try {
-    if (req.user) {
-      const { id } = req.user as IAuthUser;
+    const { userId } = req.query;
 
-      if (id) {
-        const collections = await getCollections(id);
-
-        res.json(collections);
-        return;
-      }
+    if (userId) {
+      const collections = await getCollections(+userId);
+      res.json(collections);
+      return;
     }
 
     const collections = await getCollections();
@@ -124,6 +122,20 @@ export const handleUpdateCollection = async (
 
     res.json({ msg: COLLECTION_UPDATED });
   } catch (e) {
+    res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
+  }
+};
+
+export const handleGetBiggestCollections = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const collections = await getBiggestCollections();
+
+    res.json(collections);
+  } catch (e) {
+    console.log("e: ", e);
     res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
   }
 };

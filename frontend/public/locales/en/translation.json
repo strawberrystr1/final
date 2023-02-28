@@ -50,7 +50,8 @@
     "open": "Open collection",
     "update": "Update collection",
     "delete_confirmation": "Are you sure you want to delete this collection?",
-    "title": "Your collections"
+    "title": "Your collections",
+    "biggest": "Biggest collections"
   },
   "placeholder": {
     "field_name": "Field name",

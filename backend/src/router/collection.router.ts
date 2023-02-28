@@ -6,7 +6,8 @@ import {
   handleDelete,
   handleGetCollections,
   handleGetOneCollection,
-  handleUpdateCollection
+  handleUpdateCollection,
+  handleGetBiggestCollections
 } from "../controllers/collection.controller";
 import itemsRouter from "./item.router";
 
@@ -17,6 +18,7 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   handleCreateCollection
 );
+router.get('/biggest', handleGetBiggestCollections)
 router.use("/", itemsRouter);
 router.post(
   "/:collectionId/update",

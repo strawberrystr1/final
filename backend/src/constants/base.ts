@@ -1,0 +1,1 @@
+export const BIGGEST_COLLECTION_LIMIT = 10;

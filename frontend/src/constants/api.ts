@@ -3,7 +3,8 @@ export const POST_SETTINGS = '/user/settings';
 export const POST_REGISTER = '/user/register';
 export const POST_LOGIN = '/user/login';
 export const COLLECTION_CREATE = '/collection/create';
-export const USER_COLLECTIONS = '/collection';
+export const ALL_COLLECTIONS = '/collection';
+export const USER_COLLECTIONS = (id: string) => `${ALL_COLLECTIONS}?userId=${id}`;
 export const ONE_COLLECTION = '/collection/';
 export const UPDATE_COLLECTION = (id: number) => `${ONE_COLLECTION}/${id}/update`;
 export const CREATE_COLLECTION_ITEM = (id: string) => `/collection/${id}/item/create`;
@@ -22,4 +23,5 @@ export const GET_COMMENTS = (collectionId: string, itemId: string) =>
   `${GET_ONE_ITEM(collectionId, itemId)}/comment`;
 export const CREATE_COMMENT = GET_COMMENTS;
 export const SEARCH_ITEMS = (query: string) => `/search?query=${encodeURI(query)}`;
-export const GET_LATTEST_ITEMS = `${USER_COLLECTIONS}/item/lattest`;
+export const GET_LATTEST_ITEMS = `${ALL_COLLECTIONS}/item/lattest`;
+export const BIGGEST_COLLECTIONS = `${ALL_COLLECTIONS}/biggest`;

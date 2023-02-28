@@ -1,4 +1,6 @@
 import {
+  ALL_COLLECTIONS,
+  BIGGEST_COLLECTIONS,
   COLLECTION_CREATE,
   CREATE_COLLECTION_ITEM,
   ONE_COLLECTION,
@@ -11,7 +13,11 @@ import {
   COLLECTION_ITEM_CREATE_MSG,
   COLLECTION_UPDATE_MSG,
 } from '../../constants/toast';
-import { ICreateItemPayload, IUserCollectionsResponse } from '../../types/collection';
+import {
+  IBiggestCollection,
+  ICreateItemPayload,
+  IUserCollectionsResponse,
+} from '../../types/collection';
 import { ICreateCollectionPayload, IUpdateCollectionPayload } from '../../types/formik';
 import { collectionQuery } from '../helpers/collectionQuery';
 
@@ -37,9 +43,9 @@ const collectionApi = baseApi.injectEndpoints({
       onQueryStarted: collectionQuery<IUpdateCollectionPayload, void>(COLLECTION_UPDATE_MSG),
       invalidatesTags: ['Collection'],
     }),
-    getUserCollection: builder.query<IUserCollectionsResponse[], void>({
-      query: () => ({
-        url: USER_COLLECTIONS,
+    getUserCollection: builder.query<IUserCollectionsResponse[], string | null>({
+      query: arg => ({
+        url: arg ? USER_COLLECTIONS(arg) : ALL_COLLECTIONS,
       }),
       providesTags: result =>
         result
@@ -72,6 +78,11 @@ const collectionApi = baseApi.injectEndpoints({
       invalidatesTags: ['Collection'],
       onQueryStarted: collectionQuery<number, void>(COLLECTION_DELETE),
     }),
+    getBiggestCollections: builder.query<IBiggestCollection[], void>({
+      query: () => ({
+        url: BIGGEST_COLLECTIONS,
+      }),
+    }),
   }),
 });
 
@@ -82,4 +93,5 @@ export const {
   useCreateCollectionItemMutation,
   useDeleteCollectionMutation,
   useUpdateCollectionMutation,
+  useGetBiggestCollectionsQuery,
 } = collectionApi;
