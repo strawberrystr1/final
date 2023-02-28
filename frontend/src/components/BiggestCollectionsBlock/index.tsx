@@ -11,8 +11,10 @@ export const BiggestCollections = () => {
   const { theme } = useAppSelector(state => state.user);
   const { data } = useGetBiggestCollectionsQuery();
 
+  const border = theme === 'dark' ? '1px solid white' : '1px solid black';
+
   return (
-    <Box>
+    <Box sx={{ p: '10px', border, borderRadius: 2, mt: 2 }}>
       <Typography fontWeight={600} fontSize={28}>
         {t('collection.biggest')}
       </Typography>
@@ -23,7 +25,7 @@ export const BiggestCollections = () => {
               <Box
                 sx={{
                   p: 1,
-                  border: `1px solid ${theme === 'dark' ? 'white' : 'black'}`,
+                  border: border,
                   borderRadius: 2,
                   mb: 1,
                   display: 'flex',

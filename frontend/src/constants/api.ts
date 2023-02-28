@@ -12,6 +12,7 @@ export const GET_COLLECTION_ITEMS = (id: string) => `/collection/${id}/item`;
 export const GET_ONE_ITEM = (collectionId: string, itemId: string) =>
   `${GET_COLLECTION_ITEMS(collectionId)}/${itemId}`;
 export const GET_ALL_TAGS = '/tags/';
+export const GET_TAGS_CLOUD = `${GET_ALL_TAGS}cloud`;
 export const DELETE_ITEM = GET_ONE_ITEM;
 export const UPDATE_ITEM = GET_ONE_ITEM;
 export const GET_LIKES = (collectionId: string, itemId: string) =>

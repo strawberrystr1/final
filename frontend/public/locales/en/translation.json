@@ -82,5 +82,6 @@
   "send": "Send",
   "no_comments": "This item does not have any comments",
   "clear_search": "Clear",
-  "no_items": "No items for this query"
+  "no_items": "No items for this query",
+  "main_cloud": "Most popular tags"
 }

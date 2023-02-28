@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import { useGetLattestItemsQuery } from '../../redux/api/item';
 import { useAppSelector } from '../../redux/hooks';
@@ -10,8 +10,9 @@ export const LattestItemsBlock = () => {
   const { theme } = useAppSelector(state => state.user);
   const { data } = useGetLattestItemsQuery(null, { refetchOnMountOrArgChange: true });
 
+  const border = theme === 'dark' ? '1px solid white' : '1px solid black';
   return (
-    <Box>
+    <Box sx={{ p: '10px', border, borderRadius: 2, mt: 2 }}>
       <Typography fontWeight={600} fontSize={28}>
         {t('item.lattest')}
       </Typography>
@@ -39,7 +40,6 @@ export const LattestItemsBlock = () => {
           ))}
         </Box>
       )}
-      <Divider />
     </Box>
   );
 };

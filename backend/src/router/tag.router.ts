@@ -1,13 +1,14 @@
 import { Router } from "express";
 import passport from "passport";
 
-import { handleGetAllTags } from "../controllers/tag.controller";
+import {
+  handleGetAllTags,
+  handleGetTagsCloud
+} from "../controllers/tag.controller";
 
 const router = Router();
 
-router.get(
-  "/",
-  handleGetAllTags
-);
+router.get("/cloud", handleGetTagsCloud);
+router.get("/", handleGetAllTags);
 
 export default router;
