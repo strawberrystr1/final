@@ -12,7 +12,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { ControlsWrapper, ToolbarFlex } from './styled';
 
 const Header = () => {
-  const { isLogged, id } = useAppSelector(state => state.user);
+  const { isLogged, id, role } = useAppSelector(state => state.user);
   const { t } = useTranslation();
 
   return (
@@ -24,6 +24,13 @@ const Header = () => {
               <Typography>Home</Typography>
             </Link>
           </Button>
+          {role === 'admin' && (
+            <Link to={'/users'} style={{ textDecoration: 'none' }}>
+              <Button variant="contained" color="secondary">
+                <Typography>{t('admin.list')}</Typography>
+              </Button>
+            </Link>
+          )}
           <SearchBlock />
           <ControlsWrapper sx={{ width: !isLogged ? '30%' : '20%' }}>
             <ThemeSwitcher />
@@ -37,12 +44,12 @@ const Header = () => {
             )}
             {!isLogged && (
               <>
-                <Button variant="contained">
+                <Button variant="contained" color="secondary">
                   <Link to={routes.SIGNIN} style={{ textDecoration: 'none' }}>
                     <Typography>{t('auth.title_sin')}</Typography>
                   </Link>
                 </Button>
-                <Button variant="contained">
+                <Button variant="contained" color="secondary">
                   <Link to={routes.SIGNUP} style={{ textDecoration: 'none' }}>
                     <Typography>{t('auth.title_sup')}</Typography>
                   </Link>

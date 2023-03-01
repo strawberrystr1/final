@@ -6,4 +6,5 @@ export default {
   PROFILE: '/profile',
   COLLECTION_ID: '/collection/:id',
   ITEM_ID: '/collection/:id/:itemId',
+  ADMIN_USERS: '/users',
 };

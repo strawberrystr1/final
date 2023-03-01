@@ -35,6 +35,10 @@ const User = dbClient.define<Model<IUser, IUserCreation>>(
     theme: {
       type: DataTypes.STRING,
       defaultValue: "dark"
+    },
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: "active"
     }
   },
   { timestamps: false, freezeTableName: true }

@@ -31,6 +31,7 @@ export interface ICollectionAdditionalFields {
   date1?: string;
   date2?: string;
   date3?: string;
+  currentUserId?: number;
 }
 
 export type ICollectionCreate = Omit<ICollection, "id"> &

@@ -1,11 +1,11 @@
 import { SERVER_ERROR, SETTING_CHANGED } from '../../constants/toast';
 import { IAPIError } from '../../types/error';
 import { BaseQuery } from '../../types/rtkApi';
-import { IUpdateSettingsResponse, IUpdateUserSettings } from '../../types/user';
+import { IUpdateSettingsResponse, IUpdateUserUpdatePayload } from '../../types/user';
 import { toastHandler } from '../../utils/toastHandlers';
 import { RootState } from '../store';
 
-export const userQuery: BaseQuery<IUpdateUserSettings, IUpdateSettingsResponse> = async (
+export const userQuery: BaseQuery<IUpdateUserUpdatePayload, IUpdateSettingsResponse> = async (
   arg,
   { dispatch, queryFulfilled, getState }
 ) => {

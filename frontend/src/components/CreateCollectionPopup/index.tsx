@@ -1,6 +1,7 @@
 import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
+import { useLocation } from 'react-router-dom';
 import {
   Button,
   Dialog,
@@ -21,7 +22,7 @@ import { ICreateCollectionForm } from '../../types/formik';
 import useValidationSchema from '../../utils/collectionValidationSchema';
 import { createOrUpdateCollection } from '../../utils/formik';
 import { getCreateCollectionFormikInitalState } from '../../utils/formikInitialState';
-import { getFieldName } from '../../utils/helpers';
+import { extractIds, getFieldName } from '../../utils/helpers';
 import { AdditionalField } from '../AdditionalField';
 import { CustomDialogTitle } from '../DialogTitle';
 import { FileUploader } from '../FileUploader';
@@ -43,6 +44,8 @@ export const CreateCollectionPopup: FC<IProps> = ({ isOpen, currentCollection, s
   const { t } = useTranslation();
   const [createCollection, { isSuccess }] = useCreateMutation();
   const [updateCollection, { isSuccess: isSuccessUpdate }] = useUpdateCollectionMutation();
+  const { pathname } = useLocation();
+  const [id] = extractIds(pathname);
 
   const handleSubmitForm = (values: ICreateCollectionForm) => {
     if (currentCollection) {
@@ -53,10 +56,13 @@ export const CreateCollectionPopup: FC<IProps> = ({ isOpen, currentCollection, s
         image: currentCollection.image,
       });
     } else {
-      createOrUpdateCollection(values, {
-        callback: createCollection,
-        type: 'create',
-      });
+      createOrUpdateCollection(
+        { ...values, currentUserId: +id },
+        {
+          callback: createCollection,
+          type: 'create',
+        }
+      );
     }
   };
 

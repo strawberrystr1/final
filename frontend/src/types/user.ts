@@ -1,4 +1,4 @@
-import { Languages, Roles, Themes } from './base';
+import { Languages, Roles, Status, Themes } from './base';
 
 export interface IRegisterUserPayload {
   name: string;
@@ -14,13 +14,18 @@ export interface IUserResponse {
   language: Languages;
   theme: Themes;
   token: string;
+  status: Status;
 }
 
 export type IUserLoginPayload = Omit<IRegisterUserPayload, 'name'>;
 
-export interface IUpdateUserSettings {
+export interface IUpdateUserUpdatePayload {
   theme?: Themes;
   language?: Languages;
+  role?: Roles;
+  status?: Status;
+  id?: number;
+  field?: string;
 }
 
 export interface IUpdateSettingsResponse {

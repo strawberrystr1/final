@@ -29,6 +29,11 @@ export const handleCreateCollection = async (
     const data = req.body;
     const user = req.user as IAuthUser;
 
+    if (user.role === "admin") {
+      user.id = data.currentUserId as number;
+      delete data.currentUserId;
+    }
+
     const collection = await createCollection(data, user);
 
     res.json(collection);
@@ -135,7 +140,6 @@ export const handleGetBiggestCollections = async (
 
     res.json(collections);
   } catch (e) {
-    console.log("e: ", e);
     res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
   }
 };

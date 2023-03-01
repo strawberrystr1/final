@@ -20,6 +20,7 @@ export interface ICreateCollectionForm {
   date1: string;
   date2: string;
   date3: string;
+  currentUserId?: number;
 }
 
 export interface ICreateCollectionPayload extends Omit<ICreateCollectionForm, 'image'> {

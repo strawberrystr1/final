@@ -10,6 +10,7 @@ import { additionalTypes } from '../../constants/base';
 import { useOwner } from '../../hooks/useOwner';
 import { useGetItemCommentsQuery } from '../../redux/api/comment';
 import { useDeleteItemMutation, useGetOneItemQuery } from '../../redux/api/item';
+import { useAppSelector } from '../../redux/hooks';
 import { ModalTypes } from '../../types/base';
 import { IComment } from '../../types/comment';
 import { IItem } from '../../types/item';
@@ -31,13 +32,14 @@ export const CurrentItem = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [openType, setOpenType] = useState<ModalTypes>();
   const [title, setTitle] = useState('');
+  const { role } = useAppSelector(store => store.user);
 
   const [likesCount, setLikesCount] = useState(0);
   const [currentLikeId, setCurrentLikeId] = useState(-1);
 
   const [commentsData, setCommentsData] = useState<IComment[]>([]);
   const { data: comments } = useGetItemCommentsQuery([collectionId, itemId]);
-  const isOwner = useOwner(state?.userId);
+  const isOwner = useOwner(state?.userId, role);
 
   useEffect(() => {
     if (comments) {

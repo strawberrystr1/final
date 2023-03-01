@@ -23,6 +23,7 @@ import {
 } from '../../constants/base';
 import { useOwner } from '../../hooks/useOwner';
 import { useDeleteCollectionMutation } from '../../redux/api/collection';
+import { useAppSelector } from '../../redux/hooks';
 import { ModalTypes } from '../../types/base';
 import { IUserCollectionsResponse } from '../../types/collection';
 import { ConfirmationModal } from '../ConfirmationModal';
@@ -34,13 +35,14 @@ interface IProps {
 
 export const CollectionCard: FC<IProps> = ({ collection }) => {
   const { t } = useTranslation();
+  const { role } = useAppSelector(state => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const [openType, setOpenType] = useState<ModalTypes>();
   const [title, setTitle] = useState('');
   const [deleteCollection, { isLoading, isUninitialized }] = useDeleteCollectionMutation();
 
   const { name, image, description, theme, id, userId } = collection;
-  const isOwner = useOwner(userId);
+  const isOwner = useOwner(userId, role);
 
   const closeHandler = () => setIsOpen(false);
   const handleConfirm = () => {

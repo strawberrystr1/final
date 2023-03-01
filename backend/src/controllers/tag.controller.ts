@@ -19,7 +19,6 @@ export const handleGetTagsCloud = async (req: Request, res: Response) => {
 
     res.json(tags);
   } catch (e) {
-    console.log('e: ', e);
     res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
   }
 };

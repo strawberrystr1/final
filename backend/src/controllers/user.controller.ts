@@ -6,6 +6,8 @@ import {
   EMAIL_ALREADY_EXISTS,
   SETTINGS_UPDATED,
   SOMETHING_WRONG,
+  USERS_DELETED,
+  USERS_UPDATED,
   USER_NOT_EXISTS,
   WRONG_PASSWORD
 } from "../constants/httpMessages";
@@ -13,11 +15,14 @@ import {
   createUser,
   getAllUsers,
   loginUser,
-  updateSettings
+  updateSettings,
+  deleteUsers,
+  updateUser
 } from "../services/user.service";
 import { HTTPCodes } from "../types/httpCodes";
 import {
   IAuthUser,
+  IUser,
   IUserCreation,
   IUserLogin,
   IUserSettings
@@ -85,19 +90,40 @@ export const loginController = async (
 };
 
 export const settingsController = async (
-  req: Request<{}, {}, IUserSettings>,
+  req: Request<{}, {}, IUserSettings | (IUser & { field: string })[]>,
   res: Response
 ) => {
   try {
     const data = req.body;
     const user = req.user as IAuthUser;
 
-    await updateSettings(
-      { ...data, theme: user.theme === "dark" ? "light" : "dark" },
-      user.email
-    );
+    if (Array.isArray(data)) {
+      await updateUser(data);
 
-    res.json({ msg: SETTINGS_UPDATED });
+      res.json({ msg: USERS_UPDATED });
+    } else {
+      await updateSettings(
+        { ...data, theme: user.theme === "dark" ? "light" : "dark" },
+        user.email
+      );
+
+      res.json({ msg: SETTINGS_UPDATED });
+    }
+  } catch (e) {
+    res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
+  }
+};
+
+export const deleteController = async (
+  req: Request<{}, {}, string[]>,
+  res: Response
+) => {
+  try {
+    const data = req.body;
+
+    await deleteUsers(data);
+
+    res.json({ msg: USERS_DELETED });
   } catch (e) {
     res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
   }

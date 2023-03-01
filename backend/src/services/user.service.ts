@@ -3,7 +3,7 @@ import { SALT_NUMBER } from "../constants/hash";
 import User from "../models/user.model";
 import { HTTPCodes } from "../types/httpCodes";
 
-import { IUserCreation, IUserSettings } from "../types/user";
+import { IUser, IUserCreation, IUserSettings } from "../types/user";
 import { createToken } from "../utils/createToken";
 
 export const createUser = async (user: IUserCreation) => {
@@ -82,4 +82,35 @@ export const loginUser = async (password: string, email: string) => {
 
 export const updateSettings = async (data: IUserSettings, email: string) => {
   await User.update(data, { where: { email } });
+};
+
+export const updateUser = async (data: (IUser & { field: string })[]) => {
+  await Promise.all(
+    data.map(user => {
+      const { role, id, email, field } = user;
+
+      const updateValues: Record<string, string> = {};
+
+      switch (field) {
+        case "role":
+          updateValues.role = role === "admin" ? "user" : "admin";
+          break;
+        case "block":
+          updateValues.status = "blocked";
+          break;
+        case "unblock":
+          updateValues.status = "active";
+          break;
+      }
+
+      return User.update(updateValues, { where: { id, email } });
+    })
+  );
+};
+
+export const deleteUsers = async (data: string[]) => {
+  const promises = data.map(e => User.destroy({ where: { email: e } }));
+  await Promise.all(promises);
+
+  return true;
 };

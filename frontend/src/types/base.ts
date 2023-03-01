@@ -1,5 +1,6 @@
 import { IUserResponse } from './user';
 
+export type Status = 'active' | 'blocked';
 export type SnackVariants = 'error' | 'info' | 'success';
 export type Themes = 'dark' | 'light';
 export type Languages = 'en' | 'ru';

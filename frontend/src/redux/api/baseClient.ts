@@ -14,7 +14,7 @@ const baseApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Collection', 'Item', 'Tags', 'Likes', 'Comments'],
+  tagTypes: ['Collection', 'Item', 'Tags', 'Likes', 'Comments', 'Users'],
   endpoints: () => ({}),
 });
 

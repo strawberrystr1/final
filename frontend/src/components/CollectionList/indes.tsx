@@ -13,7 +13,7 @@ export const CollectionList = () => {
   const [id] = extractIds(pathname);
   const { data, isLoading } = useGetUserCollectionQuery(id);
   const { t } = useTranslation();
-
+  console.log(data);
   return (
     <Box sx={{ pt: 2 }}>
       {isLoading ? (
@@ -21,7 +21,10 @@ export const CollectionList = () => {
       ) : data ? (
         <Masonry columns={3} spacing={1}>
           {data.map(item => (
-            <CollectionCard collection={item} key={item.id} />
+            <CollectionCard
+              collection={item}
+              key={item.id + item.name + item.description + item.theme}
+            />
           ))}
         </Masonry>
       ) : (

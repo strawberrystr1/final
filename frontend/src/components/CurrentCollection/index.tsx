@@ -5,6 +5,7 @@ import { Button, Divider, Typography } from '@mui/material';
 
 import { useOwner } from '../../hooks/useOwner';
 import { useGetOneCollectionQuery } from '../../redux/api/collection';
+import { useAppSelector } from '../../redux/hooks';
 import { getItemAdditionalField } from '../../utils/mappers';
 import { CollectionItem } from '../CollectionItem';
 import { CreateItemPopup } from '../CreateItemPopup';
@@ -15,11 +16,12 @@ import { FlexWrapper, RowItem, RowWrapper, TableWrapper } from './styled';
 export const CurrentCollection = () => {
   const { pathname } = useLocation();
   const collectionId = pathname.replace(/\D/g, '');
+  const { role } = useAppSelector(state => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
   const { data, isLoading } = useGetOneCollectionQuery(+collectionId);
-  const isOwner = useOwner(data?.userId);
+  const isOwner = useOwner(data?.userId, role);
 
   const additionalFields = useMemo(() => {
     if (data) {

@@ -1,7 +1,7 @@
 import { CREATE_COMMENT, GET_COMMENTS } from '../../constants/api';
 import { COMMENT_CREATED } from '../../constants/toast';
 import { IComment, ICreateCommentPayload } from '../../types/comment';
-import { collectionQuery } from '../helpers/collectionQuery';
+import { baseQuery } from '../helpers/baseQuery';
 
 import baseApi from './baseClient';
 
@@ -23,7 +23,7 @@ const commentApi = baseApi.injectEndpoints({
         body,
       }),
       invalidatesTags: [{ type: 'Comments', id: 'COMMENTS' }],
-      onQueryStarted: collectionQuery<ICreateCommentPayload, IComment>(COMMENT_CREATED),
+      onQueryStarted: baseQuery<ICreateCommentPayload, IComment>(COMMENT_CREATED),
     }),
   }),
 });

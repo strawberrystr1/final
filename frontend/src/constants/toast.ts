@@ -45,3 +45,8 @@ export const COMMENT_CREATED = {
   ru: 'Комментарий создан',
   en: 'Comment created',
 };
+
+export const USERS_DELETED = {
+  ru: 'Пользователи удалены',
+  en: 'Users deleted',
+};

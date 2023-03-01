@@ -13,3 +13,5 @@ export const ITEM_DELETED = "Item was seleted";
 export const ITEM_UPDATED = "Item was updated";
 export const LIKE_UPDATED = "Like was updated";
 export const NO_DATA = "Request data was not provided";
+export const USERS_DELETED = "Users deleted";
+export const USERS_UPDATED = "Users update";

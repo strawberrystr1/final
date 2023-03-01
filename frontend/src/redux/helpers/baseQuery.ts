@@ -5,7 +5,7 @@ import { BaseQuery } from '../../types/rtkApi';
 import { toastHandler } from '../../utils/toastHandlers';
 import { RootState } from '../store';
 
-export const collectionQuery =
+export const baseQuery =
   <T, R>(message: IToastMessage): BaseQuery<T, R> =>
   async (arg, { dispatch, queryFulfilled, getState }) => {
     const {

@@ -7,14 +7,16 @@ import { CollectionList } from '../../components/CollectionList/indes';
 import { CreateCollectionPopup } from '../../components/CreateCollectionPopup';
 import { useOwner } from '../../hooks/useOwner';
 import { Header, Main } from '../../layouts';
+import { useAppSelector } from '../../redux/hooks';
 import { extractIds } from '../../utils/helpers';
 
 export const Profile = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const { pathname } = useLocation();
+  const { role } = useAppSelector(state => state.user);
   const [userId] = extractIds(pathname);
-  const isOwner = useOwner(+userId);
+  const isOwner = useOwner(+userId, role);
 
   const handleButtonClick = () => setIsOpen(prev => !prev);
 

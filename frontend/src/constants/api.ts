@@ -26,3 +26,4 @@ export const CREATE_COMMENT = GET_COMMENTS;
 export const SEARCH_ITEMS = (query: string) => `/search?query=${encodeURI(query)}`;
 export const GET_LATTEST_ITEMS = `${ALL_COLLECTIONS}/item/lattest`;
 export const BIGGEST_COLLECTIONS = `${ALL_COLLECTIONS}/biggest`;
+export const ADMIN_USERS_DATA = '/user/admin';

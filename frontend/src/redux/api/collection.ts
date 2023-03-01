@@ -19,7 +19,7 @@ import {
   IUserCollectionsResponse,
 } from '../../types/collection';
 import { ICreateCollectionPayload, IUpdateCollectionPayload } from '../../types/formik';
-import { collectionQuery } from '../helpers/collectionQuery';
+import { baseQuery } from '../helpers/baseQuery';
 
 import baseApi from './baseClient';
 
@@ -31,7 +31,7 @@ const collectionApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      onQueryStarted: collectionQuery<ICreateCollectionPayload, void>(COLLECTION_CREATE_MSG),
+      onQueryStarted: baseQuery<ICreateCollectionPayload, void>(COLLECTION_CREATE_MSG),
       invalidatesTags: ['Collection'],
     }),
     updateCollection: builder.mutation<void, IUpdateCollectionPayload>({
@@ -40,7 +40,7 @@ const collectionApi = baseApi.injectEndpoints({
         method: 'POST',
         body: rest,
       }),
-      onQueryStarted: collectionQuery<IUpdateCollectionPayload, void>(COLLECTION_UPDATE_MSG),
+      onQueryStarted: baseQuery<IUpdateCollectionPayload, void>(COLLECTION_UPDATE_MSG),
       invalidatesTags: ['Collection'],
     }),
     getUserCollection: builder.query<IUserCollectionsResponse[], string | null>({
@@ -67,7 +67,7 @@ const collectionApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      onQueryStarted: collectionQuery<ICreateItemPayload, void>(COLLECTION_ITEM_CREATE_MSG),
+      onQueryStarted: baseQuery<ICreateItemPayload, void>(COLLECTION_ITEM_CREATE_MSG),
       invalidatesTags: ['Collection'],
     }),
     deleteCollection: builder.mutation<void, number>({
@@ -76,7 +76,7 @@ const collectionApi = baseApi.injectEndpoints({
         method: 'DELETE',
       }),
       invalidatesTags: ['Collection'],
-      onQueryStarted: collectionQuery<number, void>(COLLECTION_DELETE),
+      onQueryStarted: baseQuery<number, void>(COLLECTION_DELETE),
     }),
     getBiggestCollections: builder.query<IBiggestCollection[], null>({
       query: () => ({

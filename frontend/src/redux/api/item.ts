@@ -8,7 +8,7 @@ import {
 import { ITEM_DELETE, ITEM_UPDATE } from '../../constants/toast';
 import { IUpdateItemPayload } from '../../types/collection';
 import { IItem, IItemWithAllFields, IMainPageItems } from '../../types/item';
-import { collectionQuery } from '../helpers/collectionQuery';
+import { baseQuery } from '../helpers/baseQuery';
 
 import baseApi from './baseClient';
 
@@ -34,7 +34,7 @@ const itemsApi = baseApi.injectEndpoints({
         method: 'DELETE',
       }),
       invalidatesTags: ['Item', 'Collection'],
-      onQueryStarted: collectionQuery<[string, string], void>(ITEM_DELETE),
+      onQueryStarted: baseQuery<[string, string], void>(ITEM_DELETE),
     }),
     updateItem: builder.mutation<void, IUpdateItemPayload>({
       query: ({ collectionId, itemId, ...body }) => ({
@@ -43,7 +43,7 @@ const itemsApi = baseApi.injectEndpoints({
         body,
       }),
       invalidatesTags: ['Item', 'Collection'],
-      onQueryStarted: collectionQuery<IUpdateItemPayload, void>(ITEM_UPDATE),
+      onQueryStarted: baseQuery<IUpdateItemPayload, void>(ITEM_UPDATE),
     }),
     getLattestItems: builder.query<IMainPageItems[], null>({
       query: () => ({

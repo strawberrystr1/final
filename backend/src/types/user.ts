@@ -6,12 +6,16 @@ export interface IUser {
   password: string;
   language: "en" | "ru";
   theme: "light" | "dark";
+  status: "active" | "blocked";
 }
 
-export type IUserCreation = Omit<IUser, "id" | "language" | "theme" | "role">;
+export type IUserCreation = Omit<
+  IUser,
+  "id" | "language" | "theme" | "role" | "status"
+>;
 
 export type IUserLogin = Omit<IUserCreation, "name">;
 
 export type IUserSettings = Pick<IUser, "theme" | "language">;
 
-export type IAuthUser = Pick<IUser, "role" | "email" | "name" | 'theme' | 'id'>;
+export type IAuthUser = Pick<IUser, "role" | "email" | "name" | "theme" | "id">;

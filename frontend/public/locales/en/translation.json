@@ -76,6 +76,13 @@
     "update": "Update item",
     "lattest": "Last added items"
   },
+  "admin": {
+    "block": "Block selected users",
+    "unblock": "Unblock selected users",
+    "delete": "Delete selected users",
+    "change_role": "Change role of selected users",
+    "list": "Users list"
+  },
   "field_required": "Field is required",
   "confirm": "Confirm",
   "cancel": "Cancel",
