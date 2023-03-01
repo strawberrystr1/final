@@ -3,12 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { Button, Divider, Typography } from '@mui/material';
 
+import { filters } from '../../constants/filters';
 import { useOwner } from '../../hooks/useOwner';
 import { useGetOneCollectionQuery } from '../../redux/api/collection';
 import { useAppSelector } from '../../redux/hooks';
 import { getItemAdditionalField } from '../../utils/mappers';
 import { CollectionItem } from '../CollectionItem';
 import { CreateItemPopup } from '../CreateItemPopup';
+import { FiltersBlock } from '../FiltersBlock';
 import Loader from '../Loader';
 
 import { FlexWrapper, RowItem, RowWrapper, TableWrapper } from './styled';
@@ -19,6 +21,9 @@ export const CurrentCollection = () => {
   const { role } = useAppSelector(state => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
+  const [sort, setSort] = useState<string[]>(filters.sort[0].value);
+  const [bool, setBool] = useState('all');
+  const [tagsAmount, setTagsAmount] = useState(0);
 
   const { data, isLoading } = useGetOneCollectionQuery(+collectionId);
   const isOwner = useOwner(data?.userId, role);
@@ -52,6 +57,14 @@ export const CurrentCollection = () => {
         </>
       )}
       <Divider sx={{ mt: 1, mb: 1 }} />
+      <FiltersBlock
+        sort={sort}
+        setSort={setSort}
+        bool={bool}
+        setBool={setBool}
+        tagsAmount={tagsAmount}
+        setTagsAmount={setTagsAmount}
+      />
       <TableWrapper>
         <RowWrapper>
           <RowItem>ID</RowItem>

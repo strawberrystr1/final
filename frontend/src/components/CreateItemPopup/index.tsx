@@ -49,7 +49,10 @@ export const CreateItemPopup: FC<IProps> = ({
   );
   const [createItem, { isSuccess }] = useCreateCollectionItemMutation();
   const [updateItem, { isSuccess: isUpdateSuccess }] = useUpdateItemMutation();
-  const { data: suggestions } = useGetAllTagsQuery(null, { refetchOnMountOrArgChange: true });
+  const { data: suggestions, refetch } = useGetAllTagsQuery(null, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
 
   const initialValues = useMemo(() => {
     return getFormikInitialValuesForAdditionalField(additionalFields, ['itemName'], currentItem);
@@ -75,6 +78,7 @@ export const CreateItemPopup: FC<IProps> = ({
         id: collectionId,
       });
     }
+    refetch();
   };
 
   const formik = useFormik({

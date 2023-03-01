@@ -83,6 +83,22 @@
     "change_role": "Change role of selected users",
     "list": "Users list"
   },
+  "filters": {
+    "id_asc": "Sort by id ASC",
+    "id_desc": "Sort by id DESC",
+    "name_asc": "Sort by name A-Z",
+    "name_desc": "Sort by name Z-A",
+    "strings_asc": "Sort strings ASC",
+    "strings_desc": "Sort strings DESC",
+    "numbers_asc": "Sort numbers ASC",
+    "numbers_desc": "Sort numbers DESC",
+    "dates_asc": "Sort dates ASC",
+    "dates_desc": "Sort dates DESC",
+    "bool_true": "Show only with truthy boolean field",
+    "bool_false": "Show only with falsy boolean field",
+    "bool_all": "Show all boolean fields",
+    "tags": "Amount of tags"
+  },
   "field_required": "Field is required",
   "confirm": "Confirm",
   "cancel": "Cancel",
