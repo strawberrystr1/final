@@ -10,6 +10,7 @@ import {
   createItem,
   deleteItem,
   getCollectionItems,
+  getLattestItems,
   getOneItem,
   updateCollectionItem
 } from "../services/item.service";
@@ -152,4 +153,14 @@ export const handleSSE = async (req: Request, res: Response) => {
   req.on("close", () => {
     clients = clients.filter(client => client.id !== clientId);
   });
+};
+
+export const handleGetLattestItems = async (req: Request, res: Response) => {
+  try {
+    const items = await getLattestItems();
+
+    res.json(items);
+  } catch (e) {
+    res.status(HTTPCodes.INTERNAL_ERROR).json({ msg: SOMETHING_WRONG });
+  }
 };

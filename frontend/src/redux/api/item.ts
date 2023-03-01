@@ -7,7 +7,7 @@ import {
 } from '../../constants/api';
 import { ITEM_DELETE, ITEM_UPDATE } from '../../constants/toast';
 import { IUpdateItemPayload } from '../../types/collection';
-import { IItem, IItemWithAllFields } from '../../types/item';
+import { IItem, IItemWithAllFields, IMainPageItems } from '../../types/item';
 import { collectionQuery } from '../helpers/collectionQuery';
 
 import baseApi from './baseClient';
@@ -45,7 +45,7 @@ const itemsApi = baseApi.injectEndpoints({
       invalidatesTags: ['Item', 'Collection'],
       onQueryStarted: collectionQuery<IUpdateItemPayload, void>(ITEM_UPDATE),
     }),
-    getLattestItems: builder.query<IItemWithAllFields[], null>({
+    getLattestItems: builder.query<IMainPageItems[], null>({
       query: () => ({
         url: GET_LATTEST_ITEMS,
       }),

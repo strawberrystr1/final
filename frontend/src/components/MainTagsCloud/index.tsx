@@ -9,14 +9,14 @@ import { IMainTagsCloudItem } from '../../types/base';
 import { TagsPopover } from '../SearchBlock/styled';
 
 import { LinkTag } from './LinkTag';
-import { MainTag } from './Tag';
+import { MainTag } from './MainTag';
 
 export const MainTagsCloud = () => {
   const [isShown, setIsShown] = useState(false);
   const [innerTags, setInnerTags] = useState<{ value: string }[]>([]);
   const anchorElem = useRef<HTMLDivElement>(null);
   const { theme } = useAppSelector(state => state.user);
-  const { data } = useGetTagsCloudQuery();
+  const { data } = useGetTagsCloudQuery(null, { refetchOnMountOrArgChange: true });
 
   const handleMainTagClick = (tag: IMainTagsCloudItem) => {
     setInnerTags(tag.links);
@@ -37,15 +37,17 @@ export const MainTagsCloud = () => {
       <Typography fontWeight={600} fontSize={28} gutterBottom={true}>
         {t('main_cloud')}
       </Typography>
-      {data && (
-        <TagCloud
-          minSize={12}
-          maxSize={24}
-          tags={data}
-          renderer={MainTag}
-          onClick={handleMainTagClick}
-        />
-      )}
+      <Box sx={{ '& > div': { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start' } }}>
+        {data && (
+          <TagCloud
+            minSize={12}
+            maxSize={24}
+            tags={data}
+            renderer={MainTag(border)}
+            onClick={handleMainTagClick}
+          />
+        )}
+      </Box>
       <ClickAwayListener onClickAway={closePopover}>
         <TagsPopover
           open={isShown}

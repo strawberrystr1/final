@@ -4,12 +4,11 @@ import { Box, Typography } from '@mui/material';
 
 import { useGetBiggestCollectionsQuery } from '../../redux/api/collection';
 import { useAppSelector } from '../../redux/hooks';
-import { trim } from '../../utils/trimmer';
 
 export const BiggestCollections = () => {
   const { t } = useTranslation();
   const { theme } = useAppSelector(state => state.user);
-  const { data } = useGetBiggestCollectionsQuery();
+  const { data } = useGetBiggestCollectionsQuery(null, { refetchOnMountOrArgChange: true });
 
   const border = theme === 'dark' ? '1px solid white' : '1px solid black';
 
@@ -42,8 +41,8 @@ export const BiggestCollections = () => {
                 <Box sx={{ ml: 1 }}>
                   <Typography>Collection: {el.id}</Typography>
                   <Typography>Name: {el.name}</Typography>
-                  <Typography>Description: {trim(el.description, 10)}</Typography>
                   <Typography>Theme: {el.theme}</Typography>
+                  <Typography>Amount of items: {el.items_count}</Typography>
                 </Box>
               </Box>
             </Link>

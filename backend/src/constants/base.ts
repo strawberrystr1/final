@@ -1,2 +1,3 @@
 export const LATTEST_ITEMS_AMOUNT = 15;
 export const BIGGEST_COLLECTION_LIMIT = 10;
+export const CLOUD_TAGS_AMOUNT = 50;

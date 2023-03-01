@@ -1,3 +1,5 @@
+import sequelize from "sequelize";
+import { LATTEST_ITEMS_AMOUNT } from "../constants/base";
 import { client } from "../elastic";
 import CheckboxField from "../models/checkbox.model";
 import Collection from "../models/collection.model";
@@ -106,4 +108,22 @@ export const updateCollectionItem = async (
   const createdTags = await createTags(tags, +id);
 
   createIndex(item[0].toJSON(), [["tags", createdTags]]);
+};
+
+export const getLattestItems = async () => {
+  return (
+    await CollectionItem.findAll({
+      limit: LATTEST_ITEMS_AMOUNT,
+      order: [["id", "DESC"]]
+    })
+  ).map(e => {
+    const { id, collectionId, name, ...rest } = e.toJSON();
+
+    return {
+      id,
+      collectionId,
+      name,
+      fieldsAmount: Object.values(rest).filter(e => e !== null).length
+    };
+  });
 };

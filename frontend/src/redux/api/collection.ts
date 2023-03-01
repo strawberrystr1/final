@@ -78,7 +78,7 @@ const collectionApi = baseApi.injectEndpoints({
       invalidatesTags: ['Collection'],
       onQueryStarted: collectionQuery<number, void>(COLLECTION_DELETE),
     }),
-    getBiggestCollections: builder.query<IBiggestCollection[], void>({
+    getBiggestCollections: builder.query<IBiggestCollection[], null>({
       query: () => ({
         url: BIGGEST_COLLECTIONS,
       }),

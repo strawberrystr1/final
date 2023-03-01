@@ -35,3 +35,10 @@ export interface ITag {
   id: number;
   tag: string;
 }
+
+export interface IMainPageItems {
+  id: number;
+  collectionId: number;
+  name: string;
+  fieldsAmount: number;
+}

@@ -35,6 +35,7 @@ export const LattestItemsBlock = () => {
                 <Typography>Item: {el.id}</Typography>
                 <Typography>Collection: {el.collectionId}</Typography>
                 <Typography>Name: {el.name}</Typography>
+                <Typography>Amount of fields: {el.fieldsAmount}</Typography>
               </Box>
             </Link>
           ))}

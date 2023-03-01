@@ -12,7 +12,7 @@ const tagsApi = baseApi.injectEndpoints({
       providesTags: result =>
         result ? [...result.map(tag => ({ type: 'Tags' as const, id: tag.id })), 'Tags'] : ['Tags'],
     }),
-    getTagsCloud: builder.query<IMainTagsCloudItem[], void>({
+    getTagsCloud: builder.query<IMainTagsCloudItem[], null>({
       query: () => ({
         url: GET_TAGS_CLOUD,
       }),

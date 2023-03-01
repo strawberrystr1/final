@@ -7,27 +7,22 @@ import {
   handleGetOneCollectionItem,
   handleUpdateItem,
   handleGetItemLikes,
-  handleSSE
+  handleSSE,
+  handleGetLattestItems
 } from "../controllers/item.controller";
 import { handleUpdateLike } from "../controllers/like.controller";
 import commentRouter from "./comment.router";
 
 const router = Router();
 
-router.get(
-  "/:collectionId/item",
-  handleGetAllCollectionItems
-);
+router.get("/:collectionId/item", handleGetAllCollectionItems);
 router.use("/:collectionId/item", commentRouter);
 router.post(
   "/:collectionId/item/create",
   passport.authenticate("jwt", { session: false }),
   handleCreateItem
 );
-router.get(
-  "/:collectionId/item/:itemId/likes",
-  handleGetItemLikes
-);
+router.get("/:collectionId/item/:itemId/likes", handleGetItemLikes);
 router.post(
   "/:collectionId/item/:itemId/likes",
   passport.authenticate("jwt", { session: false }),
@@ -45,5 +40,6 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   handleUpdateItem
 );
+router.get("/item/lattest", handleGetLattestItems);
 
 export default router;
