@@ -22,6 +22,7 @@ import { ConfirmationModal } from '../ConfirmationModal';
 import { CreateItemPopup } from '../CreateItemPopup';
 import { itemsAdditionalFieldViews } from '../ItemAdditionalViews';
 import { LikesSection } from '../LikesSection';
+import Loader from '../Loader';
 
 import { ItemRow, Wrapper } from './styled';
 
@@ -100,7 +101,7 @@ export const CurrentItem = () => {
 
   return (
     <Wrapper>
-      {data && (
+      {data ? (
         <>
           <ItemRow sx={{ justifyContent: 'space-between' }}>
             <ItemRow sx={{ maxWidth: '90%' }}>
@@ -157,6 +158,8 @@ export const CurrentItem = () => {
             commentsData={commentsData}
           />
         </>
+      ) : (
+        <Loader />
       )}
       {isOwner && (
         <>

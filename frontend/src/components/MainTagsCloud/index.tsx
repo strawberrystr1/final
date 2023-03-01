@@ -6,6 +6,7 @@ import { t } from 'i18next';
 import { useGetTagsCloudQuery } from '../../redux/api/tags';
 import { useAppSelector } from '../../redux/hooks';
 import { IMainTagsCloudItem } from '../../types/base';
+import Loader from '../Loader';
 import { TagsPopover } from '../SearchBlock/styled';
 
 import { LinkTag } from './LinkTag';
@@ -16,7 +17,7 @@ export const MainTagsCloud = () => {
   const [innerTags, setInnerTags] = useState<{ value: string }[]>([]);
   const anchorElem = useRef<HTMLDivElement>(null);
   const { theme } = useAppSelector(state => state.user);
-  const { data } = useGetTagsCloudQuery(null, { refetchOnMountOrArgChange: true });
+  const { data, isLoading } = useGetTagsCloudQuery(null, { refetchOnMountOrArgChange: true });
 
   const handleMainTagClick = (tag: IMainTagsCloudItem) => {
     setInnerTags(tag.links);
@@ -37,36 +38,42 @@ export const MainTagsCloud = () => {
       <Typography fontWeight={600} fontSize={28} gutterBottom={true}>
         {t('main_cloud')}
       </Typography>
-      <Box sx={{ '& > div': { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start' } }}>
-        {data && (
-          <TagCloud
-            minSize={12}
-            maxSize={24}
-            tags={data}
-            renderer={MainTag(border)}
-            onClick={handleMainTagClick}
-          />
-        )}
-      </Box>
-      <ClickAwayListener onClickAway={closePopover}>
-        <TagsPopover
-          open={isShown}
-          anchorEl={anchorElem.current}
-          popperOptions={{ placement: 'bottom-start' }}
-        >
-          {innerTags.length > 0 ? (
-            <TagCloud
-              minSize={12}
-              maxSize={35}
-              tags={innerTags}
-              renderer={LinkTag}
-              disableRandomColor={true}
-            />
-          ) : (
-            <Typography>{t('no_items')}</Typography>
-          )}
-        </TagsPopover>
-      </ClickAwayListener>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <Box sx={{ '& > div': { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start' } }}>
+            {data && (
+              <TagCloud
+                minSize={12}
+                maxSize={24}
+                tags={data}
+                renderer={MainTag(border)}
+                onClick={handleMainTagClick}
+              />
+            )}
+          </Box>
+          <ClickAwayListener onClickAway={closePopover}>
+            <TagsPopover
+              open={isShown}
+              anchorEl={anchorElem.current}
+              popperOptions={{ placement: 'bottom-start' }}
+            >
+              {innerTags.length > 0 ? (
+                <TagCloud
+                  minSize={12}
+                  maxSize={35}
+                  tags={innerTags}
+                  renderer={LinkTag}
+                  disableRandomColor={true}
+                />
+              ) : (
+                <Typography>{t('no_items')}</Typography>
+              )}
+            </TagsPopover>
+          </ClickAwayListener>
+        </>
+      )}
     </Box>
   );
 };

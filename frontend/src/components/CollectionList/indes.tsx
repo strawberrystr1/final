@@ -13,7 +13,7 @@ export const CollectionList = () => {
   const [id] = extractIds(pathname);
   const { data, isLoading } = useGetUserCollectionQuery(id);
   const { t } = useTranslation();
-  console.log(data);
+
   return (
     <Box sx={{ pt: 2 }}>
       {isLoading ? (
