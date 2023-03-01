@@ -49,7 +49,7 @@ export const CreateItemPopup: FC<IProps> = ({
   );
   const [createItem, { isSuccess }] = useCreateCollectionItemMutation();
   const [updateItem, { isSuccess: isUpdateSuccess }] = useUpdateItemMutation();
-  const { data: suggestions } = useGetAllTagsQuery();
+  const { data: suggestions } = useGetAllTagsQuery(null, { refetchOnMountOrArgChange: true });
 
   const initialValues = useMemo(() => {
     return getFormikInitialValuesForAdditionalField(additionalFields, ['itemName'], currentItem);

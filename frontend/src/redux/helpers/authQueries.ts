@@ -17,7 +17,6 @@ export const authQuery: BaseQuery<IUserLoginPayload | IRegisterUserPayload, IUse
   try {
     const { data } = await queryFulfilled;
 
-    localStorage.setItem('token', data.token);
     dispatch(loginUser(data));
     toastHandler(dispatch, LOGGED_IN[language], 'success');
   } catch (e) {

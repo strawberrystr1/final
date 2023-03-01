@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import type { Languages, Roles, Themes } from '../../types/base';
 import type { IUserResponse } from '../../types/user';
+import { changeLSUser, writeUserToLS } from '../../utils/helpers';
 
 interface IInitialState {
   isLogged: boolean;
@@ -29,13 +30,16 @@ const userSlice = createSlice({
   reducers: {
     changeLanguage: state => {
       state.language = state.language === 'en' ? 'ru' : 'en';
+      changeLSUser('language', state.language);
     },
     changeTheme: state => {
       state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      changeLSUser('theme', state.theme);
     },
     loginUser: (state, action: PayloadAction<IUserResponse>) => {
       const { name, role, theme, language, token, id } = action.payload;
 
+      writeUserToLS(action.payload);
       return {
         isLogged: true,
         name,

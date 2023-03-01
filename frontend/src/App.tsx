@@ -22,11 +22,24 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const lsUser = localStorage.getItem('user');
+
+    if (!lsUser) {
+      localStorage.setItem(
+        'user',
+        JSON.stringify({ name: '', language: 'en', theme: 'dark', role: 'user', id: 0 })
+      );
+    }
+
     if (token) {
       const decoded = jwt(token) satisfies JWTUser;
 
       if (Date.now() < new Date(decoded.exp * 1000).getTime()) {
-        dispatch(loginUser({ ...decoded, token }));
+        if (lsUser) {
+          dispatch(loginUser({ ...JSON.parse(lsUser), token }));
+        } else {
+          dispatch(loginUser({ ...decoded, token }));
+        }
       }
     }
   }, []);

@@ -5,7 +5,7 @@ import baseApi from './baseClient';
 
 const tagsApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    getAllTags: builder.query<IFieldTag[], void>({
+    getAllTags: builder.query<IFieldTag[], null>({
       query: () => ({
         url: GET_ALL_TAGS,
       }),
