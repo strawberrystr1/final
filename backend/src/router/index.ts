@@ -4,6 +4,7 @@ import userRouter from "./user.router";
 import collectionRouter from "./collection.router";
 import tagsRouter from "./tag.router";
 import { handleSearch } from "../controllers/search.controller";
+import { client } from "../elastic";
 
 const router = Router();
 

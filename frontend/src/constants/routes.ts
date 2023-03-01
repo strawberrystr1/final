@@ -1,4 +1,4 @@
-export default {
+const routes = {
   HOME: '/',
   SIGNUP: '/signup',
   SIGNIN: '/signin',
@@ -8,3 +8,5 @@ export default {
   ITEM_ID: '/collection/:id/:itemId',
   ADMIN_USERS: '/users',
 };
+
+export default routes;

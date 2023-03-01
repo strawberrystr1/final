@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 
+/* eslint-disable */
+
 const useAuthValidationSchema = () => {
   const { t } = useTranslation();
 
@@ -18,14 +20,14 @@ const useAuthValidationSchema = () => {
       })
       .required(t('auth.password_required') as string)
       .test('password', t('auth.password_characters') as string, value => {
-        return !/[\&@#$%\^\*]/.test(value as string);
+        return !/[&@#$%\^\*]/.test(value as string);
       })
       .min(8, t('auth.password_min') as string),
     name: yup
       .string()
       .required(t('auth.name_required') as string)
       .test('only letters', t('auth.name_letters') as string, value => {
-        return !/[\&!@#$%\^\*\)\(\[\]\{\}<>,/\/\+\\]/.test(value as string);
+        return !/[&!@#$%^\*\)\(\[\]\{\}<>,/\/\+\\]/.test(value as string);
       })
       .min(3, t('auth.name_min') as string)
       .max(20, t('auth.name_max') as string),
