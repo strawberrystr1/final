@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx ts-node-dev --respawn --transpile-only ./src/index.ts",
-    "build": "esbuild ./src/index.ts --bundle --outfile=bundle.js --platform=node --external:pg-native --external:aws-sdk --external:mock-aws-s3 --external:nock --external:pg-hstore",
+    "build": "esbuild ./src/index.ts --bundle --target=es2020 --outfile=bundle.js --platform=node --external:pg-native --external:aws-sdk --external:mock-aws-s3 --external:nock --external:pg-hstore",
     "start": "node ./bundle.js"
   },
   "author": "strawberrystr1",
