@@ -1,5 +1,4 @@
 import passport from "passport";
-import bcrypt from "bcrypt";
 import JWTStrategy, { StrategyOptions } from "passport-jwt";
 
 import { USER_NOT_EXISTS, WRONG_PASSWORD } from "../constants/httpMessages";
@@ -9,7 +8,7 @@ const { Strategy, ExtractJwt } = JWTStrategy;
 
 const options: StrategyOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SERET
+  secretOrKey: process.env.JWT_SERET || ' '
 };
 
 passport.use(

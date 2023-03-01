@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { SALT_NUMBER } from "../constants/hash";
 import User from "../models/user.model";
 import { HTTPCodes } from "../types/httpCodes";
