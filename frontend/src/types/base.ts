@@ -18,6 +18,12 @@ export interface IFieldTag {
   text: string;
 }
 
+export interface IMainTagsCloudItem {
+  value: string;
+  count: number;
+  links: { value: string }[];
+}
+
 export type AdditionalFieldsTypes = string | number | boolean | Date;
 export type FormikItemCreate = Record<string, AdditionalFieldsTypes>;
 

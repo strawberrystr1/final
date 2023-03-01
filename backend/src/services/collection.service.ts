@@ -1,4 +1,6 @@
+import sequelize from "sequelize";
 import { additionalTypes } from "../constants/additional";
+import { BIGGEST_COLLECTION_LIMIT } from "../constants/base";
 import CheckboxField from "../models/checkbox.model";
 import Collection from "../models/collection.model";
 import DateField from "../models/date.model";
@@ -127,6 +129,31 @@ export const updateCollection = async (id: number, data: ICollectionUpdate) => {
 
   const mapped = getAdditionalFieldsData(rest);
   await Promise.all(createOrUpdateAdditionalField(mapped, +id, false));
+};
+
+export const getBiggestCollections = async () => {
+  return await Collection.findAll({
+    attributes: [
+      "id",
+      "name",
+      "description",
+      "theme",
+      "image",
+      [
+        sequelize.fn("count", sequelize.col("items.collectionId")),
+        "items_count"
+      ]
+    ],
+    group: ["collection.id"],
+    order: [["items_count", "DESC"]],
+    limit: BIGGEST_COLLECTION_LIMIT,
+    include: {
+      model: CollectionItem,
+      as: "items",
+      attributes: []
+    },
+    subQuery: false
+  });
 };
 
 const updateCollectionStringField = async (

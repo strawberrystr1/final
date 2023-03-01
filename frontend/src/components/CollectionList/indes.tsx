@@ -1,13 +1,17 @@
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { Masonry } from '@mui/lab';
 import { Box, Typography } from '@mui/material';
 
 import { useGetUserCollectionQuery } from '../../redux/api/collection';
+import { extractIds } from '../../utils/helpers';
 import { CollectionCard } from '../CollectionCard';
 import Loader from '../Loader';
 
 export const CollectionList = () => {
-  const { data, isLoading } = useGetUserCollectionQuery();
+  const { pathname } = useLocation();
+  const [id] = extractIds(pathname);
+  const { data, isLoading } = useGetUserCollectionQuery(id);
   const { t } = useTranslation();
 
   return (

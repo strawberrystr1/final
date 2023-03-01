@@ -35,3 +35,12 @@ export interface IUpdateItemPayload {
   itemName: string;
   [key: string]: string | FormikItemCreatePayload | string[];
 }
+
+export interface IBiggestCollection {
+  id: number;
+  name: string;
+  theme: string;
+  description: string;
+  items_count: string;
+  image: string;
+}
