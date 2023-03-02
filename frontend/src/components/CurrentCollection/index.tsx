@@ -1,17 +1,17 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { Button, Divider, Typography } from '@mui/material';
+import { Backdrop, Button, CircularProgress, Divider, Typography } from '@mui/material';
 
 import { filters } from '../../constants/filters';
 import { useOwner } from '../../hooks/useOwner';
 import { useGetOneCollectionQuery } from '../../redux/api/collection';
 import { useAppSelector } from '../../redux/hooks';
 import { getItemAdditionalField } from '../../utils/mappers';
+import { applyBoolean, applyTags, sortItems } from '../../utils/sort';
 import { CollectionItem } from '../CollectionItem';
 import { CreateItemPopup } from '../CreateItemPopup';
 import { FiltersBlock } from '../FiltersBlock';
-import Loader from '../Loader';
 
 import { FlexWrapper, RowItem, RowWrapper, TableWrapper } from './styled';
 
@@ -21,7 +21,7 @@ export const CurrentCollection = () => {
   const { role } = useAppSelector(state => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
-  const [sort, setSort] = useState<string[]>(filters.sort[0].value);
+  const [sort, setSort] = useState<string>(filters.sort[0].value);
   const [bool, setBool] = useState('all');
   const [tagsAmount, setTagsAmount] = useState(0);
 
@@ -35,13 +35,27 @@ export const CurrentCollection = () => {
     return {};
   }, [data, isLoading]);
 
+  const sortedData = useMemo(() => {
+    if (data) {
+      const { items, numbers, dates } = data;
+
+      const sortedItems = applyTags(
+        applyBoolean(sortItems(items, sort, numbers, dates), bool),
+        tagsAmount
+      );
+
+      return {
+        ...data,
+        items: sortedItems,
+      };
+    }
+  }, [data, sort, bool, tagsAmount]);
+
   const fields = Object.values(additionalFields).flat(1);
 
   const handleButtonClick = () => setIsOpen(prev => !prev);
 
-  return isLoading ? (
-    <Loader />
-  ) : (
+  return (
     <FlexWrapper>
       {isOwner && (
         <>
@@ -64,6 +78,7 @@ export const CurrentCollection = () => {
         setBool={setBool}
         tagsAmount={tagsAmount}
         setTagsAmount={setTagsAmount}
+        checkboxes={data?.checkboxes}
       />
       <TableWrapper>
         <RowWrapper>
@@ -74,14 +89,14 @@ export const CurrentCollection = () => {
           ))}
           <RowItem>Tags</RowItem>
         </RowWrapper>
-        {data && data.items.length > 0 ? (
-          data.items.map(item => (
+        {sortedData && sortedData.items.length > 0 ? (
+          sortedData.items.map(item => (
             <CollectionItem
               key={item.id}
               item={item}
               additionalFields={additionalFields}
-              collectionId={data.id}
-              userId={data.userId}
+              collectionId={sortedData.id}
+              userId={sortedData.userId}
             />
           ))
         ) : (
@@ -90,6 +105,9 @@ export const CurrentCollection = () => {
           </Typography>
         )}
       </TableWrapper>
+      <Backdrop sx={{ color: '#fff', zIndex: 22 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </FlexWrapper>
   );
 };

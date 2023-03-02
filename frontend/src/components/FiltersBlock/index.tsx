@@ -5,12 +5,13 @@ import { Box, MenuItem, Select, SelectChangeEvent, TextField, Typography } from 
 import { filters } from '../../constants/filters';
 
 interface IProps {
-  sort: string[];
-  setSort: Dispatch<SetStateAction<string[]>>;
+  sort: string;
+  setSort: Dispatch<SetStateAction<string>>;
   bool: string;
   setBool: Dispatch<SetStateAction<string>>;
   tagsAmount: number;
   setTagsAmount: Dispatch<SetStateAction<number>>;
+  checkboxes: string[] | undefined;
 }
 
 export const FiltersBlock: FC<IProps> = ({
@@ -20,11 +21,12 @@ export const FiltersBlock: FC<IProps> = ({
   setBool,
   tagsAmount,
   setTagsAmount,
+  checkboxes,
 }) => {
   const { t } = useTranslation();
 
-  const handleSortChange = (e: SelectChangeEvent<string[]>) => {
-    setSort(e.target.value as string[]);
+  const handleSortChange = (e: SelectChangeEvent<string>) => {
+    setSort(e.target.value as string);
   };
 
   const handleBoolChange = (e: SelectChangeEvent<string>) => {
@@ -44,11 +46,15 @@ export const FiltersBlock: FC<IProps> = ({
         ))}
       </Select>
       <Select value={bool} onChange={handleBoolChange} size="small">
-        {filters.boolean.map(el => (
-          <MenuItem value={el.value} key={el.title}>
-            {t(el.title)}
-          </MenuItem>
-        ))}
+        <MenuItem value={'all'}>{t('filters.bool_all')}</MenuItem>
+        {checkboxes &&
+          checkboxes.map(check =>
+            filters.boolean.map(el => (
+              <MenuItem value={`${el.value}-${check}`} key={el.title}>
+                {t(el.title) + ` ${check}`}
+              </MenuItem>
+            ))
+          )}
       </Select>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Typography fontSize={22} sx={{ mr: 2 }}>

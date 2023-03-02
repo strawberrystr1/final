@@ -3,7 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, Divider, IconButton, Tooltip, Typography } from '@mui/material';
+import {
+  Backdrop,
+  Box,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 
 import { API_URL, SSE_STREAM } from '../../constants/api';
 import { additionalTypes } from '../../constants/base';
@@ -22,7 +30,6 @@ import { ConfirmationModal } from '../ConfirmationModal';
 import { CreateItemPopup } from '../CreateItemPopup';
 import { itemsAdditionalFieldViews } from '../ItemAdditionalViews';
 import { LikesSection } from '../LikesSection';
-import Loader from '../Loader';
 
 import { ItemRow, Wrapper } from './styled';
 
@@ -101,7 +108,7 @@ export const CurrentItem = () => {
 
   return (
     <Wrapper>
-      {data ? (
+      {data && (
         <>
           <ItemRow sx={{ justifyContent: 'space-between' }}>
             <ItemRow sx={{ maxWidth: '90%' }}>
@@ -158,8 +165,6 @@ export const CurrentItem = () => {
             commentsData={commentsData}
           />
         </>
-      ) : (
-        <Loader />
       )}
       {isOwner && (
         <>
@@ -180,6 +185,9 @@ export const CurrentItem = () => {
           )}
         </>
       )}
+      <Backdrop sx={{ color: '#fff', zIndex: 22 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Wrapper>
   );
 };

@@ -1,10 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
 
 import { useGetBiggestCollectionsQuery } from '../../redux/api/collection';
 import { useAppSelector } from '../../redux/hooks';
-import Loader from '../Loader';
 
 export const BiggestCollections = () => {
   const { t } = useTranslation();
@@ -20,44 +19,41 @@ export const BiggestCollections = () => {
       <Typography fontWeight={600} fontSize={28}>
         {t('collection.biggest')}
       </Typography>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          {data && (
-            <Box sx={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-              {data.map(el => (
-                <Link key={el.id} to={`/collection/${el.id}`} style={{ textDecoration: 'none' }}>
-                  <Box
-                    sx={{
-                      p: 1,
-                      border: border,
-                      borderRadius: 2,
-                      mb: 1,
-                      display: 'flex',
-                    }}
-                  >
-                    {el.image && (
-                      <img
-                        src={el.image}
-                        alt={el.name}
-                        title={el.name}
-                        style={{ width: 100, height: 90 }}
-                      />
-                    )}
-                    <Box sx={{ ml: 1 }}>
-                      <Typography>Collection: {el.id}</Typography>
-                      <Typography>Name: {el.name}</Typography>
-                      <Typography>Theme: {el.theme}</Typography>
-                      <Typography>Amount of items: {el.items_count}</Typography>
-                    </Box>
-                  </Box>
-                </Link>
-              ))}
-            </Box>
-          )}
-        </>
+      {data && (
+        <Box sx={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          {data.map(el => (
+            <Link key={el.id} to={`/collection/${el.id}`} style={{ textDecoration: 'none' }}>
+              <Box
+                sx={{
+                  p: 1,
+                  border: border,
+                  borderRadius: 2,
+                  mb: 1,
+                  display: 'flex',
+                }}
+              >
+                {el.image && (
+                  <img
+                    src={el.image}
+                    alt={el.name}
+                    title={el.name}
+                    style={{ width: 100, height: 90 }}
+                  />
+                )}
+                <Box sx={{ ml: 1 }}>
+                  <Typography>Collection: {el.id}</Typography>
+                  <Typography>Name: {el.name}</Typography>
+                  <Typography>Theme: {el.theme}</Typography>
+                  <Typography>Amount of items: {el.items_count}</Typography>
+                </Box>
+              </Box>
+            </Link>
+          ))}
+        </Box>
       )}
+      <Backdrop sx={{ color: '#fff', zIndex: 22 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };

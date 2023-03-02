@@ -1,14 +1,7 @@
 import { Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Box, Dialog, DialogActions, DialogContent, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 
 import { additionalTypes } from '../../constants/base';
@@ -47,8 +40,9 @@ export const CreateItemPopup: FC<IProps> = ({
   const [tags, setTags] = useState<IFieldTag[]>(() =>
     currentItem ? mapTags(currentItem.tags) : []
   );
-  const [createItem, { isSuccess }] = useCreateCollectionItemMutation();
-  const [updateItem, { isSuccess: isUpdateSuccess }] = useUpdateItemMutation();
+  const [createItem, { isSuccess, isLoading }] = useCreateCollectionItemMutation();
+  const [updateItem, { isSuccess: isUpdateSuccess, isLoading: isUpdateLoading }] =
+    useUpdateItemMutation();
   const { data: suggestions, refetch } = useGetAllTagsQuery(null, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
@@ -140,9 +134,9 @@ export const CreateItemPopup: FC<IProps> = ({
             </DialogItem>
           </DialogContent>
           <DialogActions>
-            <Button variant="contained" type="submit">
+            <LoadingButton loading={isUpdateLoading || isLoading} variant="contained" type="submit">
               {currentItem ? t('item.update_btn') : t('item.create_btn')}
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </form>
       </Dialog>

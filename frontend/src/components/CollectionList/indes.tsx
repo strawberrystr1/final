@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { Masonry } from '@mui/lab';
-import { Box, Typography } from '@mui/material';
+import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
 
 import { useGetUserCollectionQuery } from '../../redux/api/collection';
 import { extractIds } from '../../utils/helpers';
 import { CollectionCard } from '../CollectionCard';
-import Loader from '../Loader';
 
 export const CollectionList = () => {
   const { pathname } = useLocation();
@@ -16,9 +15,7 @@ export const CollectionList = () => {
 
   return (
     <Box sx={{ pt: 2 }}>
-      {isLoading ? (
-        <Loader />
-      ) : data ? (
+      {data ? (
         <Masonry columns={3} spacing={1}>
           {data.map(item => (
             <CollectionCard
@@ -30,6 +27,9 @@ export const CollectionList = () => {
       ) : (
         <Typography>{t('collection.empty')}</Typography>
       )}
+      <Backdrop sx={{ color: '#fff', zIndex: 22 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };

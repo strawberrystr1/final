@@ -5,7 +5,9 @@ import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import {
+  Backdrop,
   Box,
+  CircularProgress,
   IconButton,
   Paper,
   Table,
@@ -23,7 +25,6 @@ import {
   useUpdateUserMutation,
 } from '../../redux/api/user';
 import { IUserResponse } from '../../types/user';
-import Loader from '../Loader';
 
 import { Wrapper } from './styled';
 import { UserRow } from './UserRow';
@@ -31,7 +32,7 @@ import { UserRow } from './UserRow';
 export const UsersTable = () => {
   const [selectedUsers, setSelectedUsers] = useState<IUserResponse[]>([]);
   const { t } = useTranslation();
-  const { data } = useGetAdminDataQuery();
+  const { data, isLoading } = useGetAdminDataQuery();
   const [updateUser] = useUpdateUserMutation();
   const [deleteUser] = useDeleteUsersMutation();
 
@@ -111,7 +112,7 @@ export const UsersTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data ? (
+            {data &&
               data.map(user => (
                 <UserRow
                   key={user.id}
@@ -119,10 +120,10 @@ export const UsersTable = () => {
                   addToUsersArray={addToUsersArray}
                   isSelected={selectedUsers.some(u => u.id === user.id)}
                 />
-              ))
-            ) : (
-              <Loader />
-            )}
+              ))}
+            <Backdrop sx={{ color: '#fff', zIndex: 22 }} open={isLoading}>
+              <CircularProgress color="inherit" />
+            </Backdrop>
           </TableBody>
         </Table>
       </TableContainer>

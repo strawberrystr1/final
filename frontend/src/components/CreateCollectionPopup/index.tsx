@@ -2,8 +2,8 @@ import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import { useLocation } from 'react-router-dom';
+import { LoadingButton } from '@mui/lab';
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -42,8 +42,9 @@ export const CreateCollectionPopup: FC<IProps> = ({ isOpen, currentCollection, s
   const textArea = useRef<HTMLTextAreaElement>(null);
   const validationSchema = useValidationSchema();
   const { t } = useTranslation();
-  const [createCollection, { isSuccess }] = useCreateMutation();
-  const [updateCollection, { isSuccess: isSuccessUpdate }] = useUpdateCollectionMutation();
+  const [createCollection, { isSuccess, isLoading }] = useCreateMutation();
+  const [updateCollection, { isSuccess: isSuccessUpdate, isLoading: isLoadingUpdate }] =
+    useUpdateCollectionMutation();
   const { pathname } = useLocation();
   const [id] = extractIds(pathname);
 
@@ -197,9 +198,9 @@ export const CreateCollectionPopup: FC<IProps> = ({ isOpen, currentCollection, s
             </DialogItem>
           </DialogContent>
           <DialogActions>
-            <Button variant="contained" type="submit">
+            <LoadingButton loading={isLoadingUpdate || isLoading} variant="contained" type="submit">
               {currentCollection ? t('collection.update') : t('collection.create_btn')}
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </form>
       </Dialog>

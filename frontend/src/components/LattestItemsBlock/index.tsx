@@ -1,10 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
 
 import { useGetLattestItemsQuery } from '../../redux/api/item';
 import { useAppSelector } from '../../redux/hooks';
-import Loader from '../Loader';
 
 export const LattestItemsBlock = () => {
   const { t } = useTranslation();
@@ -17,37 +16,34 @@ export const LattestItemsBlock = () => {
       <Typography fontWeight={600} fontSize={28}>
         {t('item.lattest')}
       </Typography>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          {data && (
-            <Box sx={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-              {data.map(el => (
-                <Link
-                  key={el.id}
-                  to={`/collection/${el.collectionId}/${el.id}`}
-                  style={{ textDecoration: 'none' }}
-                >
-                  <Box
-                    sx={{
-                      p: 1,
-                      border: `1px solid ${theme === 'dark' ? 'white' : 'black'}`,
-                      borderRadius: 2,
-                      mb: 1,
-                    }}
-                  >
-                    <Typography>Item: {el.id}</Typography>
-                    <Typography>Collection: {el.collectionId}</Typography>
-                    <Typography>Name: {el.name}</Typography>
-                    <Typography>Amount of fields: {el.fieldsAmount}</Typography>
-                  </Box>
-                </Link>
-              ))}
-            </Box>
-          )}
-        </>
+      {data && (
+        <Box sx={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          {data.map(el => (
+            <Link
+              key={el.id}
+              to={`/collection/${el.collectionId}/${el.id}`}
+              style={{ textDecoration: 'none' }}
+            >
+              <Box
+                sx={{
+                  p: 1,
+                  border: `1px solid ${theme === 'dark' ? 'white' : 'black'}`,
+                  borderRadius: 2,
+                  mb: 1,
+                }}
+              >
+                <Typography>Item: {el.id}</Typography>
+                <Typography>Collection: {el.collectionId}</Typography>
+                <Typography>Name: {el.name}</Typography>
+                <Typography>Amount of fields: {el.fieldsAmount}</Typography>
+              </Box>
+            </Link>
+          ))}
+        </Box>
       )}
+      <Backdrop sx={{ color: '#fff', zIndex: 22 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };

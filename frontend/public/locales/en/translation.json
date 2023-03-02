@@ -94,8 +94,8 @@
     "numbers_desc": "Sort numbers DESC",
     "dates_asc": "Sort dates ASC",
     "dates_desc": "Sort dates DESC",
-    "bool_true": "Show only with truthy boolean field",
-    "bool_false": "Show only with falsy boolean field",
+    "bool_true": "Show only with truthy field",
+    "bool_false": "Show only with falsy field",
     "bool_all": "Show all boolean fields",
     "tags": "Amount of tags"
   },

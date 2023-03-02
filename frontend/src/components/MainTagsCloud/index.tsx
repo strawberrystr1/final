@@ -1,12 +1,11 @@
 import { useRef, useState } from 'react';
 import { TagCloud } from 'react-tagcloud';
-import { Box, ClickAwayListener, Typography } from '@mui/material';
+import { Backdrop, Box, CircularProgress, ClickAwayListener, Typography } from '@mui/material';
 import { t } from 'i18next';
 
 import { useGetTagsCloudQuery } from '../../redux/api/tags';
 import { useAppSelector } from '../../redux/hooks';
 import { IMainTagsCloudItem } from '../../types/base';
-import Loader from '../Loader';
 import { TagsPopover } from '../SearchBlock/styled';
 
 import { LinkTag } from './LinkTag';
@@ -38,42 +37,39 @@ export const MainTagsCloud = () => {
       <Typography fontWeight={600} fontSize={28} gutterBottom={true}>
         {t('main_cloud')}
       </Typography>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          <Box sx={{ '& > div': { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start' } }}>
-            {data && (
-              <TagCloud
-                minSize={12}
-                maxSize={24}
-                tags={data}
-                renderer={MainTag(border)}
-                onClick={handleMainTagClick}
-              />
-            )}
-          </Box>
-          <ClickAwayListener onClickAway={closePopover}>
-            <TagsPopover
-              open={isShown}
-              anchorEl={anchorElem.current}
-              popperOptions={{ placement: 'bottom-start' }}
-            >
-              {innerTags.length > 0 ? (
-                <TagCloud
-                  minSize={12}
-                  maxSize={35}
-                  tags={innerTags}
-                  renderer={LinkTag}
-                  disableRandomColor={true}
-                />
-              ) : (
-                <Typography>{t('no_items')}</Typography>
-              )}
-            </TagsPopover>
-          </ClickAwayListener>
-        </>
-      )}
+      <Box sx={{ '& > div': { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start' } }}>
+        {data && (
+          <TagCloud
+            minSize={12}
+            maxSize={24}
+            tags={data}
+            renderer={MainTag(border)}
+            onClick={handleMainTagClick}
+          />
+        )}
+      </Box>
+      <ClickAwayListener onClickAway={closePopover}>
+        <TagsPopover
+          open={isShown}
+          anchorEl={anchorElem.current}
+          popperOptions={{ placement: 'bottom-start' }}
+        >
+          {innerTags.length > 0 ? (
+            <TagCloud
+              minSize={12}
+              maxSize={35}
+              tags={innerTags}
+              renderer={LinkTag}
+              disableRandomColor={true}
+            />
+          ) : (
+            <Typography>{t('no_items')}</Typography>
+          )}
+        </TagsPopover>
+      </ClickAwayListener>
+      <Backdrop sx={{ color: '#fff', zIndex: 22 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Box>
   );
 };
