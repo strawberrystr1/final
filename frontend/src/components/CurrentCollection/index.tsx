@@ -79,14 +79,16 @@ export const CurrentCollection = () => {
         tagsAmount={tagsAmount}
         setTagsAmount={setTagsAmount}
         checkboxes={data?.checkboxes}
+        numbers={data?.numbers}
+        dates={data?.dates}
       />
       <TableWrapper>
         <RowWrapper>
           <RowItem>ID</RowItem>
           <RowItem>Item name</RowItem>
-          {fields.map(field => (
-            <RowItem key={field}>{field}</RowItem>
-          ))}
+          {fields.map(field => {
+            return <RowItem key={field}>{field}</RowItem>;
+          })}
           <RowItem>Tags</RowItem>
         </RowWrapper>
         {sortedData && sortedData.items.length > 0 ? (

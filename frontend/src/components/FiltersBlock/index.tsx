@@ -12,6 +12,8 @@ interface IProps {
   tagsAmount: number;
   setTagsAmount: Dispatch<SetStateAction<number>>;
   checkboxes: string[] | undefined;
+  numbers: string[] | undefined;
+  dates: string[] | undefined;
 }
 
 export const FiltersBlock: FC<IProps> = ({

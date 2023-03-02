@@ -16,6 +16,18 @@ export const filters = {
       title: 'filters.name_desc',
       value: 'nameDESC',
     },
+  ],
+  date: [
+    {
+      title: 'filters.dates_asc',
+      value: 'dateASC',
+    },
+    {
+      title: 'filters.dates_desc',
+      value: 'dateDESC',
+    },
+  ],
+  number: [
     {
       title: 'filters.numbers_asc',
       value: 'numbersASC',
@@ -23,14 +35,6 @@ export const filters = {
     {
       title: 'filters.numbers_desc',
       value: 'numbersDESC',
-    },
-    {
-      title: 'filters.dates_desc',
-      value: 'dateASC',
-    },
-    {
-      title: 'filters.dates_desc',
-      value: 'dateDESC',
     },
   ],
   boolean: [
