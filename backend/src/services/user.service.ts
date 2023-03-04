@@ -7,7 +7,7 @@ import { IUser, IUserCreation, IUserSettings } from "../types/user";
 import { createToken } from "../utils/createToken";
 
 export const createUser = async (user: IUserCreation) => {
-  const { email, name, password } = user;
+  const { email, name, password, role: initRole } = user;
 
   const passwordHash = bcrypt.hashSync(password, SALT_NUMBER);
 
@@ -22,7 +22,8 @@ export const createUser = async (user: IUserCreation) => {
       {
         name,
         email,
-        password: passwordHash
+        password: passwordHash,
+        role: initRole ? initRole : "user"
       },
       { returning: true }
     )

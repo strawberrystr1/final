@@ -11,7 +11,7 @@ export interface IUser {
 
 export type IUserCreation = Omit<
   IUser,
-  "id" | "language" | "theme" | "role" | "status"
+  "id" | "language" | "theme" | "status"
 >;
 
 export type IUserLogin = Omit<IUserCreation, "name">;
